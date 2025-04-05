@@ -1,0 +1,32 @@
+svg {
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    top: 0;
+    left: 0;
+    box-sizing: border-box;
+}
+
+.math-div{
+    position: absolute;
+    overflow: hidden;
+    padding: 0;
+    margin: 0;
+}
+
+.math-div mjx-container {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+#math-output mjx-container{
+    text-align: right !important;
+}
+
+#math-input mjx-container{
+    text-align: left !important;
+}
+
+[inkscape\3a label^="label_"] {
+    pointer-events: none;
+}

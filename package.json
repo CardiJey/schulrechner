@@ -1,0 +1,50 @@
+{
+  "name": "schulrechner",
+  "displayName": "Schulrechner",
+  "version": "1.0.0",
+  "description": "A remake of a familiar calculator many know from school.",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "copy:mathjax": "mkdir -p www/vendor/mathjax && cp -r node_modules/mathjax/es5 www/vendor/mathjax/",
+    "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "keywords": [
+    "ecosystem:cordova"
+  ],
+  "author": "CardiJey",
+  "license": "ISC",
+  "devDependencies": {
+    "cordova": "^12.0.0",
+    "cordova-android": "^14.0.0",
+    "cordova-plugin-whitelist": "^1.3.4",
+    "electron": "^35.1.2",
+    "electron-builder": "^26.0.12"
+  },
+  "dependencies": {
+    "mathjax": "^3.2.2"
+  },
+  "build": {
+    "linux": {
+      "target": "flatpak",
+      "category": "Utility",
+      "icon": "public/icon.png"
+    },
+    "flatpak": {
+      "runtimeVersion": "24.08",
+      "baseVersion": "24.08"
+    }
+  },
+  "cordova": {
+    "plugins": {
+      "cordova-plugin-whitelist": {}
+    },
+    "platforms": [
+      "android"
+    ]
+  }
+}

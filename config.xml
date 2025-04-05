@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="io.cardijey.schulrechner" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>Schulrechner</name>
+    <description>A remake of a familiar calculator many know from school.</description>
+    <author email="your-email@example.com" href="https://yourwebsite.com">
+        Your Name
+    </author>
+
+    <!-- Point to your index.html -->
+    <content src="index.html" />
+
+    <!-- Allow all HTTP and HTTPS requests -->
+    <allow-intent href="http://*/*" />
+    <allow-intent href="https://*/*" />
+
+    <!-- Add other configurations as needed 
+    <platform name="android">
+        <preference name="android-minSdkVersion" value="21" />
+        <preference name="android-targetSdkVersion" value="29" />
+        <preference name="orientation" value="portrait" />
+    </platform> -->
+
+    <!-- Permissions or specific features -->
+    <access origin="*" />
+    <plugin name="cordova-plugin-whitelist" spec="1.3.4" />
+</widget>
