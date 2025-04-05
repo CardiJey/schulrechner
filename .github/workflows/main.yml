@@ -29,7 +29,8 @@ jobs:
       run: npx electron-builder --linux flatpak
 
     - name: Upload Flatpak artifact
-      uses: github-actions/upload-artifact@v4
+      uses: actions/upload-artifact@v4
       with:
         name: my-electron-app-flatpak
         path: dist/*.flatpak
+
