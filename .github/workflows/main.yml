@@ -1,0 +1,36 @@
+name: Build Electron App (Flatpak)
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 20
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Install Electron Builder
+      run: npm install electron-builder --save-dev
+
+    - name: Build Flatpak
+      run: npx electron-builder --linux flatpak
+
+    - name: Upload Flatpak artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: my-electron-app-flatpak
+        path: dist/*.flatpak
+
