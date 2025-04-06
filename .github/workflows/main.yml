@@ -58,10 +58,10 @@ jobs:
       - name: Prepare and build Cordova project
         run: |
           cordova platform add android
-          cordova build android --release
+          cordova build android --release "--" --packageType=apk
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
           name: schulrechner-apk
-          path: platforms/android/app/build/outputs/apk/release/app-release.apk
+          path: platforms/android/app/build/outputs/apk/release/*.apk
