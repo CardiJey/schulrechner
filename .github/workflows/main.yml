@@ -26,6 +26,13 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y flatpak flatpak-builder xdg-utils libglib2.0-dev libnss3
 
+      - name: Set up Flatpak and install Electron runtime
+        run: |
+          flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+          flatpak update -y
+          flatpak install -y flathub org.freedesktop.Platform//24.08 org.freedesktop.Sdk//24.08
+
+
       - name: Build Electron app as Flatpak
         run: npx electron-builder --linux flatpak
 
