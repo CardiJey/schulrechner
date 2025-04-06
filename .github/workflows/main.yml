@@ -60,8 +60,29 @@ jobs:
           cordova platform add android
           cordova build android --release "--" --packageType=apk
 
+      - name: Decode Keystore from secret
+        run: echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > schulrechner.jks
+
+      - name: Sign the APK
+        run: |
+          jarsigner \
+            -verbose \
+            -sigalg SHA256withRSA \
+            -digestalg SHA-256 \
+            -keystore schulrechner.jks \
+            -storepass ${{ secrets.KEYSTORE_PASSWORD }} \
+            -keypass ${{ secrets.KEY_PASSWORD }} \
+            platforms/android/app/build/outputs/apk/release/app-release-unsigned.apk \
+            ${{ secrets.KEY_ALIAS }}
+
+      - name: Zipalign the APK
+        run: |
+          sudo apt-get install -y zipalign
+          zipalign -v 4 platforms/android/app/build/outputs/apk/release/app-release-unsigned.apk platforms/android/app/build/outputs/apk/release/app-release.apk
+
+
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
           name: schulrechner-apk
-          path: platforms/android/app/build/outputs/apk/release/*.apk
+          path: platforms/android/app/build/outputs/apk/release/app-release.apk
