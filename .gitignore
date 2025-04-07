@@ -29,3 +29,4 @@ node_modules/
 .flatpak-builder/
 dist/
 www/vendor
+*.jks
