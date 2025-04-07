@@ -97,3 +97,11 @@ jobs:
         with:
           name: schulrechner-apk
           path: platforms/android/app/build/outputs/apk/release/app-release.apk
+
+      - name: Upload Release Assets
+        if: ${{ github.event_name != 'workflow_dispatch' }}
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            dist/*.flatpak
+            platforms/android/app/build/outputs/apk/release/app-release.apk
