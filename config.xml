@@ -13,12 +13,17 @@
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
 
-    <!-- Add other configurations as needed 
+    <!-- Add other configurations as needed -->
     <platform name="android">
-        <preference name="android-minSdkVersion" value="21" />
-        <preference name="android-targetSdkVersion" value="29" />
-        <preference name="orientation" value="portrait" />
-    </platform> -->
+        <icon src="www/img/android-icons/drawable-ldpi-icon.png" density="ldpi" />
+        <icon src="www/img/android-icons/drawable-mdpi-icon.png" density="mdpi" />
+        <icon src="www/img/android-icons/drawable-hdpi-icon.png" density="hdpi" />
+        <icon src="www/img/android-icons/drawable-xhdpi-icon.png" density="xhdpi" />
+        <icon src="www/img/android-icons/drawable-xxhdpi-icon.png" density="xxhdpi" />
+        <icon src="www/img/android-icons/drawable-xxxhdpi-icon.png" density="xxxhdpi" />
+    </platform>
+
+
 
     <!-- Permissions or specific features -->
     <access origin="*" />

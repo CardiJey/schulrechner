@@ -33,7 +33,7 @@
     "linux": {
       "target": "flatpak",
       "category": "Utility",
-      "icon": "www/img/icon.png"
+      "icon": "www/img/flatpak-icons/icon.png"
     },
     "flatpak": {
       "runtimeVersion": "24.08",
