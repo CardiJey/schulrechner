@@ -76,8 +76,8 @@
      inkscape:deskcolor="#505050"
      showgrid="false"
      inkscape:zoom="0.27178698"
-     inkscape:cx="1285.9336"
-     inkscape:cy="1331.9255"
+     inkscape:cx="1289.6129"
+     inkscape:cy="938.23479"
      inkscape:window-width="1920"
      inkscape:window-height="1108"
      inkscape:window-x="0"
@@ -660,24 +660,5 @@
        d="m 1444.3652,2111.184 1.0634,55.4698 41.2092,-30.9984 z"
        id="path1154"
        inkscape:label="label_dir2" />
-    <text
-       xml:space="preserve"
-       id="text436"
-       style="font-weight:500;font-size:160px;line-height:0.9;font-family:'IBM Plex Mono';-inkscape-font-specification:'IBM Plex Mono, Medium';white-space:pre;shape-inside:url(#rect438);display:inline;fill:#5b6d87;stroke:#40434f;stroke-width:9.951;stroke-linecap:round"
-       transform="translate(-47.597576,105.52188)"
-       x="1052.1232"
-       y="0"
-       inkscape:label="label_schulrechner"><tspan
-         x="414.43246"
-         y="256.48359"
-         id="tspan573"><tspan
-           style="font-weight:bold;-inkscape-font-specification:'IBM Plex Mono Bold';text-align:center;text-anchor:middle;fill:#000001;stroke:none"
-           id="tspan571">Schul
-</tspan></tspan><tspan
-         x="318.4324"
-         y="400.48359"
-         id="tspan577"><tspan
-           style="font-weight:bold;-inkscape-font-specification:'IBM Plex Mono Bold';text-align:center;text-anchor:middle;fill:#000001;stroke:none"
-           id="tspan575">Rechner</tspan></tspan></text>
   </g>
 </svg>
