@@ -1,9 +1,13 @@
 name: Build Electron App (Flatpak) and Cordova APK
+
 on:
   push:
-    branches: [ main ]
-    tags: ['v*']
+    branches:
+      - main
+    tags:
+      - 'v*'  # Only trigger on tags like v1.0.0, v1.1.0, etc.
   workflow_dispatch:
+
 
 jobs:
   build:
