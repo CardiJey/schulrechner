@@ -7,6 +7,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "copy:mathjax": "mkdir -p www/vendor/mathjax && cp -r node_modules/mathjax/es5 www/vendor/mathjax/",
+    "update_version": "node update_version.js",
     "start": "electron ."
   },
   "repository": {

@@ -25,6 +25,9 @@ jobs:
           npm install
           npm run copy:mathjax
 
+      - name: Update XML Version
+        run: npm run update_version
+
       - name: Install Flatpak and required tools
         run: |
           sudo apt-get update
