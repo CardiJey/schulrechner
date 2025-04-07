@@ -1,8 +1,8 @@
 name: Build Electron App (Flatpak) and Cordova APK
-
 on:
   push:
     branches: [ main ]
+    tags: ['v*']
   workflow_dispatch:
 
 jobs:
