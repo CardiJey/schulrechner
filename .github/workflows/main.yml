@@ -65,23 +65,27 @@ jobs:
       - name: Decode Keystore from secret
         run: echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > schulrechner.jks
 
-      - name: Sign the APK
+      - name: Find latest Build Tools version
+        id: buildtools
         run: |
-          jarsigner \
-            -verbose \
-            -sigalg SHA256withRSA \
-            -digestalg SHA-256 \
-            -keystore schulrechner.jks \
-            -storepass ${{ secrets.KEYSTORE_PASSWORD }} \
-            -keypass ${{ secrets.KEY_PASSWORD }} \
+          LATEST=$(ls -v "$ANDROID_HOME/build-tools" | tail -n 1)
+          echo "version=$LATEST" >> $GITHUB_OUTPUT
+
+      - name: Sign the APK with apksigner
+        run: |
+          BUILD_TOOLS_VERSION=${{ steps.buildtools.outputs.version }}
+      
+          $ANDROID_HOME/build-tools/$BUILD_TOOLS_VERSION/zipalign -v 4 \
             platforms/android/app/build/outputs/apk/release/app-release-unsigned.apk \
-            ${{ secrets.KEY_ALIAS }}
-
-      - name: Zipalign the APK
-        run: |
-          sudo apt-get install -y zipalign
-          zipalign -v 4 platforms/android/app/build/outputs/apk/release/app-release-unsigned.apk platforms/android/app/build/outputs/apk/release/app-release.apk
-
+            platforms/android/app/build/outputs/apk/release/app-release-aligned.apk
+      
+          $ANDROID_HOME/build-tools/$BUILD_TOOLS_VERSION/apksigner sign \
+            --ks schulrechner.jks \
+            --ks-key-alias ${{ secrets.KEY_ALIAS }} \
+            --ks-pass pass:${{ secrets.KEYSTORE_PASSWORD }} \
+            --key-pass pass:${{ secrets.KEY_PASSWORD }} \
+            --out platforms/android/app/build/outputs/apk/release/app-release.apk \
+            platforms/android/app/build/outputs/apk/release/app-release-aligned.apk
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
