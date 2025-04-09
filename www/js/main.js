@@ -94,6 +94,12 @@ class Brackets_Element extends Math_Element{
     }
 }
 
+class Ans_Element extends Math_Element{
+    constructor(left){
+        super("ans",left,"Ans")
+    }
+}
+
 class InputHandler {
     constructor(display_input_element, math_input_element, display_output_element, math_output_element, parent_handler) {
         this.input_code_history = [];
@@ -182,6 +188,7 @@ class InputHandler {
                 case "int":
                 case "operation":
                 case "brackets":
+                case "ans":
                     res += cursor_element.value
                     break;
             }
@@ -204,6 +211,10 @@ class InputHandler {
         switch(current_element.type){
             case "int":
                 [res,current_element] = this.calc_math_elements(current_element.neighbors[2],last_operation_element,res * 10 + current_element.value)
+            break;
+
+            case "ans":
+                [res,current_element] = this.calc_math_elements(current_element.neighbors[2],last_operation_element,this.parent_handler.results[this.parent_handler.results.length - 1])
             break;
 
             case "start":
@@ -284,13 +295,13 @@ class InputHandler {
                 break;
                 
                 case "key_Ans":
+                    var new_element = new Ans_Element(cursor_element)
+                    cursor_element = new_element
                     break;
 
                 case "key_=":
                     if(cursor_element.type != "start" || cursor_element.neighbors[2]){
                         calc_output = true
-                        show_cursor = false
-                        active_input_handler = this.parent_handler
                     }
                     break;
                 
@@ -338,10 +349,19 @@ class InputHandler {
             }
         }
 
-        return [
-            this.math_elements_to_string(res,cursor_element,show_cursor),
-            (calc_output ? this.calc_math_elements(res)[0] : "")
-        ]
+        if(calc_output){
+            active_input_handler = this.parent_handler
+            this.parent_handler.input_strings[this.parent_handler.display_equation_index] = this.math_elements_to_string(res,cursor_element,false)
+            this.parent_handler.results[this.parent_handler.display_equation_index] = this.calc_math_elements(res)[0]
+            this.parent_handler.update_display()
+            this.parent_handler.update_position()
+            return undefined
+        }else{
+            return [
+                this.math_elements_to_string(res,cursor_element,show_cursor),
+                (calc_output ? this.calc_math_elements(res)[0] : "")
+            ]
+        }
     }
 }
 
@@ -355,6 +375,10 @@ class EquationSelectInputHandler {
         this.add_empty_equation()
         this.display_equation_index = 0
         this.max_equations = 15
+        this.ans_value = 0
+        this.input_strings = []
+        this.results = []
+
         active_input_handler = this.equations[this.display_equation_index]
         active_input_handler.update_position();
     }
@@ -415,12 +439,56 @@ class EquationSelectInputHandler {
         }
     }
 
+    adjust_mathjax_font_size(mathElement) {
+        const mathjaxContainer = mathElement.querySelector("mjx-container");
+
+        if (mathjaxContainer) {
+            // Check if the MathJax equation contains a fraction
+            const hasFraction = mathjaxContainer.querySelector("mjx-mfrac") !== null;
+
+            // If there's a fraction, halve the font size
+            if (hasFraction) {
+                mathjaxContainer.style.fontSize = `${this.fontSize * 0.5}px`;
+            } else {
+                mathjaxContainer.style.fontSize = `${this.fontSize}px`; // Reset if no fraction
+            }
+        }
+    }
+
     update_display() {
-        this.equations[this.display_equation_index].update_display(false);
+        this.math_input_element.innerHTML = this.input_strings[this.display_equation_index]
+        this.math_output_element.innerHTML = "\\[" + this.formatNumber(this.results[this.display_equation_index]) + "\\]"
+
+        MathJax.typesetPromise([this.math_input_element, this.math_output_element]).then(() => {
+            this.adjust_mathjax_font_size(this.math_input_element);
+            this.adjust_mathjax_font_size(this.math_output_element);
+        });
+    }
+
+    formatNumber(num) {
+        if(typeof num == "string"){
+            return num
+        }
+        // Convert to scientific notation if there are 10 or more significant digits
+        if (Math.abs(num) >= 1e10 || (num !== 0 && Math.abs(num) < 1e-10)) {
+            return num.toExponential(9); // Adjust precision as needed
+        }
+        return num.toString();
     }
 
     update_position() {
-        this.equations[this.display_equation_index].update_position();
+        this.align_element(this.display_input_element, this.math_input_element, "left");
+        this.align_element(this.display_output_element, this.math_output_element, "right");
+    }
+
+    align_element(displayElement, mathElement, align) {
+        const rect = displayElement.getBoundingClientRect();
+        mathElement.style.position = "absolute";
+        mathElement.style.left = `${rect.left + window.scrollX}px`;
+        mathElement.style.top = `${rect.top + window.scrollY}px`;
+        mathElement.style.width = `${rect.width}px`;
+        mathElement.style.height = `${rect.height}px`;
+        this.fontSize = rect.height * 0.7
     }
 }
 
