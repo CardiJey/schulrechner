@@ -1,3 +1,5 @@
+let active_input_handler;
+
 class Math_Element {
     constructor(type,left,value) {
         this.type = type
@@ -109,7 +111,7 @@ class InputHandler {
         }else{
             this.input_code_history.push(input_code);
         }
-        this.update_display();
+        this.update_display(true);
     }
 
     formatNumber(num) {
@@ -123,15 +125,18 @@ class InputHandler {
         return num.toString();
     }
 
-    update_display() {
-        let [input_string, output_number] = this.parse_input_code_history(this.input_code_history);
-        this.math_input_element.innerHTML = input_string
-        this.math_output_element.innerHTML = "\\[" + this.formatNumber(output_number) + "\\]"
+    update_display(show_cursor) {
+        let parse_res = this.parse_input_code_history(this.input_code_history,show_cursor);
+        if(parse_res){
+            let [input_string, output_number] = parse_res
+            this.math_input_element.innerHTML = input_string
+            this.math_output_element.innerHTML = "\\[" + this.formatNumber(output_number) + "\\]"
 
-        MathJax.typesetPromise([this.math_input_element, this.math_output_element]).then(() => {
-            this.adjust_mathjax_font_size(this.math_input_element);
-            this.adjust_mathjax_font_size(this.math_output_element);
-        });
+            MathJax.typesetPromise([this.math_input_element, this.math_output_element]).then(() => {
+                this.adjust_mathjax_font_size(this.math_input_element);
+                this.adjust_mathjax_font_size(this.math_output_element);
+            });
+        }
     }
 
     update_position() {
@@ -165,7 +170,7 @@ class InputHandler {
         }
     }
 
-    math_elements_to_string(math_elements,last_cursor_element) {
+    math_elements_to_string(math_elements,last_cursor_element,show_cursor) {
         let res = "\\["
         let cursor_element = math_elements
 
@@ -180,7 +185,7 @@ class InputHandler {
                     res += cursor_element.value
                     break;
             }
-            if(cursor_element == last_cursor_element){
+            if(show_cursor && cursor_element == last_cursor_element){
                 res += "|"
             }
             cursor_element = cursor_element.neighbors[2]
@@ -227,7 +232,7 @@ class InputHandler {
         return [res,current_element]
     }
 
-    parse_input_code_history(input_code_history) {
+    parse_input_code_history(input_code_history,show_cursor) {
         let res = new Start_Element()
         let cursor_element = res
         let calc_output = false
@@ -250,12 +255,30 @@ class InputHandler {
                     cursor_element = new_element
                 break;
 
+                case "key_dir1":
+                case "key_dir3":
+                    if(cursor_element.type == "start" && !cursor_element.neighbors[2]){
+                        active_input_handler = this.parent_handler
+                        this.parent_handler.equations.pop(1)
+                        this.parent_handler.display_equation_index = (input_code == "key_dir1" ? 0 : this.parent_handler.equations.length - 1)
+                        this.parent_handler.update_display()
+                        return undefined
+                    }
+
                 case "key_dir0":
                 case "key_dir1":
                 case "key_dir2":
                 case "key_dir3":
-                    let dir = input_code.substring(7)
+                    var dir = input_code.substring(7)
                     if(cursor_element.neighbors[dir]){
+                        cursor_element = cursor_element.neighbors[dir]
+                    }
+                break;
+                
+                case "pos1":
+                case "end":
+                    var dir = (input_code == "pos1" ? 0 : 2)
+                    while(cursor_element.neighbors[dir]){
                         cursor_element = cursor_element.neighbors[dir]
                     }
                 break;
@@ -264,8 +287,11 @@ class InputHandler {
                     break;
 
                 case "key_=":
-                    calc_output = true
-                    active_input_handler = this.parent_handler
+                    if(cursor_element.type != "start" || cursor_element.neighbors[2]){
+                        calc_output = true
+                        show_cursor = false
+                        active_input_handler = this.parent_handler
+                    }
                     break;
                 
                 case "key_comma":
@@ -313,7 +339,7 @@ class InputHandler {
         }
 
         return [
-            this.math_elements_to_string(res,cursor_element),
+            this.math_elements_to_string(res,cursor_element,show_cursor),
             (calc_output ? this.calc_math_elements(res)[0] : "")
         ]
     }
@@ -328,6 +354,9 @@ class EquationSelectInputHandler {
         this.equations = []
         this.add_empty_equation()
         this.display_equation_index = 0
+        this.max_equations = 15
+        active_input_handler = this.equations[this.display_equation_index]
+        active_input_handler.update_position();
     }
 
     add_empty_equation(){
@@ -337,6 +366,33 @@ class EquationSelectInputHandler {
     // Method to handle input
     handle(input_code) {
         switch(input_code){
+            case "key_=":
+                this.add_empty_equation()
+                this.equations[this.equations.length - 1].input_code_history = this.equations[this.display_equation_index].input_code_history
+                this.display_equation_index = this.equations.length - 1
+                active_input_handler = this.equations[this.display_equation_index]
+                active_input_handler.update_display()
+                active_input_handler.update_position();
+            break;
+
+            case "key_dir0":
+                this.add_empty_equation()
+                this.equations[this.equations.length - 1].input_code_history = this.equations[this.display_equation_index].input_code_history.slice(0, -1)
+                this.display_equation_index = this.equations.length - 1
+                active_input_handler = this.equations[this.display_equation_index]
+                active_input_handler.handle("end")
+                active_input_handler.update_position();
+            break;
+
+            case "key_dir2":
+                this.add_empty_equation()
+                this.equations[this.equations.length - 1].input_code_history = this.equations[this.display_equation_index].input_code_history.slice(0, -1)
+                this.display_equation_index = this.equations.length - 1
+                active_input_handler = this.equations[this.display_equation_index]
+                active_input_handler.handle("pos1")
+                active_input_handler.update_position();
+            break;
+
             case "key_dir1":
                 this.display_equation_index = Math.max( 0, Math.min(this.display_equation_index + 1, this.equations.length - 1) )
                 this.update_position();
@@ -350,21 +406,18 @@ class EquationSelectInputHandler {
             break;
 
             default:
+                this.add_empty_equation()
+                this.display_equation_index = this.equations.length - 1
                 active_input_handler = this.equations[this.display_equation_index]
                 active_input_handler.handle(input_code)
                 active_input_handler.update_position();
-
-                if(this.display_equation_index == this.equations.length - 1){
-                    this.add_empty_equation()
-                }
             break;
         }
     }
 
     update_display() {
-        this.equations[this.display_equation_index].update_display();
+        this.equations[this.display_equation_index].update_display(false);
     }
-
 
     update_position() {
         this.equations[this.display_equation_index].update_position();
@@ -373,6 +426,7 @@ class EquationSelectInputHandler {
 
 document.addEventListener("DOMContentLoaded", () => {
     let expression = "";
+    
     const display = document.getElementById("display");
     const svgContainer = document.getElementById("svg-container");
 
@@ -382,7 +436,7 @@ document.addEventListener("DOMContentLoaded", () => {
         .then(data => {
             svgContainer.innerHTML = data;
 
-            active_input_handler = new EquationSelectInputHandler(
+            new EquationSelectInputHandler(
                 document.querySelector('[inkscape\\3a label="display_input"]'),
                 document.getElementById("math-input"),
                 document.querySelector('[inkscape\\3a label="display_output"]'),
