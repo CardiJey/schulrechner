@@ -93,16 +93,13 @@ class Brackets_Element extends Math_Element{
 }
 
 class InputHandler {
-    constructor(display_input_element, math_input_element, display_output_element, math_output_element) {
+    constructor(display_input_element, math_input_element, display_output_element, math_output_element, parent_handler) {
         this.input_code_history = [];
         this.display_input_element = display_input_element;
         this.display_output_element = display_output_element;
         this.math_input_element = math_input_element;
         this.math_output_element = math_output_element;
-
-        // this.copy_font_styles();
-        this.update_position();
-        this.update_display();
+        this.parent_handler = parent_handler
     }
 
     // Method to handle input
@@ -268,6 +265,7 @@ class InputHandler {
 
                 case "key_=":
                     calc_output = true
+                    active_input_handler = this.parent_handler
                     break;
                 
                 case "key_comma":
@@ -321,6 +319,58 @@ class InputHandler {
     }
 }
 
+class EquationSelectInputHandler {
+    constructor(display_input_element, math_input_element, display_output_element, math_output_element) {
+        this.display_input_element = display_input_element;
+        this.display_output_element = display_output_element;
+        this.math_input_element = math_input_element;
+        this.math_output_element = math_output_element;
+        this.equations = []
+        this.add_empty_equation()
+        this.display_equation_index = 0
+    }
+
+    add_empty_equation(){
+        this.equations.push(new InputHandler(this.display_input_element, this.math_input_element, this.display_output_element, this.math_output_element, this))
+    }
+
+    // Method to handle input
+    handle(input_code) {
+        switch(input_code){
+            case "key_dir1":
+                this.display_equation_index = Math.max( 0, Math.min(this.display_equation_index + 1, this.equations.length - 1) )
+                this.update_position();
+                this.update_display();
+            break;
+
+            case "key_dir3":
+                this.display_equation_index = Math.max( 0, Math.min(this.display_equation_index - 1, this.equations.length - 1) )
+                this.update_position();
+                this.update_display();
+            break;
+
+            default:
+                active_input_handler = this.equations[this.display_equation_index]
+                active_input_handler.handle(input_code)
+                active_input_handler.update_position();
+
+                if(this.display_equation_index == this.equations.length - 1){
+                    this.add_empty_equation()
+                }
+            break;
+        }
+    }
+
+    update_display() {
+        this.equations[this.display_equation_index].update_display();
+    }
+
+
+    update_position() {
+        this.equations[this.display_equation_index].update_position();
+    }
+}
+
 document.addEventListener("DOMContentLoaded", () => {
     let expression = "";
     const display = document.getElementById("display");
@@ -332,7 +382,7 @@ document.addEventListener("DOMContentLoaded", () => {
         .then(data => {
             svgContainer.innerHTML = data;
 
-            active_input_handler = new InputHandler(
+            active_input_handler = new EquationSelectInputHandler(
                 document.querySelector('[inkscape\\3a label="display_input"]'),
                 document.getElementById("math-input"),
                 document.querySelector('[inkscape\\3a label="display_output"]'),
