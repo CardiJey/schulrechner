@@ -116,6 +116,9 @@ class InputHandler {
     }
 
     formatNumber(num) {
+        if(typeof num == "string"){
+            return num
+        }
         // Convert to scientific notation if there are 10 or more significant digits
         if (Math.abs(num) >= 1e10 || (num !== 0 && Math.abs(num) < 1e-10)) {
             return num.toExponential(9); // Adjust precision as needed
@@ -230,6 +233,7 @@ class InputHandler {
     parse_input_code_history(input_code_history) {
         let res = new Start_Element()
         let cursor_element = res
+        let calc_output = false
 
         for (const input_index in input_code_history) {
             let input_code = input_code_history[input_index]
@@ -260,6 +264,10 @@ class InputHandler {
                 break;
                 
                 case "key_Ans":
+                    break;
+
+                case "key_=":
+                    calc_output = true
                     break;
                 
                 case "key_comma":
@@ -306,10 +314,10 @@ class InputHandler {
             }
         }
 
-        let input_string = this.math_elements_to_string(res,cursor_element)
-        let output_number = this.calc_math_elements(res)[0]
-
-        return [input_string, output_number]
+        return [
+            this.math_elements_to_string(res,cursor_element),
+            (calc_output ? this.calc_math_elements(res)[0] : "")
+        ]
     }
 }
 
