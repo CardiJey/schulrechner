@@ -207,7 +207,7 @@ class InputHandler {
 
             case "operation":
                 if(current_element.prio > last_operation_element.prio){
-                    var [sub_res,sub_current_element] = this.calc_math_elements(current_element.neighbors[2],current_element,0)
+                    let [sub_res,sub_current_element] = this.calc_math_elements(current_element.neighbors[2],current_element,0)
                     res = current_element.operate(res,sub_res)
                     const result = this.calc_math_elements(sub_current_element, last_operation_element, res);
                     [res, current_element] = result;
@@ -217,9 +217,9 @@ class InputHandler {
             case "brackets":
                 // TODO machen das Klammern selber multiplizieren
                 if(current_element.value == "("){
-                    [res,current_element] = this.calc_math_elements(current_element.neighbors[2],current_element,0)
-                }else{
-                    current_element = current_element.neighbors[2]
+                    const result = this.calc_math_elements(current_element.neighbors[2],current_element,0);
+                    let [inside_res,bracket_close_element] = result;
+                    [res,current_element] = this.calc_math_elements(bracket_close_element.neighbors[2],last_operation_element,inside_res)
                 }
             break;
         }
