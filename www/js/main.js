@@ -94,6 +94,32 @@ class Brackets_Element extends Math_Element{
     }
 }
 
+class Frac_Element extends Math_Element{
+    constructor(left){
+        let upper_frac_start = new Frac_Start_Element(left,true)
+        let lower_frac_start = new Frac_Start_Element(upper_frac_start,false)
+        upper_frac_start.neighbors[1] = lower_frac_start
+        lower_frac_start.neighbors[3] = upper_frac_start
+        super("frac",lower_frac_start,"}")
+        this.prio = 1
+        upper_frac_start.frac = this
+        lower_frac_start.frac = this
+    }
+}
+
+class Frac_Start_Element extends Math_Element{
+    constructor(left,upper){
+        let value = (upper? "\\frac{" : "}{")
+        super("frac_start",left,value)
+        this.prio = 1
+        this.upper = upper
+    }
+
+    operate(val1,val2){
+        return val1 / val2
+    }
+}
+
 class Ans_Element extends Math_Element{
     constructor(left){
         super("ans",left,"Ans")
@@ -179,20 +205,34 @@ class InputHandler {
     math_elements_to_string(math_elements,last_cursor_element,show_cursor) {
         let res = "\\["
         let cursor_element = math_elements
+        let placeholder_select = false
 
         while(cursor_element){
             switch(cursor_element.type){
                 case "start":
                     break;
 
+                case "frac_start":
+                    if((cursor_element.neighbors[2].type == "frac_start" && !cursor_element.neighbors[2].upper) || cursor_element.neighbors[2].type == "frac"){
+                        res += cursor_element.value
+                        if(show_cursor && cursor_element == last_cursor_element){
+                            res += "|"
+                            placeholder_select = true
+                        }
+                        res += "\\boxed{\\phantom{1}}"
+                        break;
+                    }
+
                 case "int":
                 case "operation":
                 case "brackets":
                 case "ans":
+                case "frac":
+                case "frac_start":
                     res += cursor_element.value
                     break;
             }
-            if(show_cursor && cursor_element == last_cursor_element){
+            if(show_cursor && cursor_element == last_cursor_element && !placeholder_select){
                 res += "|"
             }
             cursor_element = cursor_element.neighbors[2]
@@ -235,7 +275,23 @@ class InputHandler {
                 if(current_element.value == "("){
                     const result = this.calc_math_elements(current_element.neighbors[2],current_element,0);
                     let [inside_res,bracket_close_element] = result;
+                    if(bracket_close_element.type != current_element.type){
+                        return [NaN,undefined]
+                    }
                     [res,current_element] = this.calc_math_elements(bracket_close_element.neighbors[2],last_operation_element,inside_res)
+                }
+            break;
+
+            case "frac_start":
+                if(current_element.upper){
+                    let [top_res,lower_frac_start_element] = this.calc_math_elements(current_element.neighbors[2],current_element,0);
+                    if(lower_frac_start_element.type != "frac_start"){
+                        return [NaN,undefined]
+                    }
+                    let [lower_res,frac_element] = this.calc_math_elements(lower_frac_start_element.neighbors[2],lower_frac_start_element,0)
+                    let frac_res = current_element.operate(top_res,lower_res)
+                    const result = this.calc_math_elements(frac_element.neighbors[2], last_operation_element, frac_res);
+                    [res, current_element] = result;
                 }
             break;
         }
@@ -250,6 +306,9 @@ class InputHandler {
 
         for (const input_index in input_code_history) {
             let input_code = input_code_history[input_index]
+            let old_cursor_element = cursor_element
+            let old_right_neighbour = old_cursor_element.neighbors[2]
+            let created_new_element = false     
 
             switch(input_code){
                 case "key_0":
@@ -264,6 +323,7 @@ class InputHandler {
                 case "key_9":
                     var new_element = new Int_Element(cursor_element,input_code.substring(4))
                     cursor_element = new_element
+                    created_new_element = true
                 break;
 
                 case "key_dir1":
@@ -297,6 +357,7 @@ class InputHandler {
                 case "key_Ans":
                     var new_element = new Ans_Element(cursor_element)
                     cursor_element = new_element
+                    created_new_element = true
                     break;
 
                 case "key_=":
@@ -308,44 +369,93 @@ class InputHandler {
                 case "key_comma":
                     var new_element = new Point_Element(cursor_element)
                     cursor_element = new_element
+                    created_new_element = true
                     break;
 
                 case "key_x":
                     var new_element = new Times_Element(cursor_element)
                     cursor_element = new_element
+                    created_new_element = true
                     break;
 
                 case "key_÷":
                     var new_element = new Div_Element(cursor_element)
                     cursor_element = new_element
+                    created_new_element = true
                     break;
 
                 case "key_+":
                     var new_element = new Plus_Element(cursor_element)
                     cursor_element = new_element
+                    created_new_element = true
                     break;
 
                 case "key_-":
                     var new_element = new Minus_Element(cursor_element)
                     cursor_element = new_element
+                    created_new_element = true
                     break;
 
                 case "key_(":
                 case "key_)":
                     var new_element = new Brackets_Element(cursor_element,input_code.substring(4))
                     cursor_element = new_element
+                    created_new_element = true
+                    break;
+
+                case "key_frac":
+                    var new_element = new Frac_Element(cursor_element)
+                    cursor_element = new_element
+                    created_new_element = true
                     break;
 
                 case "key_del":
-                    let old_cursor_element = cursor_element
-                    if(cursor_element.type != "start"){
-                        cursor_element = cursor_element.neighbors[0]
-                        cursor_element.neighbors[2] = old_cursor_element.neighbors[2]
-                        if(cursor_element.neighbors[2]){
-                            cursor_element.neighbors[2].neighbors[0] = cursor_element
-                        }
+                    switch(cursor_element.type){
+                        case "start":
+                            break;
+
+                        case "frac":
+                            cursor_element = cursor_element.neighbors[0]
+                            break;
+                        
+                        case "frac_start":
+                            if(cursor_element.upper){
+                                const frac_element = cursor_element.neighbors[1].frac
+                                frac_element.neighbors[0].neighbors[2] = frac_element.neighbors[2]
+                                if(frac_element.neighbors[0].neighbors[2]){
+                                    frac_element.neighbors[0].neighbors[2].neighbors[0] = frac_element.neighbors[0]
+                                }
+                                const lower_frac_start_element = cursor_element.neighbors[1]
+                                lower_frac_start_element.neighbors[0].neighbors[2] = lower_frac_start_element.neighbors[2]
+                                if(lower_frac_start_element.neighbors[0].neighbors[2]){
+                                    lower_frac_start_element.neighbors[0].neighbors[2].neighbors[0] = lower_frac_start_element.neighbors[0]
+                                }
+                            }else{
+                                cursor_element = cursor_element.neighbors[0]
+                                break;
+                            }
+
+                        default:
+                            cursor_element = cursor_element.neighbors[0]
+                            cursor_element.neighbors[2] = old_cursor_element.neighbors[2]
+                            if(cursor_element.neighbors[2]){
+                                cursor_element.neighbors[2].neighbors[0] = cursor_element
+                            }
                     }
                     break;
+            }
+
+            if(created_new_element){
+                if(old_right_neighbour){
+                    cursor_element.neighbors[2] = old_right_neighbour
+                    old_right_neighbour.neighbors[0] = cursor_element
+                }
+                if(!cursor_element.neighbors[1]){
+                    cursor_element.neighbors[1] = old_cursor_element.neighbors[1]
+                }
+                if(!cursor_element.neighbors[3]){
+                    cursor_element.neighbors[3] = old_cursor_element.neighbors[3]
+                }
             }
         }
 
