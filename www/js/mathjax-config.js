@@ -4,7 +4,7 @@ window.MathJax = {
   },
   chtml: {
     scale: 1,
-    mtextInheritFont: true
+    mtextInheritFont: true,
   }
 };
   

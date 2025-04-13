@@ -53,7 +53,7 @@ class Minus_Element extends Math_Element{
 class Times_Element extends Math_Element{
     constructor(left){
         super("operation",left,"\\times")
-        this.operation_type = "x"
+        this.operation_type = ""
         this.prio = 3
     }
 
@@ -219,7 +219,7 @@ class InputHandler {
                             res += "|"
                             placeholder_select = true
                         }
-                        res += "\\boxed{\\phantom{1}}"
+                        res += "z"
                         break;
                     }
 
