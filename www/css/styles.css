@@ -1,3 +1,12 @@
+@font-face {
+    font-family: 'schulrechner';
+    src: url('../fonts/schulrechner.ttf') format('truetype');
+}
+
+body {
+    font-family: 'schulrechner', monospace;
+}
+
 svg {
     width: 100vw;
     height: 100vh;
@@ -13,7 +22,6 @@ svg {
     padding: 0;
     margin: 0;
 }
-
 .math-div mjx-container {
     margin: 0 !important;
     padding: 0 !important;
@@ -25,6 +33,16 @@ svg {
 
 #math-input mjx-container{
     text-align: left !important;
+}
+
+.MJX-TEX,
+.MJX-TEX * {
+    font-family: "schulrechner" !important;
+    font-style: normal !important;
+}
+.mjx-i {
+    font-family: "schulrechner" !important;
+    font-style: normal !important;
 }
 
 [inkscape\3a label^="label_"] {
