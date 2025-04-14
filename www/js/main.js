@@ -164,6 +164,12 @@ class InputHandler {
             this.math_input_element.innerHTML = input_string
             this.math_output_element.innerHTML = this.formatNumber(output_number)
         }
+
+        let cursor_x = document.getElementsByClassName("cursor")[0].getBoundingClientRect().x
+        let scroll_border_x = document.querySelector('[inkscape\\3a label="scroll_border"]').getBoundingClientRect().x
+        let dist_to_scroll_border = cursor_x - scroll_border_x
+
+        this.math_input_element.scrollBy(dist_to_scroll_border,0)
     }
 
     update_position() {
@@ -216,7 +222,7 @@ class InputHandler {
             cursor_element = cursor_element.neighbors[2]
         }
 
-        res += ""
+        res += '\u00A0'
 
         return res
     }

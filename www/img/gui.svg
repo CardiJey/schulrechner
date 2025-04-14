@@ -75,9 +75,9 @@
      inkscape:pagecheckerboard="1"
      inkscape:deskcolor="#505050"
      showgrid="false"
-     inkscape:zoom="0.19218242"
-     inkscape:cx="1038.0762"
-     inkscape:cy="2627.7117"
+     inkscape:zoom="0.76872968"
+     inkscape:cx="1721.6715"
+     inkscape:cy="595.78811"
      inkscape:window-width="1920"
      inkscape:window-height="1108"
      inkscape:window-x="0"
@@ -746,5 +746,13 @@
          id="path1716"
          sodipodi:nodetypes="ccssc" />
     </g>
+    <rect
+       style="display:inline;opacity:0;fill:#7b8c87;stroke:#fcfcfc;stroke-width:11.251;stroke-linecap:round;stroke-linejoin:round"
+       id="rect1331"
+       width="15.884805"
+       height="188.69521"
+       x="1949.8523"
+       y="888.66815"
+       inkscape:label="scroll_border" />
   </g>
 </svg>
