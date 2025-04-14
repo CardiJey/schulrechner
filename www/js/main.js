@@ -194,7 +194,7 @@ class InputHandler {
                     if((cursor_element.neighbors[2].type == "frac_start" && !cursor_element.neighbors[2].upper) || cursor_element.neighbors[2].type == "frac"){
                         res += cursor_element.value
                         if(show_cursor && cursor_element == last_cursor_element){
-                            res += '\uE000'
+                            res += '<span class="cursor">\uE000</span>'
                             placeholder_select = true
                         }
                         res += "▯"
@@ -211,7 +211,7 @@ class InputHandler {
                     break;
             }
             if(show_cursor && cursor_element == last_cursor_element && !placeholder_select){
-                res += '\uE000'
+                res += '<span class="cursor">\uE000</span>'
             }
             cursor_element = cursor_element.neighbors[2]
         }

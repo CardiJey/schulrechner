@@ -8,6 +8,15 @@
     src: url('../fonts/schulrechner.ttf') format('truetype');
 }
 
+@keyframes blink {
+    0%, 50% {
+        visibility: visible;
+    }
+    51%, 100% {
+        visibility: hidden;
+    }
+}
+
 body {
     font-family: 'schulrechner', monospace;
     font-size: 1rem;
@@ -25,7 +34,6 @@ svg {
 
 .math-div{
     position: absolute;
-    overflow: hidden;
     padding: 0;
     margin: 0;
     padding-left: 0.111em;
@@ -82,4 +90,11 @@ svg {
     padding-top: 0.111em;
     margin-top: 0.111em;
     padding-left: 0.111em;
+}
+
+.cursor {
+    width: 0;
+    padding: 0;
+    margin: 0;
+    animation: blink 1s infinite;
 }
