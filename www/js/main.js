@@ -52,8 +52,8 @@ class Minus_Element extends Math_Element{
 
 class Times_Element extends Math_Element{
     constructor(left){
-        super("operation",left,"\\times")
-        this.operation_type = ""
+        super("operation",left,"×")
+        this.operation_type = "×"
         this.prio = 3
     }
 
@@ -64,7 +64,7 @@ class Times_Element extends Math_Element{
 
 class Div_Element extends Math_Element{
     constructor(left){
-        super("operation",left,"\\div")
+        super("operation",left,"÷")
         this.operation_type = "÷"
         this.prio = 3
     }
@@ -100,7 +100,7 @@ class Frac_Element extends Math_Element{
         let lower_frac_start = new Frac_Start_Element(upper_frac_start,false)
         upper_frac_start.neighbors[1] = lower_frac_start
         lower_frac_start.neighbors[3] = upper_frac_start
-        super("frac",lower_frac_start,"}")
+        super("frac",lower_frac_start,"</span></span>")
         this.prio = 1
         upper_frac_start.frac = this
         lower_frac_start.frac = this
@@ -109,7 +109,7 @@ class Frac_Element extends Math_Element{
 
 class Frac_Start_Element extends Math_Element{
     constructor(left,upper){
-        let value = (upper? "\\frac{" : "}{")
+        let value = (upper? "<span class='frac_wrapper'><span class='frac_top'>" : "</span><span class='frac_bottom'>")
         super("frac_start",left,value)
         this.prio = 1
         this.upper = upper
@@ -162,48 +162,26 @@ class InputHandler {
         if(parse_res){
             let [input_string, output_number] = parse_res
             this.math_input_element.innerHTML = input_string
-            this.math_output_element.innerHTML = "\\[" + this.formatNumber(output_number) + "\\]"
-
-            MathJax.typesetPromise([this.math_input_element, this.math_output_element]).then(() => {
-                this.adjust_mathjax_font_size(this.math_input_element);
-                this.adjust_mathjax_font_size(this.math_output_element);
-            });
+            this.math_output_element.innerHTML = this.formatNumber(output_number)
         }
     }
 
     update_position() {
-        this.align_element(this.display_input_element, this.math_input_element, "left");
-        this.align_element(this.display_output_element, this.math_output_element, "right");
+        this.align_element(this.display_input_element, this.math_input_element);
+        this.align_element(this.display_output_element, this.math_output_element);
     }
 
-    align_element(displayElement, mathElement, align) {
+    align_element(displayElement, mathElement) {
         const rect = displayElement.getBoundingClientRect();
         mathElement.style.position = "absolute";
-        mathElement.style.left = `${rect.left + window.scrollX}px`;
-        mathElement.style.top = `${rect.top + window.scrollY}px`;
+        mathElement.style.left = `${rect.left}px`;
+        mathElement.style.top = `${rect.top}px`;
         mathElement.style.width = `${rect.width}px`;
         mathElement.style.height = `${rect.height}px`;
-        this.fontSize = rect.height * 0.7
-    }
-
-    adjust_mathjax_font_size(mathElement) {
-        const mathjaxContainer = mathElement.querySelector("mjx-container");
-
-        if (mathjaxContainer) {
-            // Check if the MathJax equation contains a fraction
-            const hasFraction = mathjaxContainer.querySelector("mjx-mfrac") !== null;
-
-            // If there's a fraction, halve the font size
-            if (hasFraction) {
-                mathjaxContainer.style.fontSize = `${this.fontSize * 0.5}px`;
-            } else {
-                mathjaxContainer.style.fontSize = `${this.fontSize}px`; // Reset if no fraction
-            }
-        }
     }
 
     math_elements_to_string(math_elements,last_cursor_element,show_cursor) {
-        let res = "\\["
+        let res = ""
         let cursor_element = math_elements
         let placeholder_select = false
 
@@ -216,10 +194,10 @@ class InputHandler {
                     if((cursor_element.neighbors[2].type == "frac_start" && !cursor_element.neighbors[2].upper) || cursor_element.neighbors[2].type == "frac"){
                         res += cursor_element.value
                         if(show_cursor && cursor_element == last_cursor_element){
-                            res += "|"
+                            res += '\uE000'
                             placeholder_select = true
                         }
-                        res += "z"
+                        res += "▯"
                         break;
                     }
 
@@ -233,12 +211,12 @@ class InputHandler {
                     break;
             }
             if(show_cursor && cursor_element == last_cursor_element && !placeholder_select){
-                res += "|"
+                res += '\uE000'
             }
             cursor_element = cursor_element.neighbors[2]
         }
 
-        res += "\\]"
+        res += ""
 
         return res
     }
@@ -549,30 +527,9 @@ class EquationSelectInputHandler {
         }
     }
 
-    adjust_mathjax_font_size(mathElement) {
-        const mathjaxContainer = mathElement.querySelector("mjx-container");
-
-        if (mathjaxContainer) {
-            // Check if the MathJax equation contains a fraction
-            const hasFraction = mathjaxContainer.querySelector("mjx-mfrac") !== null;
-
-            // If there's a fraction, halve the font size
-            if (hasFraction) {
-                mathjaxContainer.style.fontSize = `${this.fontSize * 0.5}px`;
-            } else {
-                mathjaxContainer.style.fontSize = `${this.fontSize}px`; // Reset if no fraction
-            }
-        }
-    }
-
     update_display() {
         this.math_input_element.innerHTML = this.input_strings[this.display_equation_index]
-        this.math_output_element.innerHTML = "\\[" + this.formatNumber(this.results[this.display_equation_index]) + "\\]"
-
-        MathJax.typesetPromise([this.math_input_element, this.math_output_element]).then(() => {
-            this.adjust_mathjax_font_size(this.math_input_element);
-            this.adjust_mathjax_font_size(this.math_output_element);
-        });
+        this.math_output_element.innerHTML = this.formatNumber(this.results[this.display_equation_index])
     }
 
     formatNumber(num) {
@@ -587,18 +544,17 @@ class EquationSelectInputHandler {
     }
 
     update_position() {
-        this.align_element(this.display_input_element, this.math_input_element, "left");
-        this.align_element(this.display_output_element, this.math_output_element, "right");
+        this.align_element(this.display_input_element, this.math_input_element);
+        this.align_element(this.display_output_element, this.math_output_element);
     }
 
     align_element(displayElement, mathElement, align) {
         const rect = displayElement.getBoundingClientRect();
         mathElement.style.position = "absolute";
-        mathElement.style.left = `${rect.left + window.scrollX}px`;
-        mathElement.style.top = `${rect.top + window.scrollY}px`;
+        mathElement.style.left = `${rect.left}px`;
+        mathElement.style.top = `${rect.top}px`;
         mathElement.style.width = `${rect.width}px`;
         mathElement.style.height = `${rect.height}px`;
-        this.fontSize = rect.height * 0.7
     }
 }
 

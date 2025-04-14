@@ -21,30 +21,54 @@ svg {
     overflow: hidden;
     padding: 0;
     margin: 0;
-}
-.math-div mjx-container {
-    margin: 0 !important;
-    padding: 0 !important;
+    padding-left: 0.111em;
 }
 
-#math-output mjx-container{
+#math-output {
     text-align: right !important;
 }
 
-#math-input mjx-container{
+#math-input {
     text-align: left !important;
-}
-
-.MJX-TEX,
-.MJX-TEX * {
-    font-family: "schulrechner" !important;
-    font-style: normal !important;
-}
-.mjx-i {
-    font-family: "schulrechner" !important;
-    font-style: normal !important;
 }
 
 [inkscape\3a label^="label_"] {
     pointer-events: none;
+}
+
+[inkscape\3a label="display_input"] {
+    position: absolute;
+    overflow: hidden;
+    padding: 0;
+    margin: 0;
+    padding-left: 0.111em;
+}
+
+.frac_wrapper {
+    display: inline-block;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 1;
+    margin-right: 0.111em;
+}
+
+.frac_top {
+    position: relative;
+    padding: 0;
+    margin: 0;
+    left: 0;
+    display: block;
+    padding-left: 0.111em;
+}
+
+.frac_bottom {
+    position: relative;
+    padding: 0;
+    margin: 0;
+    left: 0;
+    display: block;
+    border-top: 0.111em solid white;
+    padding-top: 0.111em;
+    margin-top: 0.111em;
+    padding-left: 0.111em;
 }
