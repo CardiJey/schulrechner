@@ -468,7 +468,6 @@ class EquationSelectInputHandler {
         this.results = []
 
         active_input_handler = this.equations[this.display_equation_index]
-        active_input_handler.update_position();
     }
 
     add_empty_equation(){
@@ -562,6 +561,11 @@ function setRootFontSize(size) {
     document.documentElement.style.fontSize = size + 'px';
 }
 
+function handle_resize(){
+    setRootFontSize(document.getElementById("layer1").getBoundingClientRect().height * 0.034506)
+    active_input_handler.update_position()
+}
+
 document.addEventListener("DOMContentLoaded", () => {
     let expression = "";
     
@@ -573,7 +577,6 @@ document.addEventListener("DOMContentLoaded", () => {
         .then(response => response.text())
         .then(data => {
             svgContainer.innerHTML = data;
-            setRootFontSize(document.getElementById("layer1").getBoundingClientRect().height * 0.034506)
 
             new EquationSelectInputHandler(
                 document.querySelector('[inkscape\\3a label="display_input"]'),
@@ -581,6 +584,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 document.querySelector('[inkscape\\3a label="display_output"]'),
                 document.getElementById("math-output")
             );
+            handle_resize()
             attachEventListeners();
         })
         .catch(error => console.error("Error loading SVG:", error));
@@ -593,5 +597,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 active_input_handler.handle(this.getAttribute('inkscape:label'));
             });
         });
+        window.addEventListener('resize', handle_resize)
     }
 });
