@@ -6,7 +6,6 @@
   "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "copy:mathjax": "mkdir -p www/vendor/mathjax && cp -r node_modules/mathjax/es5 www/vendor/mathjax/",
     "update_version": "node update_version.js",
     "start": "electron ."
   },
@@ -25,9 +24,6 @@
     "cordova-plugin-whitelist": "^1.3.4",
     "electron": "^35.1.2",
     "electron-builder": "^26.0.12"
-  },
-  "dependencies": {
-    "mathjax": "^3.2.2"
   },
   "build": {
     "linux": {
