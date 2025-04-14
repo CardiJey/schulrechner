@@ -558,6 +558,10 @@ class EquationSelectInputHandler {
     }
 }
 
+function setRootFontSize(size) {
+    document.documentElement.style.fontSize = size + 'px';
+}
+
 document.addEventListener("DOMContentLoaded", () => {
     let expression = "";
     
@@ -569,6 +573,7 @@ document.addEventListener("DOMContentLoaded", () => {
         .then(response => response.text())
         .then(data => {
             svgContainer.innerHTML = data;
+            setRootFontSize(document.getElementById("layer1").getBoundingClientRect().height * 0.034506)
 
             new EquationSelectInputHandler(
                 document.querySelector('[inkscape\\3a label="display_input"]'),

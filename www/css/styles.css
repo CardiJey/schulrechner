@@ -1,3 +1,8 @@
+:root {
+    /* Farbe #3f4266 als CSS-Variable */
+    --main-color: #3f4266;
+}
+
 @font-face {
     font-family: 'schulrechner';
     src: url('../fonts/schulrechner.ttf') format('truetype');
@@ -5,6 +10,8 @@
 
 body {
     font-family: 'schulrechner', monospace;
+    font-size: 1rem;
+    color: var(--main-color);
 }
 
 svg {
@@ -26,6 +33,10 @@ svg {
 
 #math-output {
     text-align: right !important;
+    vertical-align: bottom;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
 }
 
 #math-input {
@@ -67,7 +78,7 @@ svg {
     margin: 0;
     left: 0;
     display: block;
-    border-top: 0.111em solid white;
+    border-top: 0.111em solid var(--main-color);
     padding-top: 0.111em;
     margin-top: 0.111em;
     padding-left: 0.111em;
