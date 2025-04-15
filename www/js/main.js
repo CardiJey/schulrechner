@@ -165,11 +165,15 @@ class InputHandler {
             this.math_output_element.innerHTML = this.formatNumber(output_number)
         }
 
-        let cursor_x = document.getElementsByClassName("cursor")[0].getBoundingClientRect().x
-        let scroll_border_x = document.querySelector('[inkscape\\3a label="scroll_border"]').getBoundingClientRect().x
-        let dist_to_scroll_border = cursor_x - scroll_border_x
+        let cursor_x = document.getElementsByClassName("cursor")[0].getBoundingClientRect().right
+        let scroll_border_x = document.querySelector('[inkscape\\3a label="scroll_x_border"]').getBoundingClientRect().left
+        let x_dist_to_scroll_border = cursor_x - scroll_border_x
 
-        this.math_input_element.scrollBy(dist_to_scroll_border,0)
+        let cursor_y = document.getElementsByClassName("cursor")[0].getBoundingClientRect().bottom
+        let scroll_border_y = document.querySelector('[inkscape\\3a label="scroll_y_border"]').getBoundingClientRect().top
+        let y_dist_to_scroll_border = cursor_y - scroll_border_y
+
+        this.math_input_element.scrollBy(x_dist_to_scroll_border,y_dist_to_scroll_border)
     }
 
     update_position() {

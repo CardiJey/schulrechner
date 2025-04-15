@@ -75,9 +75,9 @@
      inkscape:pagecheckerboard="1"
      inkscape:deskcolor="#505050"
      showgrid="false"
-     inkscape:zoom="0.76872968"
-     inkscape:cx="1721.6715"
-     inkscape:cy="595.78811"
+     inkscape:zoom="0.54357398"
+     inkscape:cx="1314.4485"
+     inkscape:cy="927.1967"
      inkscape:window-width="1920"
      inkscape:window-height="1108"
      inkscape:window-x="0"
@@ -423,10 +423,10 @@
        inkscape:transform-center-x="144.56503"
        inkscape:transform-center-y="-5.0925799" />
     <rect
-       style="opacity:0;fill:#261c3d;fill-opacity:1;stroke:none;stroke-width:6.02598"
+       style="opacity:0;fill:#261c3d;fill-opacity:1;stroke:none;stroke-width:8.60086"
        id="rect8738"
        width="1821.9519"
-       height="290"
+       height="590.78076"
        x="331.4671"
        y="886.10553"
        inkscape:label="display_input" />
@@ -753,6 +753,14 @@
        height="188.69521"
        x="1949.8523"
        y="888.66815"
-       inkscape:label="scroll_border" />
+       inkscape:label="scroll_x_border" />
+    <rect
+       style="display:inline;opacity:0;fill:#7b8c87;stroke:#fcfcfc;stroke-width:6.45897;stroke-linecap:round;stroke-linejoin:round"
+       id="rect1331-3"
+       width="356.84247"
+       height="2.7682812"
+       x="338.09949"
+       y="1442.5986"
+       inkscape:label="scroll_y_border" />
   </g>
 </svg>
