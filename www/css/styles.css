@@ -36,7 +36,7 @@ svg {
     position: absolute;
     padding: 0;
     margin: 0;
-    padding-left: 0.111em;
+    padding-left: 0.111rem;
     overflow: hidden;
     scrollbar-width: 0;
 }
@@ -62,7 +62,7 @@ svg {
     overflow: hidden;
     padding: 0;
     margin: 0;
-    padding-left: 0.111em;
+    padding-left: 0.111rem;
 }
 
 .frac_wrapper {
@@ -70,28 +70,23 @@ svg {
     text-align: center;
     vertical-align: middle;
     line-height: 1;
-    margin-right: 0.111em;
+    margin-right: 0.111rem;
 }
 
-.frac_top {
+.frac_top, .frac_bottom {
     position: relative;
     padding: 0;
     margin: 0;
     left: 0;
     display: block;
-    padding-left: 0.111em;
+    padding-left: 0.111rem;
+    font-size: 0.667em;
 }
 
 .frac_bottom {
-    position: relative;
-    padding: 0;
-    margin: 0;
-    left: 0;
-    display: block;
-    border-top: 0.111em solid var(--main-color);
-    padding-top: 0.111em;
-    margin-top: 0.111em;
-    padding-left: 0.111em;
+    border-top: 0.111rem solid var(--main-color);
+    padding-top: 0.111rem;
+    margin-top: 0.111rem;
 }
 
 .cursor {
