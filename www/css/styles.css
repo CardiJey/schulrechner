@@ -68,7 +68,8 @@ svg {
 .frac_wrapper {
     display: inline-block;
     text-align: center;
-    vertical-align: middle;
+    vertical-align: 0px;
+    /*height: calc(2 * 0.667rem + 3 * 0.111rem);*/
     line-height: 1;
     margin-right: 0.111rem;
 }
@@ -81,6 +82,12 @@ svg {
     display: block;
     padding-left: 0.111rem;
     font-size: 0.667rem;
+    overflow: visible;
+    justify-content: center;
+}
+
+.frac_top {
+    align-items: flex-end;
 }
 
 .frac_bottom {
@@ -93,5 +100,6 @@ svg {
     width: 0;
     padding: 0;
     margin: 0;
+    height: 1em;
     animation: blink 1s infinite;
 }

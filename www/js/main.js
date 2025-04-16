@@ -1,4 +1,5 @@
 let active_input_handler;
+let next_align_id = 0
 
 class Math_Element {
     constructor(type,left,value) {
@@ -96,8 +97,10 @@ class Brackets_Element extends Math_Element{
 
 class Frac_Element extends Math_Element{
     constructor(left){
-        let upper_frac_start = new Frac_Start_Element(left,true)
-        let lower_frac_start = new Frac_Start_Element(upper_frac_start,false)
+        let align_id = next_align_id
+        next_align_id++
+        let upper_frac_start = new Frac_Start_Element(left,true,align_id)
+        let lower_frac_start = new Frac_Start_Element(upper_frac_start,false,align_id)
         upper_frac_start.neighbors[1] = lower_frac_start
         lower_frac_start.neighbors[3] = upper_frac_start
         super("frac",lower_frac_start,"</span></span>")
@@ -108,8 +111,8 @@ class Frac_Element extends Math_Element{
 }
 
 class Frac_Start_Element extends Math_Element{
-    constructor(left,upper){
-        let value = (upper? "<span class='frac_wrapper'><span class='frac_top'>" : "</span><span class='frac_bottom'>")
+    constructor(left,upper,align_id){
+        let value = (upper? "<span class='alignLeft" + align_id + "'></span><span class='frac_wrapper'><span class='frac_top'>" : "</span><span class='frac_bottom alignRight" + align_id + "'>")
         super("frac_start",left,value)
         this.prio = 1
         this.upper = upper
@@ -134,6 +137,7 @@ class InputHandler {
         this.math_input_element = math_input_element;
         this.math_output_element = math_output_element;
         this.parent_handler = parent_handler
+        this.padding_top = 0
     }
 
     // Method to handle input
@@ -144,6 +148,7 @@ class InputHandler {
             this.input_code_history.push(input_code);
         }
         this.update_display(true);
+        this.update_position()
     }
 
     formatNumber(num) {
@@ -157,6 +162,47 @@ class InputHandler {
         return num.toString();
     }
 
+    vertical_align_elements() {
+        // Step 1: Collect all the elements
+        let alignRightElements = [...document.querySelectorAll('[class*="alignRight"]')];
+
+        // Step 2: Sort them based on the 'align_id' in descending order
+        alignRightElements.sort((a, b) => {
+            const aId = a.className.match(/alignRight(\d+)/)[1];
+            const bId = b.className.match(/alignRight(\d+)/)[1];
+            return bId - aId;  // Sorting in descending order
+        });
+
+        // Step 3: Process each element after sorting
+        alignRightElements.forEach(el => {
+            let align_id = el.className.match(/alignRight(\d+)/)[1];
+            let align_left_el = document.getElementsByClassName("alignLeft" + align_id)[0];
+            let align_left_rect = align_left_el.getBoundingClientRect()
+
+            let right_y = el.getBoundingClientRect().top;
+            let left_y = align_left_rect.top + align_left_rect.height / 2;
+
+            let y_shift = right_y - left_y;
+
+            el.parentElement.style.verticalAlign = `${y_shift}px`;
+        });
+        
+        /*const elements_to_align = document.querySelectorAll(".align")
+
+        for(let element_index = 0; element_index < elements_to_align.length; element_index++){
+            let this_element = elements_to_align[element_index]
+            let parent_element = this_element.parentElement
+            
+            let align_y = this_element.getBoundingClientRect().top
+            let parent_bottom = parent_element.getBoundingClientRect().bottom
+            let parent_height = parent_element.getBoundingClientRect().height
+
+            let vertical_align = 0.5 * parent_height - (parent_bottom - align_y)
+
+            //parent_element.style.verticalAlign = `calc(${vertical_align}px - 0.25rem)`
+        }*/
+    }
+
     update_display(show_cursor) {
         let parse_res = this.parse_input_code_history(this.input_code_history,show_cursor);
         if(parse_res){
@@ -165,13 +211,21 @@ class InputHandler {
             this.math_output_element.innerHTML = this.formatNumber(output_number)
         }
 
+        this.vertical_align_elements()
+
+        /*let cursor_y_top = document.getElementsByClassName("cursor")[0].getBoundingClientRect().top
+        let input_display_top = this.math_input_element.getBoundingClientRect().top
+        let top_overflow = input_display_top - cursor_y_top
+        this.padding_top = Math.max(0,top_overflow)
+        this.math_input_element.style.paddingTop = this.padding_top + "px"*/
+
         let cursor_x = document.getElementsByClassName("cursor")[0].getBoundingClientRect().right
         let scroll_border_x = document.querySelector('[inkscape\\3a label="scroll_x_border"]').getBoundingClientRect().left
         let x_dist_to_scroll_border = cursor_x - scroll_border_x
 
-        let cursor_y = document.getElementsByClassName("cursor")[0].getBoundingClientRect().bottom
+        let cursor_y_bot = document.getElementsByClassName("cursor")[0].getBoundingClientRect().bottom
         let scroll_border_y = document.querySelector('[inkscape\\3a label="scroll_y_border"]').getBoundingClientRect().top
-        let y_dist_to_scroll_border = cursor_y - scroll_border_y
+        let y_dist_to_scroll_border = cursor_y_bot - scroll_border_y
 
         this.math_input_element.scrollBy(x_dist_to_scroll_border,y_dist_to_scroll_border)
     }
@@ -187,7 +241,7 @@ class InputHandler {
         mathElement.style.left = `${rect.left}px`;
         mathElement.style.top = `${rect.top}px`;
         mathElement.style.width = `${rect.width}px`;
-        mathElement.style.height = `${rect.height}px`;
+        mathElement.style.height = `${Math.max(0,rect.height - this.padding_top)}px`;
     }
 
     math_elements_to_string(math_elements,last_cursor_element,show_cursor) {
