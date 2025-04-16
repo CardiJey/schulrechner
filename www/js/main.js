@@ -617,6 +617,21 @@ class EquationSelectInputHandler {
         // Convert to scientific notation if there are 10 or more significant digits
         if (Math.abs(num) >= 1e10 || (num !== 0 && Math.abs(num) < 1e-10)) {
             return num.toExponential(9); // Adjust precision as needed
+        }else{
+            // Round to 10 significant digits
+            const precision = 10;
+            
+            // If num is 0, no need for significant digit calculation
+            if (num === 0) return '0';
+            
+            // Get the number of digits before the decimal point
+            const digitsBeforeDecimal = Math.floor(Math.log10(Math.abs(num))) + 1;
+            
+            // If there are fewer than 10 digits before the decimal point, scale up
+            const scaleFactor = Math.pow(10, precision - digitsBeforeDecimal);
+            
+            // Round the number to the required precision
+            num = Math.round(num * scaleFactor) / scaleFactor;
         }
         return num.toString();
     }
