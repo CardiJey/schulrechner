@@ -129,13 +129,119 @@ class Ans_Element extends Math_Element{
     }
 }
 
-class InputHandler {
-    constructor(display_input_element, math_input_element, display_output_element, math_output_element, parent_handler) {
-        this.input_code_history = [];
+class InputHandler{
+    constructor(display_input_element, math_input_element, display_output_element, math_output_element) {
         this.display_input_element = display_input_element;
         this.display_output_element = display_output_element;
         this.math_input_element = math_input_element;
         this.math_output_element = math_output_element;
+    }
+
+    identify_period(number) {
+        const number_as_string = number.toString();
+        const places_till_decimal = number_as_string.indexOf(".")
+
+        let possible_periods = []
+
+        for(let decimal_index = number_as_string.length - 1; decimal_index > places_till_decimal; decimal_index--){
+            let this_char = number_as_string[decimal_index]
+
+            if(possible_periods.length == 0){
+                possible_periods = [{string:this_char,index:0,repeats:1,ended:false}]
+            }else{
+                for(let period_index in possible_periods){
+                    let period = possible_periods[period_index]
+                    if(period.ended){
+                        continue
+                    }
+
+                    if(this_char == period.string[period.index]){
+                        period.index--
+                        if(period.index < 0){
+                            period.repeats++
+                            period.index = period.string.length - 1
+                        }
+                    }else{
+                        period.ended = true
+                    }
+                }
+
+                possible_periods.push({string:number_as_string.substring(decimal_index),index:number_as_string.length - decimal_index - 1,repeats:1,ended:false})
+            }
+        }
+
+        let best_period_index = -1
+        let most_digits_repeated = 0
+        let shortest_period_string_length = Infinity
+
+        for(let period_index in possible_periods){
+            let period = possible_periods[period_index]
+            let repeated_digits = period.repeats * period.string.length + period.string.length - period.index - 1
+            let period_string_length = period.string.length
+
+            if(repeated_digits >= 9 + period_string_length && (repeated_digits > most_digits_repeated || (repeated_digits == most_digits_repeated && period_string_length < shortest_period_string_length))){
+                best_period_index = period_index
+                most_digits_repeated = repeated_digits
+                shortest_period_string_length = period_string_length
+            }
+        }
+
+        if(best_period_index == -1){
+            return [number,false]
+        }else{
+            let best_period = possible_periods[best_period_index]
+            let shifted_period = best_period.string.substring(best_period.index + 1) + best_period.string.substring(0,best_period.index + 1)
+            let period_begin = number_as_string.length - most_digits_repeated
+            let num_without_period = number_as_string.substring(0,period_begin)
+
+            return [num_without_period,shifted_period]
+        }
+    }
+
+    round_to_significant_places(num,places){
+        const digitsBeforeDecimal = Math.max(0,Math.floor(Math.log10(Math.abs(num))) + 1);
+
+        // If there are fewer than 10 digits before the decimal point, scale up
+        const scaleFactor = Math.pow(10, places - digitsBeforeDecimal);
+        
+        // Round the number to the required precision
+        const rounded = Math.round(num * scaleFactor) / scaleFactor
+        const decimalPart = rounded.toString().split('.')[1];
+        const decimalPlaces = decimalPart ? decimalPart.length : 0;
+
+        return [rounded,digitsBeforeDecimal,decimalPlaces];
+    }
+
+    formatNumber(num) {
+        let res_num;
+        if(typeof num == "string"){
+            return num
+        }
+        // Convert to scientific notation if there are 10 or more significant digits
+        if (Math.abs(num) >= 1e10 || (num !== 0 && Math.abs(num) < 1e-10)) {
+            return num.toExponential(9); // Adjust precision as needed
+        }else{
+            let [internal_rounded,digitsBeforeDecimal,decimalPlaces] = this.round_to_significant_places(num,13)
+
+            if(digitsBeforeDecimal + decimalPlaces == 13){
+
+                let [num_without_period,period] = this.identify_period(internal_rounded)
+
+                if(period){
+                    return num_without_period + "<span class='period'>" + period + "</span>"
+                }
+            }
+
+            res_num = this.round_to_significant_places(num,10)[0]
+        }
+        return res_num.toString();
+    }
+}
+
+class EquationInputHandler extends InputHandler{
+    constructor(display_input_element, math_input_element, display_output_element, math_output_element, parent_handler) {
+        super(display_input_element, math_input_element, display_output_element, math_output_element)
+        this.input_code_history = [];
         this.parent_handler = parent_handler
         this.padding_top = 0
     }
@@ -149,32 +255,6 @@ class InputHandler {
         }
         this.update_display(true);
         this.update_position()
-    }
-
-    formatNumber(num) {
-        if(typeof num == "string"){
-            return num
-        }
-        // Convert to scientific notation if there are 10 or more significant digits
-        if (Math.abs(num) >= 1e10 || (num !== 0 && Math.abs(num) < 1e-10)) {
-            return num.toExponential(9); // Adjust precision as needed
-        }else{
-            // Round to 10 significant digits
-            const precision = 10;
-            
-            // If num is 0, no need for significant digit calculation
-            if (num === 0) return '0';
-            
-            // Get the number of digits before the decimal point
-            const digitsBeforeDecimal = Math.floor(Math.log10(Math.abs(num))) + 1;
-            
-            // If there are fewer than 10 digits before the decimal point, scale up
-            const scaleFactor = Math.pow(10, precision - digitsBeforeDecimal);
-            
-            // Round the number to the required precision
-            num = Math.round(num * scaleFactor) / scaleFactor;
-        }
-        return num.toString();
     }
 
     vertical_align_elements() {
@@ -532,12 +612,9 @@ class InputHandler {
     }
 }
 
-class EquationSelectInputHandler {
+class EquationSelectInputHandler extends InputHandler{
     constructor(display_input_element, math_input_element, display_output_element, math_output_element) {
-        this.display_input_element = display_input_element;
-        this.display_output_element = display_output_element;
-        this.math_input_element = math_input_element;
-        this.math_output_element = math_output_element;
+        super(display_input_element, math_input_element, display_output_element, math_output_element)
         this.equations = []
         this.add_empty_equation()
         this.display_equation_index = 0
@@ -550,7 +627,7 @@ class EquationSelectInputHandler {
     }
 
     add_empty_equation(){
-        this.equations.push(new InputHandler(this.display_input_element, this.math_input_element, this.display_output_element, this.math_output_element, this))
+        this.equations.push(new EquationInputHandler(this.display_input_element, this.math_input_element, this.display_output_element, this.math_output_element, this))
     }
 
     // Method to handle input
@@ -608,32 +685,6 @@ class EquationSelectInputHandler {
     update_display() {
         this.math_input_element.innerHTML = this.input_strings[this.display_equation_index]
         this.math_output_element.innerHTML = this.formatNumber(this.results[this.display_equation_index])
-    }
-
-    formatNumber(num) {
-        if(typeof num == "string"){
-            return num
-        }
-        // Convert to scientific notation if there are 10 or more significant digits
-        if (Math.abs(num) >= 1e10 || (num !== 0 && Math.abs(num) < 1e-10)) {
-            return num.toExponential(9); // Adjust precision as needed
-        }else{
-            // Round to 10 significant digits
-            const precision = 10;
-            
-            // If num is 0, no need for significant digit calculation
-            if (num === 0) return '0';
-            
-            // Get the number of digits before the decimal point
-            const digitsBeforeDecimal = Math.floor(Math.log10(Math.abs(num))) + 1;
-            
-            // If there are fewer than 10 digits before the decimal point, scale up
-            const scaleFactor = Math.pow(10, precision - digitsBeforeDecimal);
-            
-            // Round the number to the required precision
-            num = Math.round(num * scaleFactor) / scaleFactor;
-        }
-        return num.toString();
     }
 
     update_position() {

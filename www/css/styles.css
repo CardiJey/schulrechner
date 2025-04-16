@@ -103,3 +103,7 @@ svg {
     height: 1em;
     animation: blink 1s infinite;
 }
+
+.period {
+    border-top: 0.111rem solid var(--main-color);
+}
