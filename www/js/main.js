@@ -184,7 +184,7 @@ class InputHandler {
 
             let y_shift = right_y - left_y;
 
-            el.parentElement.style.verticalAlign = `${y_shift}px`;
+            el.parentElement.style.verticalAlign = `calc(${y_shift}px + 0.06rem)`;
         });
         
         /*const elements_to_align = document.querySelectorAll(".align")
