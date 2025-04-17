@@ -279,9 +279,7 @@ class InputHandler{
             if(as_fraction){
                 let decimal_fraction = this.decimal_to_fraction(internal_rounded)
                 let final_fraction = this.simplify_fraction(decimal_fraction)
-                if(final_fraction[0] != decimal_fraction[0]){
-                    return "<span class='frac_wrapper'><span class='frac_top'>" + final_fraction[0] + "</span><span class='frac_bottom'>" + final_fraction[1] + "</span></span>"
-                }
+                return "<span class='frac_wrapper'><span class='frac_top'>" + final_fraction[0] + "</span><span class='frac_bottom'>" + final_fraction[1] + "</span></span>"
             }
 
             res_num = this.round_to_significant_places(num,10)[0]
@@ -674,12 +672,26 @@ class EquationSelectInputHandler extends InputHandler{
         this.ans_value = 0
         this.input_strings = []
         this.results = []
+        this.as_fraction = true
 
         active_input_handler = this.equations[this.display_equation_index]
     }
 
     add_empty_equation(){
         this.equations.push(new EquationInputHandler(this.display_input_element, this.math_input_element, this.display_output_element, this.math_output_element, this))
+        this.as_fraction = true
+    }
+
+    select_equation(up){
+        let index_before = this.display_equation_index
+        if(up){
+            this.display_equation_index = Math.max( 0, Math.min(this.display_equation_index - 1, this.equations.length - 1) )
+        }else{
+            this.display_equation_index = Math.max( 0, Math.min(this.display_equation_index + 1, this.equations.length - 1) )
+        }
+        if(index_before != this.display_equation_index){
+            this.as_fraction = true
+        }
     }
 
     // Method to handle input
@@ -712,14 +724,19 @@ class EquationSelectInputHandler extends InputHandler{
                 active_input_handler.update_position();
             break;
 
+            case "key_SD":
+                this.as_fraction = !this.as_fraction
+                this.update_display();
+            break;
+
             case "key_dir1":
-                this.display_equation_index = Math.max( 0, Math.min(this.display_equation_index + 1, this.equations.length - 1) )
+                this.select_equation(false)
                 this.update_position();
                 this.update_display();
             break;
 
             case "key_dir3":
-                this.display_equation_index = Math.max( 0, Math.min(this.display_equation_index - 1, this.equations.length - 1) )
+                this.select_equation(true)
                 this.update_position();
                 this.update_display();
             break;
@@ -736,7 +753,7 @@ class EquationSelectInputHandler extends InputHandler{
 
     update_display() {
         this.math_input_element.innerHTML = this.input_strings[this.display_equation_index]
-        this.math_output_element.innerHTML = this.formatNumber(this.results[this.display_equation_index])
+        this.math_output_element.innerHTML = this.formatNumber(this.results[this.display_equation_index],this.as_fraction)
     }
 
     update_position() {
