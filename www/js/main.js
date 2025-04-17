@@ -213,39 +213,34 @@ class InputHandler{
         return [rounded,digitsBeforeDecimal,decimalPlaces];
     }
 
-    period_to_fraction(period_string){
-        let period_length = period_string.length
-        
-        return [parseInt(period_string), Math.pow(10,period_length) - 1]
+    parse_continued_fraction(continued_fraction){
+        let res = [1,0]
+        for(let level = continued_fraction.length - 1; level >= 0; level--){
+            res = [continued_fraction[level] * res[0] + res[1],res[0]]
+        }
+        return res
     }
 
-    decimal_to_fraction(decimal){
-        const decimalPart = decimal.toString().split('.')[1];
-        const decimalPlaces = decimalPart ? decimalPart.length : 0;
-
-        return [decimal * Math.pow(10,decimalPlaces),Math.pow(10,decimalPlaces)]
+    fraction_to_decimal(fraction){
+        return fraction[0] / fraction[1]
     }
 
-    add_fractions(fraction1,fraction2){
-        return [fraction1[0] * fraction2[1] + fraction1[1] * fraction2[0],fraction1[1] * fraction2[1]]
-    }
+    decimal_to_continued_fraction(decimal,epsilon=1e-12){
+        let new_decimal = decimal
+        let this_int = Math.floor(new_decimal)
+        let res = [this_int]
+        let remainder = new_decimal - this_int
+        let resulting_fraction = this.parse_continued_fraction(res)
 
-    simplify_fraction(fraction){
-        let simplified_fraction = [fraction[0],fraction[1]]
-        let gcd = this.gcd(simplified_fraction[0],simplified_fraction[1])
-        while(gcd != 1){
-            simplified_fraction[0] /= gcd
-            simplified_fraction[1] /= gcd
-            gcd = this.gcd(simplified_fraction[0],simplified_fraction[1])
+        while(Math.abs(this.fraction_to_decimal(resulting_fraction) - decimal) > epsilon){
+            new_decimal = 1 / remainder
+            this_int = Math.floor(new_decimal)
+            res.push(this_int)
+            remainder = new_decimal - this_int
+            resulting_fraction = this.parse_continued_fraction(res)
         }
 
-        return simplified_fraction
-    }
-
-    gcd(a, b) {
-        if (!b) return a;
-      
-        return this.gcd(b, a % b);
+        return [res,resulting_fraction]
     }
 
     formatNumber(num,as_fraction=true) {
@@ -257,30 +252,13 @@ class InputHandler{
         if (Math.abs(num) >= 1e10 || (num !== 0 && Math.abs(num) < 1e-10)) {
             return num.toExponential(9); // Adjust precision as needed
         }else{
-            let [internal_rounded,digitsBeforeDecimal,decimalPlaces] = this.round_to_significant_places(num,13)
-
-            if(digitsBeforeDecimal + decimalPlaces == 13){
-
-                let [num_without_period,period] = this.identify_period(internal_rounded)
-
-                if(period){
-                    if(as_fraction){
-                        let period_fraction = this.period_to_fraction(period)
-                        let decimal_fraction = this.decimal_to_fraction(num_without_period)
-
-                        let final_fraction = this.simplify_fraction(this.add_fractions(decimal_fraction,[period_fraction[0],period_fraction[1] * decimal_fraction[1]]))
-
-                        return "<span class='frac_wrapper'><span class='frac_top'>" + final_fraction[0] + "</span><span class='frac_bottom'>" + final_fraction[1] + "</span></span>"
-                    }else{
-                        return num_without_period + "<span class='period'>" + period + "</span>"
-                    }
-                }
-            }
-
             if(as_fraction){
-                let decimal_fraction = this.decimal_to_fraction(internal_rounded)
-                let final_fraction = this.simplify_fraction(decimal_fraction)
-                return "<span class='frac_wrapper'><span class='frac_top'>" + final_fraction[0] + "</span><span class='frac_bottom'>" + final_fraction[1] + "</span></span>"
+                let resulting_fraction = this.decimal_to_continued_fraction(num)[1]
+                let resulting_fraction_length = (resulting_fraction[0].toString() + resulting_fraction[1].toString()).length
+
+                if(resulting_fraction_length <= 9){
+                    return "<span class='frac_wrapper'><span class='frac_top'>" + resulting_fraction[0] + "</span><span class='frac_bottom'>" + resulting_fraction[1] + "</span></span>"
+                }
             }
 
             res_num = this.round_to_significant_places(num,10)[0]
