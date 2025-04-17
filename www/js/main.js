@@ -83,8 +83,9 @@ class Point_Element extends Math_Element{
     }
 
     operate(val1,val2){
-        let digits = Math.floor(Math.log10(val2)) + 1;
-        return val1 + val2 / (10 ** digits)
+        let digits = Math.floor(Math.log10(val2));
+
+        return val1 + (val2 - Math.pow(10,digits)) / (10 ** digits)
     }
 }
 
@@ -267,7 +268,7 @@ class InputHandler{
                         let period_fraction = this.period_to_fraction(period)
                         let decimal_fraction = this.decimal_to_fraction(num_without_period)
 
-                        let final_fraction = this.simplify_fraction(this.add_fractions(decimal_fraction,[period_fraction[0],period_fraction[1] / decimal_fraction[1]]))
+                        let final_fraction = this.simplify_fraction(this.add_fractions(decimal_fraction,[period_fraction[0],period_fraction[1] * decimal_fraction[1]]))
 
                         return "<span class='frac_wrapper'><span class='frac_top'>" + final_fraction[0] + "</span><span class='frac_bottom'>" + final_fraction[1] + "</span></span>"
                     }else{
@@ -450,7 +451,11 @@ class EquationInputHandler extends InputHandler{
 
             case "operation":
                 if(current_element.prio > last_operation_element.prio){
-                    let [sub_res,sub_current_element] = this.calc_math_elements(current_element.neighbors[2],current_element,0)
+                    let start_res = 0
+                    if(current_element.value == ","){
+                        start_res++
+                    }
+                    let [sub_res,sub_current_element] = this.calc_math_elements(current_element.neighbors[2],current_element,start_res)
                     res = current_element.operate(res,sub_res)
                     const result = this.calc_math_elements(sub_current_element, last_operation_element, res);
                     [res, current_element] = result;
