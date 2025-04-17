@@ -355,25 +355,27 @@ class EquationInputHandler extends InputHandler{
             let [input_string, output_number] = parse_res
             this.math_input_element.innerHTML = input_string
             this.math_output_element.innerHTML = this.formatNumber(output_number)
+
+            this.vertical_align_elements()
+
+            /*let cursor_y_top = document.getElementsByClassName("cursor")[0].getBoundingClientRect().top
+            let input_display_top = this.math_input_element.getBoundingClientRect().top
+            let top_overflow = input_display_top - cursor_y_top
+            this.padding_top = Math.max(0,top_overflow)
+            this.math_input_element.style.paddingTop = this.padding_top + "px"*/
+
+            if(show_cursor){
+                let cursor_x = document.getElementsByClassName("cursor")[0].getBoundingClientRect().right
+                let scroll_border_x = document.querySelector('[inkscape\\3a label="scroll_x_border"]').getBoundingClientRect().left
+                let x_dist_to_scroll_border = cursor_x - scroll_border_x
+
+                let cursor_y_bot = document.getElementsByClassName("cursor")[0].getBoundingClientRect().bottom
+                let scroll_border_y = document.querySelector('[inkscape\\3a label="scroll_y_border"]').getBoundingClientRect().top
+                let y_dist_to_scroll_border = cursor_y_bot - scroll_border_y
+
+                this.math_input_element.scrollBy(x_dist_to_scroll_border,y_dist_to_scroll_border)
+            }
         }
-
-        this.vertical_align_elements()
-
-        /*let cursor_y_top = document.getElementsByClassName("cursor")[0].getBoundingClientRect().top
-        let input_display_top = this.math_input_element.getBoundingClientRect().top
-        let top_overflow = input_display_top - cursor_y_top
-        this.padding_top = Math.max(0,top_overflow)
-        this.math_input_element.style.paddingTop = this.padding_top + "px"*/
-
-        let cursor_x = document.getElementsByClassName("cursor")[0].getBoundingClientRect().right
-        let scroll_border_x = document.querySelector('[inkscape\\3a label="scroll_x_border"]').getBoundingClientRect().left
-        let x_dist_to_scroll_border = cursor_x - scroll_border_x
-
-        let cursor_y_bot = document.getElementsByClassName("cursor")[0].getBoundingClientRect().bottom
-        let scroll_border_y = document.querySelector('[inkscape\\3a label="scroll_y_border"]').getBoundingClientRect().top
-        let y_dist_to_scroll_border = cursor_y_bot - scroll_border_y
-
-        this.math_input_element.scrollBy(x_dist_to_scroll_border,y_dist_to_scroll_border)
     }
 
     update_position() {
@@ -655,7 +657,7 @@ class EquationInputHandler extends InputHandler{
             active_input_handler = this.parent_handler
             this.parent_handler.input_strings[this.parent_handler.display_equation_index] = this.math_elements_to_string(res,cursor_element,false)
             this.parent_handler.results[this.parent_handler.display_equation_index] = this.calc_math_elements(res)[0]
-            this.parent_handler.update_display()
+            this.parent_handler.update_display(false)
             this.parent_handler.update_position()
             return undefined
         }else{
@@ -759,6 +761,7 @@ class EquationSelectInputHandler extends InputHandler{
     update_display() {
         this.math_input_element.innerHTML = this.input_strings[this.display_equation_index]
         this.math_output_element.innerHTML = this.formatNumber(this.results[this.display_equation_index],this.as_fraction)
+        this.math_input_element.scroll(0,0)
     }
 
     update_position() {
