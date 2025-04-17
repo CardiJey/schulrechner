@@ -212,7 +212,42 @@ class InputHandler{
         return [rounded,digitsBeforeDecimal,decimalPlaces];
     }
 
-    formatNumber(num) {
+    period_to_fraction(period_string){
+        let period_length = period_string.length
+        
+        return [parseInt(period_string), Math.pow(10,period_length) - 1]
+    }
+
+    decimal_to_fraction(decimal){
+        const decimalPart = decimal.toString().split('.')[1];
+        const decimalPlaces = decimalPart ? decimalPart.length : 0;
+
+        return [decimal * Math.pow(10,decimalPlaces),Math.pow(10,decimalPlaces)]
+    }
+
+    add_fractions(fraction1,fraction2){
+        return [fraction1[0] * fraction2[1] + fraction1[1] * fraction2[0],fraction1[1] * fraction2[1]]
+    }
+
+    simplify_fraction(fraction){
+        let simplified_fraction = [fraction[0],fraction[1]]
+        let gcd = this.gcd(simplified_fraction[0],simplified_fraction[1])
+        while(gcd != 1){
+            simplified_fraction[0] /= gcd
+            simplified_fraction[1] /= gcd
+            gcd = this.gcd(simplified_fraction[0],simplified_fraction[1])
+        }
+
+        return simplified_fraction
+    }
+
+    gcd(a, b) {
+        if (!b) return a;
+      
+        return this.gcd(b, a % b);
+    }
+
+    formatNumber(num,as_fraction=true) {
         let res_num;
         if(typeof num == "string"){
             return num
@@ -228,7 +263,24 @@ class InputHandler{
                 let [num_without_period,period] = this.identify_period(internal_rounded)
 
                 if(period){
-                    return num_without_period + "<span class='period'>" + period + "</span>"
+                    if(as_fraction){
+                        let period_fraction = this.period_to_fraction(period)
+                        let decimal_fraction = this.decimal_to_fraction(num_without_period)
+
+                        let final_fraction = this.simplify_fraction(this.add_fractions(decimal_fraction,[period_fraction[0],period_fraction[1] / decimal_fraction[1]]))
+
+                        return "<span class='frac_wrapper'><span class='frac_top'>" + final_fraction[0] + "</span><span class='frac_bottom'>" + final_fraction[1] + "</span></span>"
+                    }else{
+                        return num_without_period + "<span class='period'>" + period + "</span>"
+                    }
+                }
+            }
+
+            if(as_fraction){
+                let decimal_fraction = this.decimal_to_fraction(internal_rounded)
+                let final_fraction = this.simplify_fraction(decimal_fraction)
+                if(final_fraction[0] != decimal_fraction[0]){
+                    return "<span class='frac_wrapper'><span class='frac_top'>" + final_fraction[0] + "</span><span class='frac_bottom'>" + final_fraction[1] + "</span></span>"
                 }
             }
 
