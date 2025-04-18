@@ -131,3 +131,8 @@ svg {
     vertical-align: -0.333em;
     font-size: 0.667rem;
 }
+
+.pressed {
+    filter: brightness(85%);
+    transition: transform 0.1s, filter 0.1s;
+}

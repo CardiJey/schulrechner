@@ -982,7 +982,10 @@ document.addEventListener("DOMContentLoaded", () => {
         const keyElements = document.querySelectorAll('[inkscape\\3a label^="key_"]');
 
         keyElements.forEach(element => {
-            element.addEventListener("mousedown", function () {
+            element.addEventListener("pointerdown", function () {
+                this.classList.add("pressed");
+                setTimeout(() => this.classList.remove("pressed"), 150);
+            
                 active_input_handler.handle(this.getAttribute('inkscape:label'));
             });
         });
