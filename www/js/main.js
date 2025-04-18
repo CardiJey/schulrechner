@@ -177,6 +177,22 @@ class Pow_Element extends Math_Element{
         return Math.pow(child_results[0],child_results[1])
     }
 }
+class Logn_Element extends Math_Element{
+    constructor(left){
+        super("container_operation",left,"log<span class='logn_bottom'>")
+        
+        this.children = [
+            new Container_Element(this,"</span>(",this)
+        ]
+        this.children.push(
+            new Container_Element(this.children[0],")",this)
+        )
+    }
+
+    operate(child_results){
+        return Math.log(child_results[1]) / Math.log(child_results[0])
+    }
+}
 
 class Container_Element extends Math_Element{
     constructor(left,value,parent){
@@ -745,6 +761,11 @@ class EquationInputHandler extends InputHandler{
                     var prefilled_element2 = new Int_Element(prefilled_element1,1)
                     prefilled_element2.neighbors[2] = cursor_element.children[1]
                     cursor_element.children[1].neighbors[0] = prefilled_element2
+                    break;
+
+                case "key_logn":
+                    new_element = new Logn_Element(cursor_element)
+                    cursor_element = new_element
                     break;
 
                 case "key_del":

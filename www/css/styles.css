@@ -123,3 +123,8 @@ svg {
 .pow_bottom {
     padding-left: 0.2rem;
 }
+
+.logn_bottom {
+    vertical-align: -0.333em;
+    font-size: 0.667rem;
+}
