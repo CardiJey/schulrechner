@@ -150,7 +150,7 @@ class Frac_Element extends Math_Element{
 
 class Sqrt_Element extends Math_Element{
     constructor(left){
-        super("container_operation",left,"<span class='sqrt'>")
+        super("container_operation",left,"<span>&#8730;</span><span class='sqrt'>")
         this.children = [
             new Container_Element(this,"</span>",this)
         ]

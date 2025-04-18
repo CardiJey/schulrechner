@@ -67,7 +67,7 @@ svg {
 }
 
 .sqrt {
-    background-color: red;
+    border-top: 0.111rem solid var(--main-color);
     padding-left: 0.111rem;
     padding-right: 0.111rem;
 }
