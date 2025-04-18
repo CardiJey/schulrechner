@@ -730,6 +730,14 @@ class EquationInputHandler extends InputHandler{
                     cursor_element = new_element
                     break;
 
+                case "key_pow2":
+                    new_element = new Pow_Element(cursor_element)
+                    cursor_element = new_element
+                    let prefilled_element = new Int_Element(cursor_element.children[0],2)
+                    prefilled_element.neighbors[2] = cursor_element.children[1]
+                    cursor_element.children[1].neighbors[0] = prefilled_element
+                    break;
+
                 case "key_del":
                     switch(cursor_element.type){
                         case "start":
