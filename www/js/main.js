@@ -933,10 +933,12 @@ class EquationSelectInputHandler extends InputHandler{
     }
 
     update_display() {
-        this.math_input_element.innerHTML = this.input_strings[this.display_equation_index]
-        this.math_output_element.innerHTML = this.formatNumber(this.results[this.display_equation_index],this.as_fraction)
-        this.math_input_element.scroll(0,0)
-        this.vertical_align_elements()
+        if(this.equations.length > 0){
+            this.math_input_element.innerHTML = this.input_strings[this.display_equation_index]
+            this.math_output_element.innerHTML = this.formatNumber(this.results[this.display_equation_index],this.as_fraction)
+            this.math_input_element.scroll(0,0)
+            this.vertical_align_elements()
+        }
     }
 
     update_position() {
