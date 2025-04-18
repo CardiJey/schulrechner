@@ -1,6 +1,32 @@
 let active_input_handler;
 let next_align_id = 0
 
+function is_family(el1, el2){
+    if(el1 && el2){
+        let parent_el;
+        let child_el;
+        if(el1.type == "container_operation"){
+            parent_el = el1
+            child_el = el2
+        }else if(el2.type == "container_operation"){
+            parent_el = el2
+            child_el = el1
+        }else{
+            if(el1.type == "container" && el2.type == "container"){
+                return el1.parent == el2.parent
+            }else{
+                return false
+            }
+        }
+
+        if(child_el.type == "container"){
+            return parent_el == child_el.parent
+        }
+    }
+    
+    return false
+}
+
 class Math_Element {
     constructor(type,left,value) {
         this.type = type
@@ -104,29 +130,42 @@ class Frac_Element extends Math_Element{
     constructor(left){
         let align_id = next_align_id
         next_align_id++
-        let upper_frac_start = new Frac_Start_Element(left,true,align_id)
-        let lower_frac_start = new Frac_Start_Element(upper_frac_start,false,align_id)
-        upper_frac_start.neighbors[1] = lower_frac_start
-        lower_frac_start.neighbors[3] = upper_frac_start
-        super("frac",lower_frac_start,"</span></span>")
+        super("container_operation",left,"<span class='alignLeft" + align_id + "'></span><span class='frac_wrapper'><span class='frac_top'>")
+        
+        this.children = [
+            new Container_Element(this,"</span><span class='frac_bottom alignRight" + align_id + "'>",this)
+        ]
+        this.children.push(
+            new Container_Element(this.children[0],"</span></span>",this)
+        )
+        this.children[0].neighbors[1] = this.children[1]
+        this.children[1].neighbors[3] = this.children[0]
         this.prio = 1
-        this.upper_frac_start = upper_frac_start
-        this.lower_frac_start = lower_frac_start
-        upper_frac_start.frac = this
-        lower_frac_start.frac = this
+    }
+
+    operate(child_results){
+        return child_results[0] / child_results[1]
     }
 }
 
-class Frac_Start_Element extends Math_Element{
-    constructor(left,upper,align_id){
-        let value = (upper? "<span class='alignLeft" + align_id + "'></span><span class='frac_wrapper'><span class='frac_top'>" : "</span><span class='frac_bottom alignRight" + align_id + "'>")
-        super("frac_start",left,value)
-        this.prio = 1
-        this.upper = upper
+class Sqrt_Element extends Math_Element{
+    constructor(left){
+        super("container_operation",left,"<span class='sqrt'>")
+        this.children = [
+            new Container_Element(this,"</span>",this)
+        ]
     }
 
-    operate(val1,val2){
-        return val1 / val2
+    operate(child_results){
+        return Math.sqrt(child_results[0])
+    }
+}
+
+class Container_Element extends Math_Element{
+    constructor(left,value,parent){
+        super("container",left,value)
+        this.prio = 1
+        this.parent = parent
     }
 }
 
@@ -441,8 +480,11 @@ class EquationInputHandler extends InputHandler{
                 case "start":
                     break;
 
-                case "frac_start":
-                    if((cursor_element.neighbors[2].type == "frac_start" && !cursor_element.neighbors[2].upper) || cursor_element.neighbors[2].type == "frac"){
+                case "container_operation":
+                case "container":
+                    if(
+                        is_family(cursor_element,cursor_element.neighbors[2])
+                    ){
                         res += cursor_element.value
                         if(show_cursor && cursor_element == last_cursor_element){
                             res += '<span class="cursor">\uE000</span>'
@@ -456,8 +498,8 @@ class EquationInputHandler extends InputHandler{
                 case "operation":
                 case "brackets_operation":
                 case "ans":
-                case "frac":
-                case "frac_start":
+                case "container_operation":
+                case "container":
                     res += cursor_element.value
                     break;
             }
@@ -516,17 +558,19 @@ class EquationInputHandler extends InputHandler{
                 }
             break;
 
-            case "frac_start":
-                if(current_element.upper){
-                    let [top_res,lower_frac_start_element] = this.calc_math_elements(current_element.neighbors[2],current_element,0);
-                    if(lower_frac_start_element.type != "frac_start"){
-                        return [NaN,undefined]
-                    }
-                    let [lower_res,frac_element] = this.calc_math_elements(lower_frac_start_element.neighbors[2],lower_frac_start_element,0)
-                    let frac_res = current_element.operate(top_res,lower_res)
-                    const result = this.calc_math_elements(frac_element.neighbors[2], last_operation_element, frac_res);
-                    [res, current_element] = result;
+            case "container_operation":
+                // TODO machen das Klammern selber multiplizieren
+                const child_results = []
+                let current_container = current_element
+                for(let child_index = 0; child_index < current_element.children.length; child_index++){
+                    let [child_result,next_container_element] = this.calc_math_elements(current_container.neighbors[2],current_container,0)
+                    current_container = next_container_element
+                    child_results.push(child_result)
                 }
+                let container_operation_res = current_element.operate(child_results);
+                current_element = current_container;
+                
+                [res,current_element] = this.calc_math_elements(current_element.neighbors[2],current_element,container_operation_res);
             break;
         }
 
@@ -656,7 +700,12 @@ class EquationInputHandler extends InputHandler{
 
                 case "key_frac":
                     new_element = new Frac_Element(cursor_element)
-                    cursor_element = new_element.upper_frac_start
+                    cursor_element = new_element
+                    break;
+
+                case "key_sqrt":
+                    new_element = new Sqrt_Element(cursor_element)
+                    cursor_element = new_element
                     break;
 
                 case "key_del":
@@ -664,26 +713,21 @@ class EquationInputHandler extends InputHandler{
                         case "start":
                             break;
 
-                        case "frac":
+                        case "container":
                             cursor_element = cursor_element.neighbors[0]
                             break;
                         
-                        case "frac_start":
-                            if(cursor_element.upper){
-                                const frac_element = cursor_element.neighbors[1].frac
-                                frac_element.neighbors[0].neighbors[2] = frac_element.neighbors[2]
-                                if(frac_element.neighbors[0].neighbors[2]){
-                                    frac_element.neighbors[0].neighbors[2].neighbors[0] = frac_element.neighbors[0]
+                        case "container_operation":
+                            let elements_to_delete = [cursor_element].concat(cursor_element.children)
+                            cursor_element = cursor_element.neighbors[0]
+                            for(let delete_index = 0; delete_index < elements_to_delete.length; delete_index++){
+                                let element_to_delete = elements_to_delete[delete_index]
+                                element_to_delete.neighbors[0].neighbors[2] = element_to_delete.neighbors[2]
+                                if(element_to_delete.neighbors[0].neighbors[2]){
+                                    element_to_delete.neighbors[0].neighbors[2].neighbors[0] = element_to_delete.neighbors[0]
                                 }
-                                const lower_frac_start_element = cursor_element.neighbors[1]
-                                lower_frac_start_element.neighbors[0].neighbors[2] = lower_frac_start_element.neighbors[2]
-                                if(lower_frac_start_element.neighbors[0].neighbors[2]){
-                                    lower_frac_start_element.neighbors[0].neighbors[2].neighbors[0] = lower_frac_start_element.neighbors[0]
-                                }
-                            }else{
-                                cursor_element = cursor_element.neighbors[0]
-                                break;
                             }
+                            break;
 
                         default:
                             cursor_element = cursor_element.neighbors[0]
@@ -697,8 +741,14 @@ class EquationInputHandler extends InputHandler{
 
             if(new_element){
                 if(old_right_neighbour){
-                    new_element.neighbors[2] = old_right_neighbour
-                    old_right_neighbour.neighbors[0] = new_element
+                    if(new_element.children){
+                        let last_child = new_element.children[new_element.children.length - 1]
+                        last_child.neighbors[2] = old_right_neighbour
+                        old_right_neighbour.neighbors[0] = last_child
+                    }else{
+                        new_element.neighbors[2] = old_right_neighbour
+                        old_right_neighbour.neighbors[0] = new_element
+                    }
                 }
                 if(!new_element.neighbors[1]){
                     new_element.neighbors[1] = old_cursor_element.neighbors[1]

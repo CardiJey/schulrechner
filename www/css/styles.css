@@ -66,6 +66,12 @@ svg {
     padding-left: 0.111rem;
 }
 
+.sqrt {
+    background-color: red;
+    padding-left: 0.111rem;
+    padding-right: 0.111rem;
+}
+
 .frac_wrapper {
     display: inline-block;
     text-align: center;
