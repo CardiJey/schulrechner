@@ -161,6 +161,23 @@ class Sqrt_Element extends Math_Element{
     }
 }
 
+class Pow_Element extends Math_Element{
+    constructor(left){
+        super("container_operation",left,"<span class='pow_bottom'>")
+        
+        this.children = [
+            new Container_Element(this,"</span><span class='pow_top'>",this)
+        ]
+        this.children.push(
+            new Container_Element(this.children[0],"</span>",this)
+        )
+    }
+
+    operate(child_results){
+        return Math.pow(child_results[0],child_results[1])
+    }
+}
+
 class Container_Element extends Math_Element{
     constructor(left,value,parent){
         super("container",left,value)
@@ -705,6 +722,11 @@ class EquationInputHandler extends InputHandler{
 
                 case "key_sqrt":
                     new_element = new Sqrt_Element(cursor_element)
+                    cursor_element = new_element
+                    break;
+
+                case "key_pown":
+                    new_element = new Pow_Element(cursor_element)
                     cursor_element = new_element
                     break;
 

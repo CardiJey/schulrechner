@@ -114,3 +114,12 @@ svg {
 .period {
     border-top: 0.111rem solid var(--main-color);
 }
+
+.pow_top {
+    vertical-align: 0.667em;
+    font-size: 0.667rem;
+}
+
+.pow_bottom {
+    padding-left: 0.2rem;
+}
