@@ -39,6 +39,7 @@ svg {
     padding-left: 0.111rem;
     overflow: hidden;
     scrollbar-width: 0;
+    white-space: nowrap;
 }
 
 #math-output {
