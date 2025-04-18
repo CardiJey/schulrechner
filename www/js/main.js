@@ -163,6 +163,28 @@ class Tan_Element extends Math_Element{
     }
 }
 
+class Log_Element extends Math_Element{
+    constructor(left){
+        super("brackets",left,"log(")
+        this.prio = 1
+    }
+
+    operate(val){
+        return Math.log10(val)
+    }
+}
+
+class Ln_Element extends Math_Element{
+    constructor(left){
+        super("brackets",left,"ln(")
+        this.prio = 1
+    }
+
+    operate(val){
+        return Math.log(val)
+    }
+}
+
 class Ans_Element extends Math_Element{
     constructor(left){
         super("ans",left,"Ans")
@@ -619,6 +641,16 @@ class EquationInputHandler extends InputHandler{
 
                 case "key_tan":
                     new_element = new Tan_Element(cursor_element)
+                    cursor_element = new_element
+                    break;
+
+                case "key_log":
+                    new_element = new Log_Element(cursor_element)
+                    cursor_element = new_element
+                    break;
+
+                case "key_ln":
+                    new_element = new Ln_Element(cursor_element)
                     cursor_element = new_element
                     break;
 
