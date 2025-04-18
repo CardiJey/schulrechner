@@ -106,6 +106,8 @@ class Frac_Element extends Math_Element{
         lower_frac_start.neighbors[3] = upper_frac_start
         super("frac",lower_frac_start,"</span></span>")
         this.prio = 1
+        this.upper_frac_start = upper_frac_start
+        this.lower_frac_start = lower_frac_start
         upper_frac_start.frac = this
         lower_frac_start.frac = this
     }
@@ -480,7 +482,7 @@ class EquationInputHandler extends InputHandler{
             let input_code = input_code_history[input_index]
             let old_cursor_element = cursor_element
             let old_right_neighbour = old_cursor_element.neighbors[2]
-            let created_new_element = false     
+            let new_element;
 
             switch(input_code){
                 case "key_0":
@@ -493,9 +495,8 @@ class EquationInputHandler extends InputHandler{
                 case "key_7":
                 case "key_8":
                 case "key_9":
-                    var new_element = new Int_Element(cursor_element,input_code.substring(4))
+                    new_element = new Int_Element(cursor_element,input_code.substring(4))
                     cursor_element = new_element
-                    created_new_element = true
                 break;
 
                 case "key_dir1":
@@ -527,9 +528,8 @@ class EquationInputHandler extends InputHandler{
                 break;
                 
                 case "key_Ans":
-                    var new_element = new Ans_Element(cursor_element)
+                    new_element = new Ans_Element(cursor_element)
                     cursor_element = new_element
-                    created_new_element = true
                     break;
 
                 case "key_=":
@@ -539,46 +539,39 @@ class EquationInputHandler extends InputHandler{
                     break;
                 
                 case "key_comma":
-                    var new_element = new Point_Element(cursor_element)
+                    new_element = new Point_Element(cursor_element)
                     cursor_element = new_element
-                    created_new_element = true
                     break;
 
                 case "key_x":
-                    var new_element = new Times_Element(cursor_element)
+                    new_element = new Times_Element(cursor_element)
                     cursor_element = new_element
-                    created_new_element = true
                     break;
 
                 case "key_÷":
-                    var new_element = new Div_Element(cursor_element)
+                    new_element = new Div_Element(cursor_element)
                     cursor_element = new_element
-                    created_new_element = true
                     break;
 
                 case "key_+":
-                    var new_element = new Plus_Element(cursor_element)
+                    new_element = new Plus_Element(cursor_element)
                     cursor_element = new_element
-                    created_new_element = true
                     break;
 
                 case "key_-":
-                    var new_element = new Minus_Element(cursor_element)
+                    new_element = new Minus_Element(cursor_element)
                     cursor_element = new_element
-                    created_new_element = true
                     break;
 
                 case "key_(":
                 case "key_)":
-                    var new_element = new Brackets_Element(cursor_element,input_code.substring(4))
+                    new_element = new Brackets_Element(cursor_element,input_code.substring(4))
                     cursor_element = new_element
-                    created_new_element = true
                     break;
 
                 case "key_frac":
-                    var new_element = new Frac_Element(cursor_element)
-                    cursor_element = new_element
-                    created_new_element = true
+                    new_element = new Frac_Element(cursor_element)
+                    cursor_element = new_element.upper_frac_start
                     break;
 
                 case "key_del":
@@ -617,16 +610,16 @@ class EquationInputHandler extends InputHandler{
                     break;
             }
 
-            if(created_new_element){
+            if(new_element){
                 if(old_right_neighbour){
-                    cursor_element.neighbors[2] = old_right_neighbour
-                    old_right_neighbour.neighbors[0] = cursor_element
+                    new_element.neighbors[2] = old_right_neighbour
+                    new_element.neighbors[0] = new_element
                 }
-                if(!cursor_element.neighbors[1]){
-                    cursor_element.neighbors[1] = old_cursor_element.neighbors[1]
+                if(!new_element.neighbors[1]){
+                    new_element.neighbors[1] = old_cursor_element.neighbors[1]
                 }
-                if(!cursor_element.neighbors[3]){
-                    cursor_element.neighbors[3] = old_cursor_element.neighbors[3]
+                if(!new_element.neighbors[3]){
+                    new_element.neighbors[3] = old_cursor_element.neighbors[3]
                 }
             }
         }
