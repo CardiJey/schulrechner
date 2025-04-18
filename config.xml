@@ -21,11 +21,17 @@
         <icon src="www/img/android-icons/drawable-xhdpi-icon.png" density="xhdpi" />
         <icon src="www/img/android-icons/drawable-xxhdpi-icon.png" density="xxhdpi" />
         <icon src="www/img/android-icons/drawable-xxxhdpi-icon.png" density="xxxhdpi" />
+        <!-- Splash screens -->
+        <splash src="www/img/splash/splash-mdpi.png" density="mdpi"/>
+        <splash src="www/img/splash/splash-hdpi.png" density="hdpi"/>
+        <splash src="www/img/splash/splash-xhdpi.png" density="xhdpi"/>
+        <splash src="www/img/splash/splash-xxhdpi.png" density="xxhdpi"/>
+        <splash src="www/img/splash/splash-xxxhdpi.png" density="xxxhdpi"/>
     </platform>
-
 
 
     <!-- Permissions or specific features -->
     <access origin="*" />
     <plugin name="cordova-plugin-whitelist" spec="1.3.4" />
+    <plugin name="cordova-plugin-splashscreen" spec="6.0.2" />
 </widget>
