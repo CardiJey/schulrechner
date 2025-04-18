@@ -34,7 +34,10 @@ svg {
 
 .math-div{
     position: absolute;
-    padding: 0;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0.222rem;
+    padding-bottom: 0;
     margin: 0;
     padding-left: 0.111rem;
     overflow: hidden;
@@ -67,9 +70,9 @@ svg {
 }
 
 .sqrt {
-    border-top: 0.111rem solid var(--main-color);
-    padding-left: 0.111rem;
-    padding-right: 0.111rem;
+    border-top: 0.111em solid var(--main-color);
+    padding-right: 0.222em;
+    padding-top: 0.111em;
 }
 
 .frac_wrapper {

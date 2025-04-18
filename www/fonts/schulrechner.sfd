@@ -22,7 +22,7 @@ OS2Version: 0
 OS2_WeightWidthSlopeOnly: 0
 OS2_UseTypoMetrics: 1
 CreationTime: 1744471654
-ModificationTime: 1744966747
+ModificationTime: 1745015770
 OS2TypoAscent: 0
 OS2TypoAOffset: 1
 OS2TypoDescent: 0
@@ -45,10 +45,10 @@ NameList: AGL For New Fonts
 DisplaySize: -48
 AntiAlias: 1
 FitToEm: 0
-WinInfo: 0 38 14
+WinInfo: 8664 38 14
 BeginPrivate: 0
 EndPrivate
-BeginChars: 65536 36
+BeginChars: 65536 37
 
 StartChar: zero
 Encoding: 48 48 0
@@ -3165,6 +3165,86 @@ SplineSet
  11 61 l 1
  0 61 l 1
  0 72 l 1
+EndSplineSet
+EndChar
+
+StartChar: radical
+Encoding: 8730 8730 36
+Width: 60
+Flags: HWO
+LayerCount: 2
+Fore
+SplineSet
+48 132 m 1
+ 59 132 l 1
+ 59 121 l 1
+ 48 121 l 1
+ 48 132 l 1
+36 120 m 1
+ 47 120 l 1
+ 47 109 l 1
+ 36 109 l 1
+ 36 120 l 1
+36 132 m 1
+ 47 132 l 1
+ 47 121 l 1
+ 36 121 l 1
+ 36 132 l 1
+36 84 m 1
+ 47 84 l 1
+ 47 73 l 1
+ 36 73 l 1
+ 36 84 l 1
+36 96 m 1
+ 47 96 l 1
+ 47 85 l 1
+ 36 85 l 1
+ 36 96 l 1
+36 108 m 1
+ 47 108 l 1
+ 47 97 l 1
+ 36 97 l 1
+ 36 108 l 1
+24 12 m 1
+ 35 12 l 1
+ 35 1 l 1
+ 24 1 l 1
+ 24 12 l 1
+24 24 m 1
+ 35 24 l 1
+ 35 13 l 1
+ 24 13 l 1
+ 24 24 l 1
+24 36 m 1
+ 35 36 l 1
+ 35 25 l 1
+ 24 25 l 1
+ 24 36 l 1
+24 48 m 1
+ 35 48 l 1
+ 35 37 l 1
+ 24 37 l 1
+ 24 48 l 1
+24 60 m 1
+ 35 60 l 1
+ 35 49 l 1
+ 24 49 l 1
+ 24 60 l 1
+24 72 m 1
+ 35 72 l 1
+ 35 61 l 1
+ 24 61 l 1
+ 24 72 l 1
+12 24 m 1
+ 23 24 l 1
+ 23 13 l 1
+ 12 13 l 1
+ 12 24 l 1
+0 36 m 1
+ 11 36 l 1
+ 11 25 l 1
+ 0 25 l 1
+ 0 36 l 1
 EndSplineSet
 EndChar
 EndChars
