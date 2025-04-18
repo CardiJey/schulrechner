@@ -645,14 +645,22 @@ class EquationInputHandler extends InputHandler{
                         this.parent_handler.update_display()
                         return undefined
                     }
-
-                case "key_dir0":
-                case "key_dir1":
-                case "key_dir2":
-                case "key_dir3":
                     var dir = input_code.substring(7)
                     if(cursor_element.neighbors[dir]){
                         cursor_element = cursor_element.neighbors[dir]
+                    }
+                break;
+
+                case "key_dir0":
+                case "key_dir2":
+                    var dir = input_code.substring(7)
+                    if(cursor_element.neighbors[dir]){
+                        cursor_element = cursor_element.neighbors[dir]
+                    }else{
+                        dir = (parseInt(dir) + 2) % 4
+                        while(cursor_element.neighbors[dir]){
+                            cursor_element = cursor_element.neighbors[dir]
+                        }
                     }
                 break;
                 
