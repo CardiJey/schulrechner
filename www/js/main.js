@@ -256,7 +256,7 @@ class InputHandler{
                 let resulting_fraction = this.decimal_to_continued_fraction(num)[1]
                 let resulting_fraction_length = (resulting_fraction[0].toString() + resulting_fraction[1].toString()).length
 
-                if(resulting_fraction_length <= 9){
+                if(resulting_fraction[1] != 1 && resulting_fraction_length <= 9){
                     return "<span class='frac_wrapper'><span class='frac_top'>" + resulting_fraction[0] + "</span><span class='frac_bottom'>" + resulting_fraction[1] + "</span></span>"
                 }
             }
