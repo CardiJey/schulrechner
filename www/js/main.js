@@ -94,6 +94,10 @@ class Brackets_Element extends Math_Element{
         super("brackets",left,value)
         this.prio = 1
     }
+
+    operate(val){
+        return val
+    }
 }
 
 class Frac_Element extends Math_Element{
@@ -123,6 +127,17 @@ class Frac_Start_Element extends Math_Element{
 
     operate(val1,val2){
         return val1 / val2
+    }
+}
+
+class Sin_Element extends Math_Element{
+    constructor(left){
+        super("brackets",left,"sin(")
+        this.prio = 1
+    }
+
+    operate(val){
+        return Math.sin(val)
     }
 }
 
@@ -446,9 +461,10 @@ class EquationInputHandler extends InputHandler{
 
             case "brackets":
                 // TODO machen das Klammern selber multiplizieren
-                if(current_element.value == "("){
+                if(current_element.value != ")"){
                     const result = this.calc_math_elements(current_element.neighbors[2],current_element,0);
                     let [inside_res,bracket_close_element] = result;
+                    inside_res = current_element.operate(inside_res)
                     if(bracket_close_element.type != current_element.type){
                         return [NaN,undefined]
                     }
@@ -566,6 +582,11 @@ class EquationInputHandler extends InputHandler{
                 case "key_(":
                 case "key_)":
                     new_element = new Brackets_Element(cursor_element,input_code.substring(4))
+                    cursor_element = new_element
+                    break;
+
+                case "key_sin":
+                    new_element = new Sin_Element(cursor_element)
                     cursor_element = new_element
                     break;
 
