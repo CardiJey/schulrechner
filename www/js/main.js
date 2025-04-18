@@ -265,26 +265,6 @@ class InputHandler{
         }
         return res_num.toString();
     }
-}
-
-class EquationInputHandler extends InputHandler{
-    constructor(display_input_element, math_input_element, display_output_element, math_output_element, parent_handler) {
-        super(display_input_element, math_input_element, display_output_element, math_output_element)
-        this.input_code_history = [];
-        this.parent_handler = parent_handler
-        this.padding_top = 0
-    }
-
-    // Method to handle input
-    handle(input_code) {
-        if(input_code == "key_ac"){
-            this.input_code_history = []
-        }else{
-            this.input_code_history.push(input_code);
-        }
-        this.update_display(true);
-        this.update_position()
-    }
 
     vertical_align_elements() {
         // Step 1: Collect all the elements
@@ -325,6 +305,26 @@ class EquationInputHandler extends InputHandler{
 
             //parent_element.style.verticalAlign = `calc(${vertical_align}px - 0.25rem)`
         }*/
+    }
+}
+
+class EquationInputHandler extends InputHandler{
+    constructor(display_input_element, math_input_element, display_output_element, math_output_element, parent_handler) {
+        super(display_input_element, math_input_element, display_output_element, math_output_element)
+        this.input_code_history = [];
+        this.parent_handler = parent_handler
+        this.padding_top = 0
+    }
+
+    // Method to handle input
+    handle(input_code) {
+        if(input_code == "key_ac"){
+            this.input_code_history = []
+        }else{
+            this.input_code_history.push(input_code);
+        }
+        this.update_display(true);
+        this.update_position()
     }
 
     update_display(show_cursor) {
@@ -740,6 +740,7 @@ class EquationSelectInputHandler extends InputHandler{
         this.math_input_element.innerHTML = this.input_strings[this.display_equation_index]
         this.math_output_element.innerHTML = this.formatNumber(this.results[this.display_equation_index],this.as_fraction)
         this.math_input_element.scroll(0,0)
+        this.vertical_align_elements()
     }
 
     update_position() {
