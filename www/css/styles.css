@@ -36,7 +36,6 @@ svg {
     position: absolute;
     padding-left: 0;
     padding-right: 0;
-    padding-top: 0.222rem;
     padding-bottom: 0;
     margin: 0;
     padding-left: 0.111rem;
@@ -51,10 +50,12 @@ svg {
     display: flex;
     justify-content: flex-end;
     align-items: flex-end;
+    padding-top: 0;
 }
 
 #math-input {
     text-align: left !important;
+    padding-top: 0.222rem;
 }
 
 [inkscape\3a label^="label_"] {

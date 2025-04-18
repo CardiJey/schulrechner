@@ -138,8 +138,8 @@ class Frac_Element extends Math_Element{
         this.children.push(
             new Container_Element(this.children[0],"</span></span>",this)
         )
-        this.children[0].neighbors[1] = this.children[1]
-        this.children[1].neighbors[3] = this.children[0]
+        this.neighbors[1] = this.children[0]
+        this.children[0].neighbors[3] = this
         this.prio = 1
     }
 
