@@ -634,7 +634,7 @@ class EquationInputHandler extends InputHandler{
             if(new_element){
                 if(old_right_neighbour){
                     new_element.neighbors[2] = old_right_neighbour
-                    new_element.neighbors[0] = new_element
+                    old_right_neighbour.neighbors[0] = new_element
                 }
                 if(!new_element.neighbors[1]){
                     new_element.neighbors[1] = old_cursor_element.neighbors[1]
