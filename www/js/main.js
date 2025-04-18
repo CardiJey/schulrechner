@@ -733,9 +733,18 @@ class EquationInputHandler extends InputHandler{
                 case "key_pow2":
                     new_element = new Pow_Element(cursor_element)
                     cursor_element = new_element
-                    let prefilled_element = new Int_Element(cursor_element.children[0],2)
+                    var prefilled_element = new Int_Element(cursor_element.children[0],2)
                     prefilled_element.neighbors[2] = cursor_element.children[1]
                     cursor_element.children[1].neighbors[0] = prefilled_element
+                    break;
+
+                case "key_pow-1":
+                    new_element = new Pow_Element(cursor_element)
+                    cursor_element = new_element
+                    var prefilled_element1 = new Minus_Element(cursor_element.children[0])
+                    var prefilled_element2 = new Int_Element(prefilled_element1,1)
+                    prefilled_element2.neighbors[2] = cursor_element.children[1]
+                    cursor_element.children[1].neighbors[0] = prefilled_element2
                     break;
 
                 case "key_del":
