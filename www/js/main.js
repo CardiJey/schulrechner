@@ -91,7 +91,7 @@ class Point_Element extends Math_Element{
 
 class Brackets_Element extends Math_Element{
     constructor(left,value){
-        super("brackets",left,value)
+        super("brackets_operation",left,value)
         this.prio = 1
     }
 
@@ -132,7 +132,7 @@ class Frac_Start_Element extends Math_Element{
 
 class Sin_Element extends Math_Element{
     constructor(left){
-        super("brackets",left,"sin(")
+        super("brackets_operation",left,"sin(")
         this.prio = 1
     }
 
@@ -143,7 +143,7 @@ class Sin_Element extends Math_Element{
 
 class Cos_Element extends Math_Element{
     constructor(left){
-        super("brackets",left,"cos(")
+        super("brackets_operation",left,"cos(")
         this.prio = 1
     }
 
@@ -154,7 +154,7 @@ class Cos_Element extends Math_Element{
 
 class Tan_Element extends Math_Element{
     constructor(left){
-        super("brackets",left,"tan(")
+        super("brackets_operation",left,"tan(")
         this.prio = 1
     }
 
@@ -165,7 +165,7 @@ class Tan_Element extends Math_Element{
 
 class Log_Element extends Math_Element{
     constructor(left){
-        super("brackets",left,"log(")
+        super("brackets_operation",left,"log(")
         this.prio = 1
     }
 
@@ -176,7 +176,7 @@ class Log_Element extends Math_Element{
 
 class Ln_Element extends Math_Element{
     constructor(left){
-        super("brackets",left,"ln(")
+        super("brackets_operation",left,"ln(")
         this.prio = 1
     }
 
@@ -454,7 +454,7 @@ class EquationInputHandler extends InputHandler{
 
                 case "int":
                 case "operation":
-                case "brackets":
+                case "brackets_operation":
                 case "ans":
                 case "frac":
                 case "frac_start":
@@ -503,7 +503,7 @@ class EquationInputHandler extends InputHandler{
                 }
             break;
 
-            case "brackets":
+            case "brackets_operation":
                 // TODO machen das Klammern selber multiplizieren
                 if(current_element.value != ")"){
                     const result = this.calc_math_elements(current_element.neighbors[2],current_element,0);
