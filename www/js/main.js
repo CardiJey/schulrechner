@@ -137,7 +137,29 @@ class Sin_Element extends Math_Element{
     }
 
     operate(val){
-        return Math.sin(val)
+        return Math.sin(val/360*(2*Math.PI))
+    }
+}
+
+class Cos_Element extends Math_Element{
+    constructor(left){
+        super("brackets",left,"cos(")
+        this.prio = 1
+    }
+
+    operate(val){
+        return Math.cos(val/360*(2*Math.PI))
+    }
+}
+
+class Tan_Element extends Math_Element{
+    constructor(left){
+        super("brackets",left,"tan(")
+        this.prio = 1
+    }
+
+    operate(val){
+        return Math.tan(val/360*(2*Math.PI))
     }
 }
 
@@ -587,6 +609,16 @@ class EquationInputHandler extends InputHandler{
 
                 case "key_sin":
                     new_element = new Sin_Element(cursor_element)
+                    cursor_element = new_element
+                    break;
+
+                case "key_cos":
+                    new_element = new Cos_Element(cursor_element)
+                    cursor_element = new_element
+                    break;
+
+                case "key_tan":
+                    new_element = new Tan_Element(cursor_element)
                     cursor_element = new_element
                     break;
 
