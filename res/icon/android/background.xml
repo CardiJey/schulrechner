@@ -1,26 +1,11 @@
-<?xml version="1.0"?>
-<!DOCTYPE ipe SYSTEM "ipe.dtd">
-<ipe version="70212" creator="svgtoipe 20191210">
-<ipestyle>
-<layout paper="108 108" frame="108 108" origin="0 0" crop="no"/>
-<opacity name="10%" value="0.10"/>
-<opacity name="20%" value="0.20"/>
-<opacity name="30%" value="0.30"/>
-<opacity name="40%" value="0.40"/>
-<opacity name="50%" value="0.50"/>
-<opacity name="60%" value="0.60"/>
-<opacity name="70%" value="0.70"/>
-<opacity name="80%" value="0.80"/>
-<opacity name="90%" value="0.90"/>
-<pathstyle cap="0" join="0" fillrule="wind"/>
-</ipestyle>
-<page>
-<group matrix="1 0 0 -1 0 108">
-<group>
-<path fill="0 0 0" pen="0.032" cap="1" join="1">
-0 0 m 108 0 l 108 108 l 0 108 l h
-</path>
-</group>
-</group>
-</page>
-</ipe>
+<vector xmlns:android="http://schemas.android.com/apk/res/android" xmlns:aapt="http://schemas.android.com/aapt"
+    android:viewportWidth="108"
+    android:viewportHeight="108"
+    android:width="108dp"
+    android:height="108dp">
+    <path
+        android:pathData="M0 0H108V108H0V0Z"
+        android:fillColor="#000000"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+</vector>

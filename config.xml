@@ -15,12 +15,12 @@
 
     <!-- Add other configurations as needed -->
     <platform name="android">
-        <icon monochrome="res/icon/android/monochrome.png" background="res/icon/android/background.png" foreground="res/icon/android/foreground.png" src="www/img/android-icons/drawable-ldpi-icon.png" density="ldpi" />
-        <icon monochrome="res/icon/android/monochrome.png" background="res/icon/android/background.png" foreground="res/icon/android/foreground.png" src="www/img/android-icons/drawable-mdpi-icon.png" density="mdpi" />
-        <icon monochrome="res/icon/android/monochrome.png" background="res/icon/android/background.png" foreground="res/icon/android/foreground.png" src="www/img/android-icons/drawable-hdpi-icon.png" density="hdpi" />
-        <icon monochrome="res/icon/android/monochrome.png" background="res/icon/android/background.png" foreground="res/icon/android/foreground.png" src="www/img/android-icons/drawable-xhdpi-icon.png" density="xhdpi" />
-        <icon monochrome="res/icon/android/monochrome.png" background="res/icon/android/background.png" foreground="res/icon/android/foreground.png" src="www/img/android-icons/drawable-xxhdpi-icon.png" density="xxhdpi" />
-        <icon monochrome="res/icon/android/monochrome.png" background="res/icon/android/background.png" foreground="res/icon/android/foreground.png" src="www/img/android-icons/drawable-xxxhdpi-icon.png" density="xxxhdpi" />
+        <icon monochrome="res/icon/android/monochrome.xml" background="res/icon/android/background.xml" foreground="res/icon/android/foreground.xml" src="www/img/android-icons/drawable-ldpi-icon.png" density="ldpi" />
+        <icon monochrome="res/icon/android/monochrome.xml" background="res/icon/android/background.xml" foreground="res/icon/android/foreground.xml" src="www/img/android-icons/drawable-mdpi-icon.png" density="mdpi" />
+        <icon monochrome="res/icon/android/monochrome.xml" background="res/icon/android/background.xml" foreground="res/icon/android/foreground.xml" src="www/img/android-icons/drawable-hdpi-icon.png" density="hdpi" />
+        <icon monochrome="res/icon/android/monochrome.xml" background="res/icon/android/background.xml" foreground="res/icon/android/foreground.xml" src="www/img/android-icons/drawable-xhdpi-icon.png" density="xhdpi" />
+        <icon monochrome="res/icon/android/monochrome.xml" background="res/icon/android/background.xml" foreground="res/icon/android/foreground.xml" src="www/img/android-icons/drawable-xxhdpi-icon.png" density="xxhdpi" />
+        <icon monochrome="res/icon/android/monochrome.xml" background="res/icon/android/background.xml" foreground="res/icon/android/foreground.xml" src="www/img/android-icons/drawable-xxxhdpi-icon.png" density="xxxhdpi" />
     </platform>
 
     <!-- Permissions or specific features -->
