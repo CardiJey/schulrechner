@@ -15,23 +15,14 @@
 
     <!-- Add other configurations as needed -->
     <platform name="android">
-        <icon src="www/img/android-icons/drawable-ldpi-icon.png" density="ldpi" />
-        <icon src="www/img/android-icons/drawable-mdpi-icon.png" density="mdpi" />
-        <icon src="www/img/android-icons/drawable-hdpi-icon.png" density="hdpi" />
-        <icon src="www/img/android-icons/drawable-xhdpi-icon.png" density="xhdpi" />
-        <icon src="www/img/android-icons/drawable-xxhdpi-icon.png" density="xxhdpi" />
-        <icon src="www/img/android-icons/drawable-xxxhdpi-icon.png" density="xxxhdpi" />
-        <!-- Splash screens -->
-        <splash src="www/img/splash/splash-mdpi.png" density="mdpi"/>
-        <splash src="www/img/splash/splash-hdpi.png" density="hdpi"/>
-        <splash src="www/img/splash/splash-xhdpi.png" density="xhdpi"/>
-        <splash src="www/img/splash/splash-xxhdpi.png" density="xxhdpi"/>
-        <splash src="www/img/splash/splash-xxxhdpi.png" density="xxxhdpi"/>
+        <icon monochrome="www/img/android-icons/monochrome.svg" background="www/img/android-icons/background.svg" foreground="www/img/android-icons/foreground.svg" src="www/img/android-icons/drawable-ldpi-icon.png" density="ldpi" />
+        <icon monochrome="www/img/android-icons/monochrome.svg" background="www/img/android-icons/background.svg" foreground="www/img/android-icons/foreground.svg" src="www/img/android-icons/drawable-mdpi-icon.png" density="mdpi" />
+        <icon monochrome="www/img/android-icons/monochrome.svg" background="www/img/android-icons/background.svg" foreground="www/img/android-icons/foreground.svg" src="www/img/android-icons/drawable-hdpi-icon.png" density="hdpi" />
+        <icon monochrome="www/img/android-icons/monochrome.svg" background="www/img/android-icons/background.svg" foreground="www/img/android-icons/foreground.svg" src="www/img/android-icons/drawable-xhdpi-icon.png" density="xhdpi" />
+        <icon monochrome="www/img/android-icons/monochrome.svg" background="www/img/android-icons/background.svg" foreground="www/img/android-icons/foreground.svg" src="www/img/android-icons/drawable-xxhdpi-icon.png" density="xxhdpi" />
+        <icon monochrome="www/img/android-icons/monochrome.svg" background="www/img/android-icons/background.svg" foreground="www/img/android-icons/foreground.svg" src="www/img/android-icons/drawable-xxxhdpi-icon.png" density="xxxhdpi" />
     </platform>
-
 
     <!-- Permissions or specific features -->
     <access origin="*" />
-    <plugin name="cordova-plugin-whitelist" spec="1.3.4" />
-    <plugin name="cordova-plugin-splashscreen" spec="6.0.2" />
 </widget>

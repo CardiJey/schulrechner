@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   version="1.1"
+   id="svg2"
+   width="108"
+   height="108"
+   viewBox="0 0 108 108"
+   sodipodi:docname="background.svg"
+   inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
+   inkscape:export-filename="background.svg"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs6" />
+  <sodipodi:namedview
+     id="namedview4"
+     pagecolor="#505050"
+     bordercolor="#ffffff"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="1"
+     inkscape:deskcolor="#505050"
+     showgrid="false"
+     inkscape:zoom="5.6568542"
+     inkscape:cx="46.934213"
+     inkscape:cy="55.154329"
+     inkscape:window-width="1920"
+     inkscape:window-height="1108"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer2">
+    <sodipodi:guide
+       position="21,87"
+       orientation="66,0"
+       id="guide1807"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="21,21"
+       orientation="0,66"
+       id="guide1809"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="87,21"
+       orientation="-66,0"
+       id="guide1811"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="87,87"
+       orientation="0,-66"
+       id="guide1813"
+       inkscape:locked="false" />
+  </sodipodi:namedview>
+  <g
+     inkscape:groupmode="layer"
+     id="layer2"
+     inkscape:label="background">
+    <rect
+       style="fill:#000000;stroke-width:0.032;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:0.096, 0.096"
+       id="rect427"
+       width="108"
+       height="108"
+       x="0"
+       y="0" />
+  </g>
+</svg>
