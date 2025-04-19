@@ -74,6 +74,16 @@ svg {
     border-top: 0.111em solid var(--main-color);
     padding-right: 0.222em;
     padding-top: 0.111em;
+    display: inline-block;
+}
+
+.scale_height {
+    display: inline-block;
+    transform-origin: bottom;
+}
+
+.sqrt_wrapper {
+    display: inline-block;
 }
 
 .frac_wrapper {
@@ -116,19 +126,23 @@ svg {
 }
 
 .period {
+    display: inline-block;
     border-top: 0.111rem solid var(--main-color);
 }
 
 .pow_top {
+    display: inline-block;
     vertical-align: 0.667em;
     font-size: 0.667rem;
 }
 
 .pow_bottom {
+    display: inline-block;
     padding-left: 0.2rem;
 }
 
 .logn_bottom {
+    display: inline-block;
     vertical-align: -0.333em;
     font-size: 0.667rem;
 }
