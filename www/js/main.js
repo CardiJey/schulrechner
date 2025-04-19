@@ -154,6 +154,7 @@ class Sqrt_Element extends Math_Element{
         this.children = [
             new Container_Element(this,"</span>",this)
         ]
+        this.prio = 1
     }
 
     operate(child_results){
@@ -171,6 +172,7 @@ class Pow_Element extends Math_Element{
         this.children.push(
             new Container_Element(this.children[0],"</span>",this)
         )
+        this.prio = 1
     }
 
     operate(child_results){
@@ -187,6 +189,7 @@ class Logn_Element extends Math_Element{
         this.children.push(
             new Container_Element(this.children[0],")",this)
         )
+        this.prio = 1
     }
 
     operate(child_results){
