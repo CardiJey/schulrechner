@@ -21,7 +21,7 @@
         <icon monochrome="res/icon/android/monochrome.xml" background="res/icon/android/background.xml" foreground="res/icon/android/foreground.xml" src="www/img/android-icons/drawable-xhdpi-icon.png" density="xhdpi" />
         <icon monochrome="res/icon/android/monochrome.xml" background="res/icon/android/background.xml" foreground="res/icon/android/foreground.xml" src="www/img/android-icons/drawable-xxhdpi-icon.png" density="xxhdpi" />
         <icon monochrome="res/icon/android/monochrome.xml" background="res/icon/android/background.xml" foreground="res/icon/android/foreground.xml" src="www/img/android-icons/drawable-xxxhdpi-icon.png" density="xxxhdpi" />
-        <preference name="AndroidWindowSplashScreenAnimatedIcon" value="res/icon/android/foreground.xml" />
+        <preference name="AndroidWindowSplashScreenAnimatedIcon" value="res/icon/android/splash.xml" />
     </platform>
 
     <!-- Permissions or specific features -->
