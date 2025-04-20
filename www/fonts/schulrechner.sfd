@@ -22,7 +22,7 @@ OS2Version: 0
 OS2_WeightWidthSlopeOnly: 0
 OS2_UseTypoMetrics: 1
 CreationTime: 1744471654
-ModificationTime: 1745015770
+ModificationTime: 1745160714
 OS2TypoAscent: 0
 OS2TypoAOffset: 1
 OS2TypoDescent: 0
@@ -45,10 +45,10 @@ NameList: AGL For New Fonts
 DisplaySize: -48
 AntiAlias: 1
 FitToEm: 0
-WinInfo: 8664 38 14
+WinInfo: 0 38 14
 BeginPrivate: 0
 EndPrivate
-BeginChars: 65536 37
+BeginChars: 65536 42
 
 StartChar: zero
 Encoding: 48 48 0
@@ -3171,7 +3171,7 @@ EndChar
 StartChar: radical
 Encoding: 8730 8730 36
 Width: 60
-Flags: HWO
+Flags: HW
 LayerCount: 2
 Fore
 SplineSet
@@ -3245,6 +3245,306 @@ SplineSet
  11 25 l 1
  0 25 l 1
  0 36 l 1
+EndSplineSet
+EndChar
+
+StartChar: y
+Encoding: 121 121 37
+Width: 72
+Flags: HW
+LayerCount: 2
+Fore
+SplineSet
+48 48 m 1
+ 59 48 l 1
+ 59 37 l 1
+ 48 37 l 1
+ 48 48 l 1
+48 60 m 1
+ 59 60 l 1
+ 59 49 l 1
+ 48 49 l 1
+ 48 60 l 1
+36 36 m 1
+ 47 36 l 1
+ 47 25 l 1
+ 36 25 l 1
+ 36 36 l 1
+24 24 m 1
+ 35 24 l 1
+ 35 13 l 1
+ 24 13 l 1
+ 24 24 l 1
+24 36 m 1
+ 35 36 l 1
+ 35 25 l 1
+ 24 25 l 1
+ 24 36 l 1
+12 12 m 1
+ 23 12 l 1
+ 23 1 l 1
+ 12 1 l 1
+ 12 12 l 1
+12 48 m 1
+ 23 48 l 1
+ 23 37 l 1
+ 12 37 l 1
+ 12 48 l 1
+0 12 m 1
+ 11 12 l 1
+ 11 1 l 1
+ 0 1 l 1
+ 0 12 l 1
+0 60 m 1
+ 11 60 l 1
+ 11 49 l 1
+ 0 49 l 1
+ 0 60 l 1
+EndSplineSet
+EndChar
+
+StartChar: x
+Encoding: 120 120 38
+Width: 72
+Flags: HW
+LayerCount: 2
+Fore
+SplineSet
+48 12 m 1
+ 59 12 l 1
+ 59 1 l 1
+ 48 1 l 1
+ 48 12 l 1
+48 60 m 1
+ 59 60 l 1
+ 59 49 l 1
+ 48 49 l 1
+ 48 60 l 1
+36 12 m 1
+ 47 12 l 1
+ 47 1 l 1
+ 36 1 l 1
+ 36 12 l 1
+36 48 m 1
+ 47 48 l 1
+ 47 37 l 1
+ 36 37 l 1
+ 36 48 l 1
+24 24 m 1
+ 35 24 l 1
+ 35 13 l 1
+ 24 13 l 1
+ 24 24 l 1
+24 36 m 1
+ 35 36 l 1
+ 35 25 l 1
+ 24 25 l 1
+ 24 36 l 1
+24 48 m 1
+ 35 48 l 1
+ 35 37 l 1
+ 24 37 l 1
+ 24 48 l 1
+12 24 m 1
+ 23 24 l 1
+ 23 13 l 1
+ 12 13 l 1
+ 12 24 l 1
+12 60 m 1
+ 23 60 l 1
+ 23 49 l 1
+ 12 49 l 1
+ 12 60 l 1
+0 12 m 1
+ 11 12 l 1
+ 11 1 l 1
+ 0 1 l 1
+ 0 12 l 1
+0 60 m 1
+ 11 60 l 1
+ 11 49 l 1
+ 0 49 l 1
+ 0 60 l 1
+EndSplineSet
+EndChar
+
+StartChar: f
+Encoding: 102 102 39
+Width: 72
+Flags: HW
+LayerCount: 2
+Fore
+SplineSet
+36 72 m 1
+ 47 72 l 1
+ 47 61 l 1
+ 36 61 l 1
+ 36 72 l 1
+24 48 m 1
+ 35 48 l 1
+ 35 37 l 1
+ 24 37 l 1
+ 24 48 l 1
+24 72 m 1
+ 35 72 l 1
+ 35 61 l 1
+ 24 61 l 1
+ 24 72 l 1
+12 12 m 1
+ 23 12 l 1
+ 23 1 l 1
+ 12 1 l 1
+ 12 12 l 1
+12 24 m 1
+ 23 24 l 1
+ 23 13 l 1
+ 12 13 l 1
+ 12 24 l 1
+12 36 m 1
+ 23 36 l 1
+ 23 25 l 1
+ 12 25 l 1
+ 12 36 l 1
+12 48 m 1
+ 23 48 l 1
+ 23 37 l 1
+ 12 37 l 1
+ 12 48 l 1
+12 60 m 1
+ 23 60 l 1
+ 23 49 l 1
+ 12 49 l 1
+ 12 60 l 1
+0 48 m 1
+ 11 48 l 1
+ 11 37 l 1
+ 0 37 l 1
+ 0 48 l 1
+EndSplineSet
+EndChar
+
+StartChar: h
+Encoding: 104 104 40
+Width: 72
+Flags: HW
+LayerCount: 2
+Fore
+SplineSet
+48 12 m 1
+ 59 12 l 1
+ 59 1 l 1
+ 48 1 l 1
+ 48 12 l 1
+48 24 m 1
+ 59 24 l 1
+ 59 13 l 1
+ 48 13 l 1
+ 48 24 l 1
+48 36 m 1
+ 59 36 l 1
+ 59 25 l 1
+ 48 25 l 1
+ 48 36 l 1
+36 48 m 1
+ 47 48 l 1
+ 47 37 l 1
+ 36 37 l 1
+ 36 48 l 1
+24 48 m 1
+ 35 48 l 1
+ 35 37 l 1
+ 24 37 l 1
+ 24 48 l 1
+12 36 m 1
+ 23 36 l 1
+ 23 25 l 1
+ 12 25 l 1
+ 12 36 l 1
+0 12 m 1
+ 11 12 l 1
+ 11 1 l 1
+ 0 1 l 1
+ 0 12 l 1
+0 24 m 1
+ 11 24 l 1
+ 11 13 l 1
+ 0 13 l 1
+ 0 24 l 1
+0 36 m 1
+ 11 36 l 1
+ 11 25 l 1
+ 0 25 l 1
+ 0 36 l 1
+0 48 m 1
+ 11 48 l 1
+ 11 37 l 1
+ 0 37 l 1
+ 0 48 l 1
+0 60 m 1
+ 11 60 l 1
+ 11 49 l 1
+ 0 49 l 1
+ 0 60 l 1
+0 72 m 1
+ 11 72 l 1
+ 11 61 l 1
+ 0 61 l 1
+ 0 72 l 1
+EndSplineSet
+EndChar
+
+StartChar: r
+Encoding: 114 114 41
+Width: 72
+Flags: HW
+LayerCount: 2
+Fore
+SplineSet
+48 48 m 1
+ 59 48 l 1
+ 59 37 l 1
+ 48 37 l 1
+ 48 48 l 1
+36 60 m 1
+ 47 60 l 1
+ 47 49 l 1
+ 36 49 l 1
+ 36 60 l 1
+24 60 m 1
+ 35 60 l 1
+ 35 49 l 1
+ 24 49 l 1
+ 24 60 l 1
+12 48 m 1
+ 23 48 l 1
+ 23 37 l 1
+ 12 37 l 1
+ 12 48 l 1
+0 12 m 1
+ 11 12 l 1
+ 11 1 l 1
+ 0 1 l 1
+ 0 12 l 1
+0 24 m 1
+ 11 24 l 1
+ 11 13 l 1
+ 0 13 l 1
+ 0 24 l 1
+0 36 m 1
+ 11 36 l 1
+ 11 25 l 1
+ 0 25 l 1
+ 0 36 l 1
+0 48 m 1
+ 11 48 l 1
+ 11 37 l 1
+ 0 37 l 1
+ 0 48 l 1
+0 60 m 1
+ 11 60 l 1
+ 11 49 l 1
+ 0 49 l 1
+ 0 60 l 1
 EndSplineSet
 EndChar
 EndChars

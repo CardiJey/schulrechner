@@ -853,16 +853,25 @@ class EquationInputHandler extends InputHandler{
         }
 
         if(calc_output){
-            active_input_handler = this.parent_handler
-            this.parent_handler.input_strings[this.parent_handler.display_equation_index] = this.math_elements_to_string(res,cursor_element,false)
-            this.parent_handler.results[this.parent_handler.display_equation_index] = this.calc_math_elements(res)[0]
-            this.parent_handler.update_display(false)
-            this.parent_handler.update_position()
-            return undefined
+            let this_result = this.calc_math_elements(res)[0]
+            if(isNaN(this_result)){
+                this.input_code_history.pop()
+                return [
+                    "syntaxfehler",
+                    ""
+                ]
+            }else{
+                active_input_handler = this.parent_handler
+                this.parent_handler.input_strings[this.parent_handler.display_equation_index] = this.math_elements_to_string(res,cursor_element,false)
+                this.parent_handler.results[this.parent_handler.display_equation_index] = this_result
+                this.parent_handler.update_display(false)
+                this.parent_handler.update_position()
+                return undefined
+            }
         }else{
             return [
                 this.math_elements_to_string(res,cursor_element,show_cursor),
-                (calc_output ? this.calc_math_elements(res)[0] : "")
+                ""
             ]
         }
     }
