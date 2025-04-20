@@ -129,7 +129,7 @@ class Brackets_Element extends Math_Element{
 
 class Brackets_Close_Element extends Math_Element{
     constructor(left,value){
-        super("brackets_close",left,["additive_operation","multi_operation"])
+        super("brackets_close",left,")",["additive_operation","multi_operation"])
         this.prio = 1
     }
 }
@@ -172,10 +172,10 @@ class Sqrt_Element extends Math_Element{
 
 class Pow_Element extends Math_Element{
     constructor(left){
-        super("container_operation",left,"<span class='pow_bottom'>",["additive_operation","container_operation","brackets_operation","int","ans"])
+        super("container_operation",left,"<span class='pow_bottom'>(",["additive_operation","container_operation","brackets_operation","int","ans"])
         
         this.children = [
-            new Container_Element(this,"</span><span class='pow_top'>",this,false)
+            new Container_Element(this,")</span><span class='pow_top'>",this,false)
         ]
         this.children.push(
             new Container_Element(this.children[0],"</span>",this,true)
@@ -582,6 +582,9 @@ class EquationInputHandler extends InputHandler{
 
             case "start":
                 [res,current_element] = this.calc_math_elements(current_element.neighbors[2],current_element)
+                if(current_element){
+                    return [NaN,undefined]
+                }
             break;
 
             case "additive_operation":
@@ -603,7 +606,7 @@ class EquationInputHandler extends InputHandler{
                 const result = this.calc_math_elements(current_element.neighbors[2],current_element,0);
                 let [inside_res,bracket_close_element] = result;
                 inside_res = current_element.operate(inside_res)
-                if(bracket_close_element.type != current_element.type){
+                if(!bracket_close_element){
                     return [NaN,undefined]
                 }
                 [res,current_element] = this.calc_math_elements(bracket_close_element.neighbors[2],last_operation_element,inside_res)
