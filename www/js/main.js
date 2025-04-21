@@ -3,26 +3,28 @@ let next_align_id = 0
 let changelog_visible = false
 let version;
 
-fetch("version.txt")
+fetch("changelog.txt")
     .then((res) => res.text())
     .then((text) => {
-        version = text.trim()
-        document.getElementById("version").innerText = "Whats new in " + version + "?"
-        document.getElementById("version-small").innerText = version
+        const lines = text.trim().split("\n");
+
+        if (lines.length === 0) return;
+
+        const versionLine = lines[0]; // First line is the version, e.g. "- 1.1.10"
+        const version = versionLine.replace(/^- /, "").trim(); // remove leading "- "
+
+        document.getElementById("version").innerText = "What's new in " + version + "?";
+        document.getElementById("version-small").innerText = version;
 
         const lastSeenVersion = localStorage.getItem("lastSeenVersion");
         if (lastSeenVersion !== version) {
             toggle_changelog(); // Show changelog automatically
-            localStorage.setItem("lastSeenVersion", version); // Remember this version
+            localStorage.setItem("lastSeenVersion", version);
         }
-    })
-    .catch((e) => console.error(e));
 
-
-fetch("changelog.txt")
-    .then((res) => res.text())
-    .then((text) => {
-        document.getElementById("changelog-content").innerText = text
+        // The rest is the actual changelog
+        const changelogLines = lines.slice(1);
+        document.getElementById("changelog-content").innerText = changelogLines.join("\n");
     })
     .catch((e) => console.error(e));
 
