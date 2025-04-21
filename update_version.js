@@ -14,7 +14,7 @@ const versionMatch = versionRegex.exec(configXml);
 if (versionMatch) {
     configXml = configXml.replace(versionMatch[1], packageJson.version);
     // Write the updated config.xml file back
-    //fs.writeFileSync(configFilePath, configXml, 'utf8');
+    fs.writeFileSync(configFilePath, configXml, 'utf8');
 } else { 
     console.error('Could not find version tag in config.xml'); 
 }
