@@ -151,3 +151,25 @@ svg {
     filter: brightness(85%);
     transition: transform 0.1s, filter 0.1s;
 }
+
+.changelog-div {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    font-family: auto;
+    font-size: 0.8rem;
+    padding: 3vw;
+    overflow: hidden;
+    background-color: rgba(0,0,0,0.8);
+    color: white;
+    visibility: hidden;
+}
+
+#version-small {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    font-size: 0.6rem;
+}

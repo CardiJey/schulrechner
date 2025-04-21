@@ -1,5 +1,39 @@
 let active_input_handler;
 let next_align_id = 0
+let changelog_visible = false
+let version;
+
+fetch("version.txt")
+    .then((res) => res.text())
+    .then((text) => {
+        version = text.trim()
+        document.getElementById("version").innerText = "Whats new in " + version + "?"
+        document.getElementById("version-small").innerText = version
+
+        const lastSeenVersion = localStorage.getItem("lastSeenVersion");
+        if (lastSeenVersion !== version) {
+            toggle_changelog(); // Show changelog automatically
+            localStorage.setItem("lastSeenVersion", version); // Remember this version
+        }
+    })
+    .catch((e) => console.error(e));
+
+
+fetch("changelog.txt")
+    .then((res) => res.text())
+    .then((text) => {
+        document.getElementById("changelog-content").innerText = text
+    })
+    .catch((e) => console.error(e));
+
+function toggle_changelog(){
+    changelog_visible = !changelog_visible
+    if(changelog_visible){
+        document.getElementById("changelog").style.visibility = "visible"
+    }else{
+        document.getElementById("changelog").style.visibility = "hidden"
+    }
+}
 
 function is_family(el1, el2){
     if(el1 && el2){
@@ -1037,5 +1071,7 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         });
         window.addEventListener('resize', handle_resize)
+        document.getElementById("changelog").addEventListener('pointerdown', toggle_changelog)
+        document.getElementById("version-small").addEventListener('pointerdown', toggle_changelog)
     }
 });

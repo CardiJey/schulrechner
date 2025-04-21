@@ -4,6 +4,7 @@ const packageJson = require('./package.json');
 
 // Read config.xml 
 const configFilePath = path.join(__dirname, 'config.xml'); 
+const versionTxtFilePath = path.join(__dirname, 'www', 'version.txt'); 
 let configXml = fs.readFileSync(configFilePath, 'utf8');
 
 // Find and replace version in config.xml 
@@ -13,7 +14,9 @@ const versionMatch = versionRegex.exec(configXml);
 if (versionMatch) {
     configXml = configXml.replace(versionMatch[1], packageJson.version);
     // Write the updated config.xml file back
-    fs.writeFileSync(configFilePath, configXml, 'utf8');
+    //fs.writeFileSync(configFilePath, configXml, 'utf8');
 } else { 
     console.error('Could not find version tag in config.xml'); 
 }
+
+fs.writeFileSync(versionTxtFilePath, packageJson.version, 'utf8');
