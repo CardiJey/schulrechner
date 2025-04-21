@@ -50,7 +50,7 @@ class Start_Element extends Math_Element{
 
 class Int_Element extends Math_Element{
     constructor(left,value){
-        super("int",left,parseInt(value),["additive_operation","multi_operation","container","brackets_close","ans"])
+        super("int",left,parseInt(value),["additive_operation","multi_operation","container","brackets_close","int"])
     }
 }
 
