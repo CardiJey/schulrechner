@@ -18,5 +18,3 @@ if (versionMatch) {
 } else { 
     console.error('Could not find version tag in config.xml'); 
 }
-
-fs.writeFileSync(versionTxtFilePath, packageJson.version, 'utf8');

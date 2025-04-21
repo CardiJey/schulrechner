@@ -173,3 +173,15 @@ svg {
     left: 0;
     font-size: 0.6rem;
 }
+
+.changelog-feature, .changelog-bugfix, .changelog-tweak {
+    display: block;
+}
+
+.changelog-tweak {
+    color: gray;
+}
+
+.changelog-feature {
+    color: rgb(0,255,0);
+}

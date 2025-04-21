@@ -30,3 +30,4 @@ node_modules/
 dist/
 www/vendor
 *.jks
+www/changelog.txt

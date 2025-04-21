@@ -24,7 +24,26 @@ fetch("changelog.txt")
 
         // The rest is the actual changelog
         const changelogLines = lines.slice(1);
-        document.getElementById("changelog-content").innerText = changelogLines.join("\n");
+        const changelog_content = document.getElementById("changelog-content")
+        for(let line_index = 0; line_index < changelogLines.length; line_index++){
+            let line = changelogLines[line_index]
+            let line_class;
+
+            if(line.startsWith("- Feature: ")){
+                line_class = "changelog-feature"
+            }else if(line.startsWith("- Bugfix: ")){
+                line_class = "changelog-bugfix"
+            }else if(line.startsWith("- Tweak: ")){
+                line_class = "changelog-tweak"
+            }else{
+                continue
+            }
+
+            let line_element = document.createElement("span")
+            line_element.classList.add(line_class)
+            line_element.innerText = line
+            changelog_content.appendChild(line_element)
+        }
     })
     .catch((e) => console.error(e));
 
