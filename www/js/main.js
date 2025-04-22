@@ -330,9 +330,9 @@ class Logn_Element extends Math_Element{
 class Container_Element extends Math_Element{
     constructor(left,value,parent,last_container){
         if(last_container){
-            super("container",left,value,["additive_operation","multi_operation"])
+            super("container",left,value,["additive_operation","multi_operation","container"])
         }else{
-            super("container",left,value,["additive_operation","brackets_operation","int","ans"])
+            super("container",left,value,["additive_operation","brackets_operation","container_operation","container","int","ans"])
         }
         this.prio = 1
         this.parent = parent
