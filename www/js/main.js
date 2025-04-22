@@ -396,7 +396,7 @@ class Ln_Element extends Math_Element{
 
 class Ans_Element extends Math_Element{
     constructor(left){
-        super("ans",left,"Ans",["additive_operation","multi_operation"])
+        super("var",left,"Ans",["additive_operation","multi_operation","container", "brackets_close"])
     }
 }
 
