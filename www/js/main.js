@@ -223,7 +223,7 @@ class Brackets_Element extends Math_Element{
 
 class Brackets_Close_Element extends Math_Element{
     constructor(left,value){
-        super("brackets_close",left,")",["additive_operation","multi_operation"])
+        super("brackets_close",left,")",["additive_operation","multi_operation","container","brackets_close"])
         this.prio = 1
     }
 }
