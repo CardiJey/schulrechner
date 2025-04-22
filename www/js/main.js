@@ -150,7 +150,7 @@ class Int_Element extends Math_Element{
 
 class Plus_Element extends Math_Element{
     constructor(left){
-        super("additive_operation",left,"+",["container_operation","brackets_operation","int","ans"])
+        super("additive_operation",left,"+",["container_operation","brackets_operation","int","var"])
         this.operation_type = "+"
         this.prio = 2
     }
@@ -162,7 +162,7 @@ class Plus_Element extends Math_Element{
 
 class Minus_Element extends Math_Element{
     constructor(left){
-        super("additive_operation",left,"-",["container_operation","brackets_operation","int","ans"])
+        super("additive_operation",left,"-",["container_operation","brackets_operation","int","var"])
         this.operation_type = "-"
         this.prio = 2
     }
@@ -174,7 +174,7 @@ class Minus_Element extends Math_Element{
 
 class Times_Element extends Math_Element{
     constructor(left){
-        super("multi_operation",left,"×",["container_operation","brackets_operation","int","ans"])
+        super("multi_operation",left,"×",["container_operation","brackets_operation","int","var"])
         this.operation_type = "×"
         this.prio = 3
     }
@@ -186,7 +186,7 @@ class Times_Element extends Math_Element{
 
 class Div_Element extends Math_Element{
     constructor(left){
-        super("multi_operation",left,"÷",["container_operation","brackets_operation","int","ans"])
+        super("multi_operation",left,"÷",["container_operation","brackets_operation","int","var"])
         this.operation_type = "÷"
         this.prio = 3
     }
@@ -212,7 +212,7 @@ class Point_Element extends Math_Element{
 
 class Brackets_Element extends Math_Element{
     constructor(left,value){
-        super("brackets_operation",left,"(",["additive_operation","container_operation","brackets_operation","int","ans"])
+        super("brackets_operation",left,"(",["additive_operation","container_operation","brackets_operation","int","var"])
         this.prio = 1
     }
 
@@ -234,7 +234,7 @@ class Frac_Element extends Math_Element{
         
         let align_id = next_align_id
         next_align_id++
-        super("container_operation",next_left_neighbor,"<span class='alignLeft" + align_id + "'></span><span class='frac_wrapper'><span class='frac_top'>",["additive_operation","container_operation","brackets_operation","int","ans"])
+        super("container_operation",next_left_neighbor,"<span class='alignLeft" + align_id + "'></span><span class='frac_wrapper'><span class='frac_top'>",["additive_operation","container_operation","brackets_operation","int","var"])
         if(last_element){
             last_element.neighbors[0] = this
 
@@ -266,7 +266,7 @@ class Frac_Element extends Math_Element{
 
 class Sqrt_Element extends Math_Element{
     constructor(left){
-        super("container_operation",left,"<span class='sqrt_wrapper'><span class='scale_height'>&#8730;</span><span class='sqrt'>",["additive_operation","container_operation","brackets_operation","int","ans"])
+        super("container_operation",left,"<span class='sqrt_wrapper'><span class='scale_height'>&#8730;</span><span class='sqrt'>",["additive_operation","container_operation","brackets_operation","int","var"])
         this.children = [
             new Container_Element(this,"</span></span>",this,true)
         ]
@@ -282,7 +282,7 @@ class Pow_Element extends Math_Element{
     constructor(left){
         let [next_left_neighbor,last_element,first_element] = get_left_block(left)
 
-        super("container_operation",next_left_neighbor,"<span class='pow_bottom'>(",["additive_operation","container_operation","brackets_operation","int","ans"])
+        super("container_operation",next_left_neighbor,"<span class='pow_bottom'>(",["additive_operation","container_operation","brackets_operation","int","var"])
         if(last_element){
             last_element.neighbors[0] = this
 
@@ -311,7 +311,7 @@ class Pow_Element extends Math_Element{
 }
 class Logn_Element extends Math_Element{
     constructor(left){
-        super("container_operation",left,"log<span class='logn_bottom'>",["additive_operation","container_operation","brackets_operation","int","ans"])
+        super("container_operation",left,"log<span class='logn_bottom'>",["additive_operation","container_operation","brackets_operation","int","var"])
         
         this.children = [
             new Container_Element(this,"</span>(",this,false)
@@ -332,7 +332,7 @@ class Container_Element extends Math_Element{
         if(last_container){
             super("container",left,value,["additive_operation","multi_operation","container"])
         }else{
-            super("container",left,value,["additive_operation","brackets_operation","container_operation","container","int","ans"])
+            super("container",left,value,["additive_operation","brackets_operation","container_operation","container","int","var"])
         }
         this.prio = 1
         this.parent = parent
@@ -341,7 +341,7 @@ class Container_Element extends Math_Element{
 
 class Sin_Element extends Math_Element{
     constructor(left){
-        super("brackets_operation",left,"sin(",["additive_operation","container_operation","brackets_operation","int","ans"])
+        super("brackets_operation",left,"sin(",["additive_operation","container_operation","brackets_operation","int","var"])
         this.prio = 1
     }
 
@@ -352,7 +352,7 @@ class Sin_Element extends Math_Element{
 
 class Cos_Element extends Math_Element{
     constructor(left){
-        super("brackets_operation",left,"cos(",["additive_operation","container_operation","brackets_operation","int","ans"])
+        super("brackets_operation",left,"cos(",["additive_operation","container_operation","brackets_operation","int","var"])
         this.prio = 1
     }
 
@@ -363,7 +363,7 @@ class Cos_Element extends Math_Element{
 
 class Tan_Element extends Math_Element{
     constructor(left){
-        super("brackets_operation",left,"tan(",["additive_operation","container_operation","brackets_operation","int","ans"])
+        super("brackets_operation",left,"tan(",["additive_operation","container_operation","brackets_operation","int","var"])
         this.prio = 1
     }
 
@@ -374,7 +374,7 @@ class Tan_Element extends Math_Element{
 
 class Log_Element extends Math_Element{
     constructor(left){
-        super("brackets_operation",left,"log(",["additive_operation","container_operation","brackets_operation","int","ans"])
+        super("brackets_operation",left,"log(",["additive_operation","container_operation","brackets_operation","int","var"])
         this.prio = 1
     }
 
@@ -385,7 +385,7 @@ class Log_Element extends Math_Element{
 
 class Ln_Element extends Math_Element{
     constructor(left){
-        super("brackets_operation",left,"ln(",["additive_operation","container_operation","brackets_operation","int","ans"])
+        super("brackets_operation",left,"ln(",["additive_operation","container_operation","brackets_operation","int","var"])
         this.prio = 1
     }
 
@@ -397,6 +397,110 @@ class Ln_Element extends Math_Element{
 class Ans_Element extends Math_Element{
     constructor(left){
         super("var",left,"Ans",["additive_operation","multi_operation","container", "brackets_close"])
+    }
+
+    get_value(){
+        return active_input_handler.parent_handler.results[active_input_handler.parent_handler.results.length - 1]
+    }
+}
+
+class Const_Element extends Math_Element{
+    constructor(left,index){
+        const char_map = [
+            "mp",
+            "mn",
+            "me",
+            "mμ",
+            "a0",
+            "h",
+            "μN",
+            "μB",
+            "ħ",
+            "α",
+            "re",
+            "λc",
+            "γp",
+            "λc,p",
+            "λc,n",
+            "R∞",
+            "u",
+            "μp",
+            "μe",
+            "μn",
+            "μμ",
+            "F",
+            "e",
+            "NA",
+            "k",
+            "Vm",
+            "R",
+            "C0",
+            "C1",
+            "C2",
+            "σ",
+            "ε0",
+            "μ0",
+            "Φ0",
+            "g",
+            "G0",
+            "Z0",
+            "t",
+            "G",
+            "atm",
+            "π",
+            "e",
+        ]
+        super("var",left,char_map[index],["additive_operation","multi_operation","container", "brackets_close"])
+        this.index = index
+    }
+
+    get_value(){
+        const value_map = [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            Math.PI,
+            Math.E
+        ]
+
+        return value_map[this.index]
     }
 }
 
@@ -584,14 +688,28 @@ class EquationInputHandler extends InputHandler{
         this.input_code_history = [];
         this.parent_handler = parent_handler
         this.padding_top = 0
+        this.shift = false
+        this.shift_map = {
+            "key_pow10": "key_pi"
+        }
     }
 
     // Method to handle input
     handle(input_code) {
         if(input_code == "key_ac"){
             this.input_code_history = []
+            this.shift = false
+        }else if(input_code == "key_shift"){
+            this.shift = !this.shift
         }else{
-            this.input_code_history.push(input_code);
+            if(this.shift){
+                if(this.shift_map[input_code]){
+                    this.input_code_history.push(this.shift_map[input_code]);
+                }
+                this.shift = false
+            }else{
+                this.input_code_history.push(input_code);
+            }
         }
         this.update_display(true);
         this.update_position()
@@ -623,6 +741,12 @@ class EquationInputHandler extends InputHandler{
 
                 this.math_input_element.scrollBy(x_dist_to_scroll_border,y_dist_to_scroll_border)
             }
+        }
+
+        if(this.shift){
+            document.querySelector('[inkscape\\3a label="indicator_shift"]').style.visibility = "visible"
+        }else{
+            document.querySelector('[inkscape\\3a label="indicator_shift"]').style.visibility = "hidden"
         }
     }
 
@@ -669,7 +793,7 @@ class EquationInputHandler extends InputHandler{
                 case "multi_operation":
                 case "brackets_operation":
                 case "brackets_close":
-                case "ans":
+                case "var":
                 case "container_operation":
                 case "container":
                     res += cursor_element.value
@@ -698,8 +822,8 @@ class EquationInputHandler extends InputHandler{
                 [res,current_element] = this.calc_math_elements(current_element.neighbors[2],last_operation_element,res * 10 + current_element.value)
             break;
 
-            case "ans":
-                [res,current_element] = this.calc_math_elements(current_element.neighbors[2],last_operation_element,this.parent_handler.results[this.parent_handler.results.length - 1])
+            case "var":
+                [res,current_element] = this.calc_math_elements(current_element.neighbors[2],last_operation_element,current_element.get_value())
             break;
 
             case "start":
@@ -820,6 +944,11 @@ class EquationInputHandler extends InputHandler{
                 
                 case "key_Ans":
                     new_element = new Ans_Element(cursor_element)
+                    cursor_element = new_element
+                    break;
+                
+                case "key_pi":
+                    new_element = new Const_Element(cursor_element,40)
                     cursor_element = new_element
                     break;
 

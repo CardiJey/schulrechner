@@ -70,6 +70,11 @@ svg {
     padding-left: 0.111rem;
 }
 
+
+[inkscape\3a label="indicator_shift"] {
+    visibility: hidden;
+}
+
 .sqrt {
     border-top: 0.111em solid var(--main-color);
     padding-right: 0.222em;
