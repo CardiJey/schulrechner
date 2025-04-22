@@ -82,6 +82,45 @@ function is_family(el1, el2){
     return false
 }
 
+function get_left_block(left){
+    let next_left_neighbor = left
+    let last_element;
+    let first_element;
+    let bracket_counter = 0
+
+    if(next_left_neighbor.type == "brackets_operation"){
+        bracket_counter -= 1
+    }else if(next_left_neighbor.type == "brackets_close"){
+        bracket_counter += 1
+    }
+
+    while(
+        next_left_neighbor.type != "start" && 
+        bracket_counter >= 0 &&
+        (
+            !["additive_operation","multi_operation"].includes(next_left_neighbor.type) ||
+            bracket_counter > 0
+        )
+    ){
+        if(!first_element){
+            first_element = next_left_neighbor
+        }
+        if(next_left_neighbor.type == "container"){
+            next_left_neighbor = next_left_neighbor.parent
+        }
+        last_element = next_left_neighbor
+        next_left_neighbor = next_left_neighbor.neighbors[0]
+
+        if(next_left_neighbor.type == "brackets_operation"){
+            bracket_counter -= 1
+        }else if(next_left_neighbor.type == "brackets_close"){
+            bracket_counter += 1
+        }
+    }
+    
+    return [next_left_neighbor,last_element,first_element]
+}
+
 class Math_Element {
     constructor(type,left,value,allowed_right_neighbor) {
         this.type = type
@@ -191,19 +230,33 @@ class Brackets_Close_Element extends Math_Element{
 
 class Frac_Element extends Math_Element{
     constructor(left){
+        let [next_left_neighbor,last_element,first_element] = get_left_block(left)
+        
         let align_id = next_align_id
         next_align_id++
-        super("container_operation",left,"<span class='alignLeft" + align_id + "'></span><span class='frac_wrapper'><span class='frac_top'>",["additive_operation","container_operation","brackets_operation","int","ans"])
+        super("container_operation",next_left_neighbor,"<span class='alignLeft" + align_id + "'></span><span class='frac_wrapper'><span class='frac_top'>",["additive_operation","container_operation","brackets_operation","int","ans"])
+        if(last_element){
+            last_element.neighbors[0] = this
+
+            this.children = [
+                new Container_Element(first_element,"</span><span class='frac_bottom alignRight" + align_id + "'>",this,false)
+            ]
+        }else{
+            this.children = [
+                new Container_Element(this,"</span><span class='frac_bottom alignRight" + align_id + "'>",this,false)
+            ]
+        }
         
-        this.children = [
-            new Container_Element(this,"</span><span class='frac_bottom alignRight" + align_id + "'>",this,false)
-        ]
         this.children.push(
             new Container_Element(this.children[0],"</span></span>",this,true)
         )
         this.neighbors[1] = this.children[0]
         this.children[0].neighbors[3] = this
         this.prio = 1
+
+        if(last_element){
+            this.skip_to_element_after_creation = this.children[0]
+        }
     }
 
     operate(child_results){
@@ -227,15 +280,29 @@ class Sqrt_Element extends Math_Element{
 
 class Pow_Element extends Math_Element{
     constructor(left){
-        super("container_operation",left,"<span class='pow_bottom'>(",["additive_operation","container_operation","brackets_operation","int","ans"])
-        
-        this.children = [
-            new Container_Element(this,")</span><span class='pow_top'>",this,false)
-        ]
+        let [next_left_neighbor,last_element,first_element] = get_left_block(left)
+
+        super("container_operation",next_left_neighbor,"<span class='pow_bottom'>(",["additive_operation","container_operation","brackets_operation","int","ans"])
+        if(last_element){
+            last_element.neighbors[0] = this
+
+            this.children = [
+                new Container_Element(first_element,")</span><span class='pow_top'>",this,false)
+            ]
+        }else{
+            this.children = [
+                new Container_Element(this,")</span><span class='pow_top'>",this,false)
+            ]
+        }
+                        
         this.children.push(
             new Container_Element(this.children[0],"</span>",this,true)
         )
         this.prio = 1
+
+        if(last_element){
+            this.skip_to_element_after_creation = this.children[1]
+        }
     }
 
     operate(child_results){
@@ -891,6 +958,10 @@ class EquationInputHandler extends InputHandler{
             }
 
             if(new_element){
+                if(new_element.skip_to_element_after_creation){
+                    cursor_element = new_element.skip_to_element_after_creation
+                }
+                
                 if(old_right_neighbour){
                     if(new_element.children){
                         let last_child = new_element.children[new_element.children.length - 1]
