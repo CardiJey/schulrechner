@@ -227,7 +227,7 @@ class Pow10_Element extends Math_Element{
     constructor(left){
         super("point_operation",left,"<span class='pow10'>×⒑</span>",["int"])
         this.operation_type = "pow10"
-        this.prio = 99
+        this.prio = 98
     }
 
     operate(val1,val2){
