@@ -992,6 +992,11 @@ class EquationInputHandler extends InputHandler{
                     new_element = new Const_Element(cursor_element,40)
                     cursor_element = new_element
                     break;
+                
+                case "key_e":
+                    new_element = new Const_Element(cursor_element,41)
+                    cursor_element = new_element
+                    break;
 
                 case "key_=":
                     if(cursor_element.type != "start" || cursor_element.neighbors[2]){
