@@ -336,6 +336,7 @@ class Container_Element extends Math_Element{
         }
         this.prio = 1
         this.parent = parent
+        this.last_container = last_container
     }
 }
 
@@ -810,6 +811,26 @@ class EquationInputHandler extends InputHandler{
         return res
     }
 
+    add_implicit_multiplication(first_element) {
+        let next_element = first_element
+        let last_element;
+        while(next_element){
+            if(
+                ["var","brackets_operation","container_operation"].includes(next_element.type) &&
+                (
+                    !["container_operation","container","start","multi_operation","additive_operation","brackets_operation"].includes(last_element.type) ||
+                    (last_element.type == "container" && last_element.last_container)
+                )
+            ){
+                let this_implicit_multiplication = new Times_Element(last_element)
+                this_implicit_multiplication.neighbors[2] = next_element
+                next_element.neighbors[0] = this_implicit_multiplication
+            }
+            last_element = next_element
+            next_element = next_element.neighbors[2]
+        }
+    }
+
     calc_math_elements(current_element, last_operation_element, res=0) {
         if(!current_element){
             return [res,current_element]
@@ -1111,6 +1132,8 @@ class EquationInputHandler extends InputHandler{
         }
 
         if(calc_output){
+            let this_math_string = this.math_elements_to_string(res,cursor_element,false)
+            this.add_implicit_multiplication(res)
             let this_result = this.calc_math_elements(res)[0]
             if(isNaN(this_result)){
                 this.input_code_history.pop()
@@ -1120,7 +1143,7 @@ class EquationInputHandler extends InputHandler{
                 ]
             }else{
                 active_input_handler = this.parent_handler
-                this.parent_handler.input_strings[this.parent_handler.display_equation_index] = this.math_elements_to_string(res,cursor_element,false)
+                this.parent_handler.input_strings[this.parent_handler.display_equation_index] = this_math_string
                 this.parent_handler.results[this.parent_handler.display_equation_index] = this_result
                 this.parent_handler.update_display(false)
                 this.parent_handler.update_position()
