@@ -33,7 +33,7 @@ jobs:
         run: npm run update_version
 
       - name: Extract Changelog
-        run: git log $(git tag --sort=-creatordate | sed -n 2p)..HEAD --pretty=format:"- %s" > www/changelog.txt
+        run: git log $(git describe --tags --abbrev=0 `git rev-list --tags --skip=1 --max-count=1`)..HEAD --pretty=format:"- %s" > www/changelog.txt
 
       - name: Install Flatpak and required tools
         run: |
