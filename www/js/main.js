@@ -144,7 +144,7 @@ class Start_Element extends Math_Element{
 
 class Int_Element extends Math_Element{
     constructor(left,value){
-        super("int",left,parseInt(value),["additive_operation","multi_operation","container","brackets_close","int","sto"])
+        super("int",left,parseInt(value),["additive_operation","multi_operation","point_operation","container","brackets_close","int","sto"])
     }
 }
 
@@ -220,6 +220,18 @@ class Point_Element extends Math_Element{
         let digits = Math.floor(Math.log10(val2));
 
         return val1 + (val2 - Math.pow(10,digits)) / (10 ** digits)
+    }
+}
+
+class Pow10_Element extends Math_Element{
+    constructor(left){
+        super("point_operation",left,"<span class='pow10'>×⒑</span>",["int"])
+        this.operation_type = "pow10"
+        this.prio = 99
+    }
+
+    operate(val1,val2){
+        return val1*Math.pow(10,val2)
     }
 }
 
@@ -878,6 +890,7 @@ class EquationInputHandler extends InputHandler{
                 case "int":
                 case "additive_operation":
                 case "multi_operation":
+                case "point_operation":
                 case "sto":
                 case "brackets_operation":
                 case "brackets_close":
@@ -943,6 +956,7 @@ class EquationInputHandler extends InputHandler{
 
             case "additive_operation":
             case "multi_operation":
+            case "point_operation":
             case "sto":
                 if(current_element.prio > last_operation_element.prio){
                     let start_res = 0
@@ -1106,6 +1120,11 @@ class EquationInputHandler extends InputHandler{
                 
                 case "key_comma":
                     new_element = new Point_Element(cursor_element)
+                    cursor_element = new_element
+                    break;
+                
+                case "key_pow10":
+                    new_element = new Pow10_Element(cursor_element)
                     cursor_element = new_element
                     break;
 
