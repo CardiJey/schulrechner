@@ -98,7 +98,7 @@ function get_left_block(left){
         next_left_neighbor.type != "start" && 
         bracket_counter >= 0 &&
         (
-            !["additive_operation","multi_operation"].includes(next_left_neighbor.type) ||
+            !["additive_operation","multi_operation","sto"].includes(next_left_neighbor.type) ||
             bracket_counter > 0
         )
     ){
@@ -144,7 +144,20 @@ class Start_Element extends Math_Element{
 
 class Int_Element extends Math_Element{
     constructor(left,value){
-        super("int",left,parseInt(value),["additive_operation","multi_operation","container","brackets_close","int"])
+        super("int",left,parseInt(value),["additive_operation","multi_operation","container","brackets_close","int","sto"])
+    }
+}
+
+class Sto_Element extends Math_Element{
+    constructor(left,var_name){
+        super("sto",left,"→"+var_name,[])
+        this.var_name = var_name
+        this.prio = 0.5
+    }
+
+    operate(val1,val2){
+        active_input_handler.parent_handler.user_var[this.var_name] = val1
+        return val1
     }
 }
 
@@ -223,7 +236,7 @@ class Brackets_Element extends Math_Element{
 
 class Brackets_Close_Element extends Math_Element{
     constructor(left,value){
-        super("brackets_close",left,")",["additive_operation","multi_operation","container","brackets_close"])
+        super("brackets_close",left,")",["additive_operation","multi_operation","container","brackets_close","sto"])
         this.prio = 1
     }
 }
@@ -330,7 +343,7 @@ class Logn_Element extends Math_Element{
 class Container_Element extends Math_Element{
     constructor(left,value,parent,last_container){
         if(last_container){
-            super("container",left,value,["additive_operation","multi_operation","container"])
+            super("container",left,value,["additive_operation","multi_operation","container","sto"])
         }else{
             super("container",left,value,["additive_operation","brackets_operation","container_operation","container","int","var"])
         }
@@ -397,11 +410,26 @@ class Ln_Element extends Math_Element{
 
 class Ans_Element extends Math_Element{
     constructor(left){
-        super("var",left,"Ans",["additive_operation","multi_operation","container", "brackets_close"])
+        super("var",left,"Ans",["additive_operation","multi_operation","container", "brackets_close","sto"])
     }
 
     get_value(){
         return active_input_handler.parent_handler.results[active_input_handler.parent_handler.results.length - 1]
+    }
+}
+
+class User_Var_Element extends Math_Element{
+    constructor(left,var_name){
+        super("var",left,var_name,["additive_operation","multi_operation","container", "brackets_close","sto"])
+        this.var_name = var_name
+    }
+
+    get_value(){
+        if(active_input_handler.parent_handler.user_var[this.var_name]){
+            return active_input_handler.parent_handler.user_var[this.var_name]
+        }else{
+            return 0
+        }
     }
 }
 
@@ -451,7 +479,7 @@ class Const_Element extends Math_Element{
             "π",
             "e",
         ]
-        super("var",left,char_map[index],["additive_operation","multi_operation","container", "brackets_close"])
+        super("var",left,char_map[index],["additive_operation","multi_operation","container", "brackets_close","sto"])
         this.index = index
     }
 
@@ -689,13 +717,55 @@ class EquationInputHandler extends InputHandler{
         this.input_code_history = [];
         this.parent_handler = parent_handler
         this.padding_top = 0
-        this.shift = false
-        this.alpha = false
-        this.shift_map = {
-            "key_pow10": "key_pi"
+        this.modes = {
+            "shift": false,
+            "alpha": false,
+            "STO": false
         }
-        this.alpha_map = {
-            "key_pow10": "key_e"
+        this.mode_maps = {
+            "shift": {
+                "key_pow10": "key_pi",
+                "key_rcl": "key_STO"
+            },
+            "alpha": {
+                "key_pow10": "key_e",
+                "key_(-)": "key_uservar_A",
+                "key_°": "key_uservar_B",
+                "key_hyp": "key_uservar_C",
+                "key_sin": "key_uservar_D",
+                "key_cos": "key_uservar_E",
+                "key_tan": "key_uservar_F",
+                "key_)": "key_uservar_X",
+                "key_SD": "key_uservar_Y",
+                "key_M+": "key_uservar_M",
+            },
+            "STO": {
+                "key_(-)": "key_STO_A",
+                "key_°": "key_STO_B",
+                "key_hyp": "key_STO_C",
+                "key_sin": "key_STO_D",
+                "key_cos": "key_STO_E",
+                "key_tan": "key_STO_F",
+                "key_)": "key_STO_X",
+                "key_SD": "key_STO_Y",
+                "key_M+": "key_STO_M",
+            }
+        }
+    }
+
+    toggle_mode(mode_to_toggle){
+        for(let mode in this.modes){
+            if(mode == mode_to_toggle){
+                this.modes[mode] = !this.modes[mode]
+            }else{
+                this.modes[mode] = false
+            }
+
+            if(this.modes[mode]){
+                document.querySelector('[inkscape\\3a label="indicator_' + mode + '"]').style.visibility = "visible"
+            }else{
+                document.querySelector('[inkscape\\3a label="indicator_' + mode + '"]').style.visibility = "hidden"
+            }
         }
     }
 
@@ -703,25 +773,33 @@ class EquationInputHandler extends InputHandler{
     handle(input_code) {
         if(input_code == "key_ac"){
             this.input_code_history = []
-            this.shift = false
-            this.alpha = false
+            this.toggle_mode("none")
         }else if(input_code == "key_shift"){
-            this.shift = !this.shift
-            this.alpha = false
+            this.toggle_mode("shift")
         }else if(input_code == "key_alpha"){
-            this.alpha = !this.alpha
-            this.shift = false
+            this.toggle_mode("alpha")
         }else{
-            if(this.shift){
-                if(this.shift_map[input_code]){
-                    this.input_code_history.push(this.shift_map[input_code]);
+            if(this.modes["shift"]){
+                this.toggle_mode("none")
+                let mapped_input_code = this.mode_maps["shift"][input_code]
+                if(mapped_input_code){
+                    if(mapped_input_code == "key_STO"){
+                        this.toggle_mode("STO")
+                    }else{
+                        this.input_code_history.push();
+                    }
                 }
-                this.shift = false
-            }else if(this.alpha){
-                if(this.alpha_map[input_code]){
-                    this.input_code_history.push(this.alpha_map[input_code]);
+            }else if(this.modes["alpha"]){
+                this.toggle_mode("none")
+                if(this.mode_maps["alpha"][input_code]){
+                    this.input_code_history.push(this.mode_maps["alpha"][input_code]);
                 }
-                this.alpha = false
+            }else if(this.modes["STO"]){
+                this.toggle_mode("none")
+                if(this.mode_maps["STO"][input_code]){
+                    this.input_code_history.push(this.mode_maps["STO"][input_code]);
+                    this.input_code_history.push("key_=");
+                }
             }else{
                 this.input_code_history.push(input_code);
             }
@@ -756,18 +834,6 @@ class EquationInputHandler extends InputHandler{
 
                 this.math_input_element.scrollBy(x_dist_to_scroll_border,y_dist_to_scroll_border)
             }
-        }
-
-        if(this.shift){
-            document.querySelector('[inkscape\\3a label="indicator_shift"]').style.visibility = "visible"
-        }else{
-            document.querySelector('[inkscape\\3a label="indicator_shift"]').style.visibility = "hidden"
-        }
-
-        if(this.alpha){
-            document.querySelector('[inkscape\\3a label="indicator_alpha"]').style.visibility = "visible"
-        }else{
-            document.querySelector('[inkscape\\3a label="indicator_alpha"]').style.visibility = "hidden"
         }
     }
 
@@ -812,6 +878,7 @@ class EquationInputHandler extends InputHandler{
                 case "int":
                 case "additive_operation":
                 case "multi_operation":
+                case "sto":
                 case "brackets_operation":
                 case "brackets_close":
                 case "var":
@@ -876,6 +943,7 @@ class EquationInputHandler extends InputHandler{
 
             case "additive_operation":
             case "multi_operation":
+            case "sto":
                 if(current_element.prio > last_operation_element.prio){
                     let start_res = 0
                     if(current_element.value == ","){
@@ -914,7 +982,7 @@ class EquationInputHandler extends InputHandler{
                 let container_operation_res = current_element.operate(child_results);
                 current_element = current_container;
                 
-                [res,current_element] = this.calc_math_elements(current_element.neighbors[2],current_element,container_operation_res);
+                [res,current_element] = this.calc_math_elements(current_element.neighbors[2],last_operation_element,container_operation_res);
             break;
         }
 
@@ -987,6 +1055,19 @@ class EquationInputHandler extends InputHandler{
                     new_element = new Ans_Element(cursor_element)
                     cursor_element = new_element
                     break;
+
+                case "key_uservar_A":
+                case "key_uservar_B":
+                case "key_uservar_C":
+                case "key_uservar_D":
+                case "key_uservar_E":
+                case "key_uservar_F":
+                case "key_uservar_X":
+                case "key_uservar_Y":
+                case "key_uservar_M":
+                    new_element = new User_Var_Element(cursor_element,input_code.substring(12))
+                    cursor_element = new_element
+                    break;
                 
                 case "key_pi":
                     new_element = new Const_Element(cursor_element,40)
@@ -998,9 +1079,28 @@ class EquationInputHandler extends InputHandler{
                     cursor_element = new_element
                     break;
 
+
                 case "key_=":
                     if(cursor_element.type != "start" || cursor_element.neighbors[2]){
                         calc_output = true
+                    }
+                    break;
+
+                case "key_STO_A":
+                case "key_STO_B":
+                case "key_STO_C":
+                case "key_STO_D":
+                case "key_STO_E":
+                case "key_STO_F":
+                case "key_STO_X":
+                case "key_STO_Y":
+                case "key_STO_M":
+                    if(cursor_element.type != "start" || cursor_element.neighbors[2]){
+                        while(cursor_element.neighbors[2]){
+                            cursor_element = cursor_element.neighbors[2]
+                        }
+                        new_element = new Sto_Element(cursor_element,input_code.substring(8))
+                        cursor_element = new_element
                     }
                     break;
                 
@@ -1194,6 +1294,7 @@ class EquationSelectInputHandler extends InputHandler{
         this.input_strings = []
         this.results = []
         this.as_fraction = true
+        this.user_var = {}
 
         active_input_handler = this.equations[this.display_equation_index]
     }
