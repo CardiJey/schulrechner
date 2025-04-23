@@ -1,3 +1,4 @@
+//"var","container","container_operation", "brackets_close", "brackets_operation", "point_operation", "multi_operation", "additive_operation", "sto", "int", "start"
 let active_input_handler;
 let next_align_id = 0
 let changelog_visible = false
@@ -132,6 +133,11 @@ class Math_Element {
         }
         this.value = value
         this.allowed_right_neighbor = allowed_right_neighbor
+        this.negative_sign = false
+    }
+
+    negate(){
+        this.negative_sign = !this.negative_sign
     }
 }
 
@@ -145,6 +151,15 @@ class Start_Element extends Math_Element{
 class Int_Element extends Math_Element{
     constructor(left,value){
         super("int",left,parseInt(value),["additive_operation","multi_operation","point_operation","container","brackets_close","int","sto"])
+        this.value = parseInt(value)
+    }
+
+    get_value(){
+        if(this.negative_sign){
+            return -this.value
+        }else{
+            return this.value
+        }
     }
 }
 
@@ -169,7 +184,16 @@ class Plus_Element extends Math_Element{
     }
 
     operate(val1,val2){
-        return val1 + val2
+        if(this.negative_sign){
+            return val1 - val2
+        }else{
+            return val1 + val2
+        }
+    }
+
+    negate(){
+        super.negate()
+        this.operation_type = "-"
     }
 }
 
@@ -181,7 +205,16 @@ class Minus_Element extends Math_Element{
     }
 
     operate(val1,val2){
-        return val1 - val2
+        if(!this.negative_sign){
+            return val1 - val2
+        }else{
+            return val1 + val2
+        }
+    }
+
+    negate(){
+        super.negate()
+        this.operation_type = "+"
     }
 }
 
@@ -219,7 +252,7 @@ class Point_Element extends Math_Element{
     operate(val1,val2){
         let digits = Math.floor(Math.log10(val2));
 
-        return val1 + (val2 - Math.pow(10,digits)) / (10 ** digits)
+        return Math.sign(val1)*(Math.abs(val1) + Math.abs((val2 - Math.pow(10,digits)) / (10 ** digits)))
     }
 }
 
@@ -242,7 +275,11 @@ class Brackets_Element extends Math_Element{
     }
 
     operate(val){
-        return val
+        if(this.negative_sign){
+            return -val
+        }else{
+            return val
+        }
     }
 }
 
@@ -285,7 +322,11 @@ class Frac_Element extends Math_Element{
     }
 
     operate(child_results){
-        return child_results[0] / child_results[1]
+        if(this.negative_sign){
+            return -child_results[0] / child_results[1]
+        }else{
+            return child_results[0] / child_results[1]
+        }
     }
 }
 
@@ -299,7 +340,11 @@ class Sqrt_Element extends Math_Element{
     }
 
     operate(child_results){
-        return Math.sqrt(child_results[0])
+        if(this.negative_sign){
+            return -Math.sqrt(child_results[0])
+        }else{
+            return Math.sqrt(child_results[0])
+        }
     }
 }
 
@@ -348,7 +393,11 @@ class Logn_Element extends Math_Element{
     }
 
     operate(child_results){
-        return Math.log(child_results[1]) / Math.log(child_results[0])
+        if(this.negative_sign){
+            return -Math.log(child_results[1]) / Math.log(child_results[0])
+        }else{
+            return Math.log(child_results[1]) / Math.log(child_results[0])
+        }
     }
 }
 
@@ -372,7 +421,11 @@ class Sin_Element extends Math_Element{
     }
 
     operate(val){
-        return Math.sin(val/360*(2*Math.PI))
+        if(this.negative_sign){
+            return -Math.sin(val/360*(2*Math.PI))
+        }else{
+            return Math.sin(val/360*(2*Math.PI))
+        }
     }
 }
 
@@ -383,7 +436,11 @@ class Cos_Element extends Math_Element{
     }
 
     operate(val){
-        return Math.cos(val/360*(2*Math.PI))
+        if(this.negative_sign){
+            return -Math.cos(val/360*(2*Math.PI))
+        }else{
+            return Math.cos(val/360*(2*Math.PI))
+        }
     }
 }
 
@@ -394,7 +451,11 @@ class Tan_Element extends Math_Element{
     }
 
     operate(val){
-        return Math.tan(val/360*(2*Math.PI))
+        if(this.negative_sign){
+            return -Math.tan(val/360*(2*Math.PI))
+        }else{
+            return Math.tan(val/360*(2*Math.PI))
+        }
     }
 }
 
@@ -405,7 +466,11 @@ class Log_Element extends Math_Element{
     }
 
     operate(val){
-        return Math.log10(val)
+        if(this.negative_sign){
+            return -Math.log10(val)
+        }else{
+            return Math.log10(val)
+        }
     }
 }
 
@@ -416,7 +481,11 @@ class Ln_Element extends Math_Element{
     }
 
     operate(val){
-        return Math.log(val)
+        if(this.negative_sign){
+            return -Math.log(val)
+        }else{
+            return Math.log(val)
+        }
     }
 }
 
@@ -426,7 +495,11 @@ class Ans_Element extends Math_Element{
     }
 
     get_value(){
-        return active_input_handler.parent_handler.results[active_input_handler.parent_handler.results.length - 1]
+        if(this.negative_sign){
+            return -active_input_handler.parent_handler.results[active_input_handler.parent_handler.results.length - 1]
+        }else{
+            return active_input_handler.parent_handler.results[active_input_handler.parent_handler.results.length - 1]
+        }
     }
 }
 
@@ -438,7 +511,11 @@ class User_Var_Element extends Math_Element{
 
     get_value(){
         if(active_input_handler.parent_handler.user_var[this.var_name]){
-            return active_input_handler.parent_handler.user_var[this.var_name]
+            if(this.negative_sign){
+                return -active_input_handler.parent_handler.user_var[this.var_name]
+            }else{
+                return active_input_handler.parent_handler.user_var[this.var_name]
+            }
         }else{
             return 0
         }
@@ -541,7 +618,11 @@ class Const_Element extends Math_Element{
             Math.E
         ]
 
-        return value_map[this.index]
+        if(this.negative_sign){
+            return -value_map[this.index]
+        }else{
+            return value_map[this.index]
+        }
     }
 }
 
@@ -930,6 +1011,36 @@ class EquationInputHandler extends InputHandler{
             next_element = next_element.neighbors[2]
         }
     }
+//"var","container","container_operation", "brackets_close", "brackets_operation", "point_operation", "multi_operation", "additive_operation", "sto", "int", "start"
+
+    convert_operators_to_signs(first_element){
+        let next_element = first_element
+        let last_element;
+        let second_last_element;
+        while(next_element){
+            if(
+                next_element && last_element && second_last_element &&
+                !["container", "brackets_close", "point_operation", "multi_operation", "sto"].includes(next_element.type) &&
+                (
+                    ["multi_operation", "additive_operation","start","container_operation"].includes(second_last_element.type) ||
+                    (second_last_element.type == "container" && !second_last_element.last_container) ||
+                    (second_last_element.type == "point_operation" && second_last_element.operation_type == "pow10")
+                ) &&
+                ["additive_operation"].includes(last_element.type)
+            ){
+                if(last_element.operation_type == "-"){
+                    next_element.negate()
+                }
+                
+                second_last_element.neighbors[2] = next_element
+                next_element.neighbors[0] = second_last_element
+            }else{
+                second_last_element = last_element
+            }
+            last_element = next_element
+            next_element = next_element.neighbors[2]
+        }
+    }
 
     calc_math_elements(current_element, last_operation_element, res=0) {
         if(!current_element){
@@ -940,7 +1051,7 @@ class EquationInputHandler extends InputHandler{
 
         switch(current_element.type){
             case "int":
-                [res,current_element] = this.calc_math_elements(current_element.neighbors[2],last_operation_element,res * 10 + current_element.value)
+                [res,current_element] = this.calc_math_elements(current_element.neighbors[2],last_operation_element,res * 10 + current_element.get_value())
             break;
 
             case "var":
@@ -1278,6 +1389,7 @@ class EquationInputHandler extends InputHandler{
         if(calc_output){
             let this_math_string = this.math_elements_to_string(res,cursor_element,false)
             this.add_implicit_multiplication(res)
+            this.convert_operators_to_signs(res)
             let this_result = this.calc_math_elements(res)[0]
             if(isNaN(this_result)){
                 this.input_code_history.pop()
