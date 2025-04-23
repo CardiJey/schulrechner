@@ -71,7 +71,7 @@ svg {
 }
 
 
-[inkscape\3a label="indicator_shift"] {
+[inkscape\3a label="indicator_shift"], [inkscape\3a label="indicator_alpha"] {
     visibility: hidden;
 }
 

@@ -690,8 +690,12 @@ class EquationInputHandler extends InputHandler{
         this.parent_handler = parent_handler
         this.padding_top = 0
         this.shift = false
+        this.alpha = false
         this.shift_map = {
             "key_pow10": "key_pi"
+        }
+        this.alpha_map = {
+            "key_pow10": "key_e"
         }
     }
 
@@ -700,14 +704,24 @@ class EquationInputHandler extends InputHandler{
         if(input_code == "key_ac"){
             this.input_code_history = []
             this.shift = false
+            this.alpha = false
         }else if(input_code == "key_shift"){
             this.shift = !this.shift
+            this.alpha = false
+        }else if(input_code == "key_alpha"){
+            this.alpha = !this.alpha
+            this.shift = false
         }else{
             if(this.shift){
                 if(this.shift_map[input_code]){
                     this.input_code_history.push(this.shift_map[input_code]);
                 }
                 this.shift = false
+            }else if(this.alpha){
+                if(this.alpha_map[input_code]){
+                    this.input_code_history.push(this.alpha_map[input_code]);
+                }
+                this.alpha = false
             }else{
                 this.input_code_history.push(input_code);
             }
@@ -748,6 +762,12 @@ class EquationInputHandler extends InputHandler{
             document.querySelector('[inkscape\\3a label="indicator_shift"]').style.visibility = "visible"
         }else{
             document.querySelector('[inkscape\\3a label="indicator_shift"]').style.visibility = "hidden"
+        }
+
+        if(this.alpha){
+            document.querySelector('[inkscape\\3a label="indicator_alpha"]').style.visibility = "visible"
+        }else{
+            document.querySelector('[inkscape\\3a label="indicator_alpha"]').style.visibility = "hidden"
         }
     }
 
