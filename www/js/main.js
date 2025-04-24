@@ -257,8 +257,12 @@ class Point_Element extends Math_Element{
 
     operate(val1,val2){
         let digits = Math.floor(Math.log10(val2));
+        let sign = 1
+        if(val1 != 0){
+            sign = Math.sign(val1)
+        }
 
-        return Math.sign(val1)*(Math.abs(val1) + Math.abs((val2 - Math.pow(10,digits)) / (10 ** digits)))
+        return sign*(Math.abs(val1) + Math.abs((val2 - Math.pow(10,digits)) / (10 ** digits)))
     }
 }
 
