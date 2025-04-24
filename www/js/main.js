@@ -107,11 +107,13 @@ function get_left_block(left){
             first_element = next_left_neighbor
         }
         if(next_left_neighbor.type == "container"){
-            if(next_left_neighbor.last_child){
+            if(next_left_neighbor.last_container){
                 next_left_neighbor = next_left_neighbor.parent
             }else{
                 break;
             }
+        }else if(next_left_neighbor.type == "container_operation"){
+            break;
         }
         last_element = next_left_neighbor
         next_left_neighbor = next_left_neighbor.neighbors[0]
