@@ -913,7 +913,7 @@ class EquationInputHandler extends InputHandler{
                     if(mapped_input_code == "key_STO"){
                         this.toggle_mode("STO")
                     }else{
-                        this.input_code_history.push();
+                        this.input_code_history.push(mapped_input_code);
                     }
                 }
             }else if(this.modes["alpha"]){
