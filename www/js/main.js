@@ -244,7 +244,11 @@ class Div_Element extends Math_Element{
     }
 
     operate(val1,val2){
-        return val1 / val2
+        if(val2 == 0){
+            return "Math_error"
+        }else{
+            return val1 / val2
+        }
     }
 }
 
@@ -332,6 +336,10 @@ class Frac_Element extends Math_Element{
     }
 
     operate(child_results){
+        if(child_results[1] == 0){
+            return "Math_error"
+        }
+
         if(this.negative_sign){
             return -child_results[0] / child_results[1]
         }else{
@@ -350,6 +358,10 @@ class Sqrt_Element extends Math_Element{
     }
 
     operate(child_results){
+        if(child_results[0] < 0){
+            return "Math_error"
+        }
+
         if(this.negative_sign){
             return -Math.sqrt(child_results[0])
         }else{
@@ -386,10 +398,13 @@ class Pow_Element extends Math_Element{
     }
 
     operate(child_results){
+        if(child_results[0] == 0 && child_results[1] == 0){
+            return "Math_error"
+        }
         return Math.pow(child_results[0],child_results[1])
     }
 }
-class Logn_Element extends Math_Element{
+class Logx_Element extends Math_Element{
     constructor(left){
         super("container_operation",left,"log<span class='logn_bottom'>",["additive_operation","container_operation","brackets_operation","int","var"])
         
@@ -403,6 +418,9 @@ class Logn_Element extends Math_Element{
     }
 
     operate(child_results){
+        if(child_results[0] <= 0 || child_results[0] == 1 || child_results[1] <= 0){
+            return "Math_error"
+        }
         if(this.negative_sign){
             return -Math.log(child_results[1]) / Math.log(child_results[0])
         }else{
@@ -476,6 +494,9 @@ class Log_Element extends Math_Element{
     }
 
     operate(val){
+        if(val <= 0){
+            return "Math_error"
+        }
         if(this.negative_sign){
             return -Math.log10(val)
         }else{
@@ -491,6 +512,9 @@ class Ln_Element extends Math_Element{
     }
 
     operate(val){
+        if(val <= 0){
+            return "Math_error"
+        }
         if(this.negative_sign){
             return -Math.log(val)
         }else{
@@ -1056,7 +1080,7 @@ class EquationInputHandler extends InputHandler{
         if(!current_element){
             return [res,current_element]
         }else if(current_element.neighbors[2] && current_element.allowed_right_neighbor[0] != "*" && !current_element.allowed_right_neighbor.includes(current_element.neighbors[2].type)){
-            return [NaN,undefined]
+            return ["syntax_error",undefined]
         }
 
         switch(current_element.type){
@@ -1070,8 +1094,8 @@ class EquationInputHandler extends InputHandler{
 
             case "start":
                 [res,current_element] = this.calc_math_elements(current_element.neighbors[2],current_element)
-                if(current_element){
-                    return [NaN,undefined]
+                if(typeof res != "string" && current_element){
+                    return ["syntax_error",undefined]
                 }
             break;
 
@@ -1085,7 +1109,13 @@ class EquationInputHandler extends InputHandler{
                         start_res++
                     }
                     let [sub_res,sub_current_element] = this.calc_math_elements(current_element.neighbors[2],current_element,start_res)
+                    if(typeof sub_res == "string"){
+                        return [sub_res,undefined]
+                    }
                     res = current_element.operate(res,sub_res)
+                    if(typeof res == "string"){
+                        return [res,undefined]
+                    }
                     const result = this.calc_math_elements(sub_current_element, last_operation_element, res);
                     [res, current_element] = result;
                 }
@@ -1095,9 +1125,16 @@ class EquationInputHandler extends InputHandler{
                 // TODO machen das Klammern selber multiplizieren
                 const result = this.calc_math_elements(current_element.neighbors[2],current_element,0);
                 let [inside_res,bracket_close_element] = result;
-                inside_res = current_element.operate(inside_res)
+                if(typeof inside_res == "string"){
+                    return [inside_res,undefined]
+                }
                 if(!bracket_close_element){
-                    return [NaN,undefined]
+                    return ["syntax_error",undefined]
+                }
+
+                inside_res = current_element.operate(inside_res)
+                if(typeof inside_res == "string"){
+                    return [inside_res,undefined]
                 }
                 [res,current_element] = this.calc_math_elements(bracket_close_element.neighbors[2],last_operation_element,inside_res)
             break;
@@ -1108,13 +1145,19 @@ class EquationInputHandler extends InputHandler{
                 let current_container = current_element
                 for(let child_index = 0; child_index < current_element.children.length; child_index++){
                     let [child_result,next_container_element] = this.calc_math_elements(current_container.neighbors[2],current_container,0)
+                    if(typeof child_result == "string"){
+                        return [child_result,undefined]
+                    }
                     current_container = next_container_element
                     if(!current_container){
-                        return [NaN,undefined]
+                        return ["syntax_error",undefined]
                     }
                     child_results.push(child_result)
                 }
                 let container_operation_res = current_element.operate(child_results);
+                if(typeof container_operation_res == "string"){
+                    return [container_operation_res,undefined]
+                }
                 current_element = current_container;
                 
                 [res,current_element] = this.calc_math_elements(current_element.neighbors[2],last_operation_element,container_operation_res);
@@ -1337,7 +1380,7 @@ class EquationInputHandler extends InputHandler{
                     break;
 
                 case "key_logn":
-                    new_element = new Logn_Element(cursor_element)
+                    new_element = new Logx_Element(cursor_element)
                     cursor_element = new_element
                     break;
 
@@ -1401,10 +1444,10 @@ class EquationInputHandler extends InputHandler{
             this.add_implicit_multiplication(res)
             this.convert_operators_to_signs(res)
             let this_result = this.calc_math_elements(res)[0]
-            if(isNaN(this_result)){
+            if(typeof this_result == "string"){
                 this.input_code_history.pop()
                 return [
-                    "syntaxfehler",
+                    this_result,
                     ""
                 ]
             }else{
