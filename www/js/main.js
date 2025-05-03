@@ -371,7 +371,7 @@ class Sqrt_Element extends Math_Element{
 }
 
 class Pow_Element extends Math_Element{
-    constructor(left){
+    constructor(left,is_exp_prefilled){
         let [next_left_neighbor,last_element,first_element] = get_left_block(left)
 
         super("container_operation",next_left_neighbor,"<span class='pow_bottom'>(",["additive_operation","container_operation","brackets_operation","int","var"])
@@ -391,9 +391,14 @@ class Pow_Element extends Math_Element{
             new Container_Element(this.children[0],"</span>",this,true)
         )
         this.prio = 1
+        this.is_exp_prefilled = is_exp_prefilled
 
         if(last_element){
-            this.skip_to_element_after_creation = this.children[1]
+            if(this.is_exp_prefilled){
+                this.skip_to_element_after_creation = this.children[1]
+            }else{
+                this.skip_to_element_after_creation = this.children[0]
+            }
         }
     }
 
@@ -1363,12 +1368,12 @@ class EquationInputHandler extends InputHandler{
                     break;
 
                 case "key_pown":
-                    new_element = new Pow_Element(cursor_element)
+                    new_element = new Pow_Element(cursor_element,false)
                     cursor_element = new_element
                     break;
 
                 case "key_pow2":
-                    new_element = new Pow_Element(cursor_element)
+                    new_element = new Pow_Element(cursor_element,true)
                     cursor_element = new_element
                     var prefilled_element = new Int_Element(cursor_element.children[0],2)
                     prefilled_element.neighbors[2] = cursor_element.children[1]
@@ -1376,7 +1381,7 @@ class EquationInputHandler extends InputHandler{
                     break;
 
                 case "key_pow-1":
-                    new_element = new Pow_Element(cursor_element)
+                    new_element = new Pow_Element(cursor_element,true)
                     cursor_element = new_element
                     var prefilled_element1 = new Minus_Element(cursor_element.children[0])
                     var prefilled_element2 = new Int_Element(prefilled_element1,1)
