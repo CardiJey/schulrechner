@@ -401,7 +401,12 @@ class Pow_Element extends Math_Element{
         if(child_results[0] == 0 && child_results[1] == 0){
             return "Math_error"
         }
-        return Math.pow(child_results[0],child_results[1])
+
+        if(this.negative_sign){
+            return -Math.pow(child_results[0],child_results[1])
+        }else{
+            return Math.pow(child_results[0],child_results[1])
+        }
     }
 }
 class Logx_Element extends Math_Element{
