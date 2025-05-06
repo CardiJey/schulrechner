@@ -1,4 +1,3 @@
-//"var","container","container_operation", "brackets_close", "brackets_operation", "point_operation", "multi_operation", "additive_operation", "sto", "int", "start"
 let active_input_handler;
 let next_align_id = 0
 let changelog_visible = false
@@ -129,7 +128,7 @@ function get_left_block(left){
 }
 
 class Math_Element {
-    constructor(type,left,value,allowed_right_neighbor) {
+    constructor(type,left,value,mathjs_value) {
         this.type = type
         if(left){
             this.neighbors = [left,undefined,left.neighbors[2],undefined] //left,bottom,right,top
@@ -138,8 +137,7 @@ class Math_Element {
             this.neighbors = [left,undefined,undefined,undefined] //left,bottom,right,top
         }
         this.value = value
-        this.allowed_right_neighbor = allowed_right_neighbor
-        this.negative_sign = false
+        this.mathjs_value = mathjs_value
     }
 
     negate(){
@@ -149,158 +147,74 @@ class Math_Element {
 
 class Start_Element extends Math_Element{
     constructor(){
-        super("start",undefined,NaN,["*"])
+        super("start",undefined,NaN,"")
         this.prio = 0
     }
 }
 
 class Int_Element extends Math_Element{
     constructor(left,value){
-        super("int",left,parseInt(value),["additive_operation","multi_operation","point_operation","container","brackets_close","int","sto"])
-        this.value = parseInt(value)
-    }
-
-    get_value(){
-        if(this.negative_sign){
-            return -this.value
-        }else{
-            return this.value
-        }
+        super("int",left,parseInt(value),value)
     }
 }
 
 class Sto_Element extends Math_Element{
     constructor(left,var_name){
-        super("sto",left,"→"+var_name,[])
+        super("sto",left,"→"+var_name,"")
         this.var_name = var_name
-        this.prio = 0.5
     }
 
-    operate(val1,val2){
-        active_input_handler.parent_handler.user_var[this.var_name] = val1
-        return val1
+    operate(val){
+        active_input_handler.parent_handler.user_var[this.var_name] = val
+        return val
     }
 }
 
 class Plus_Element extends Math_Element{
     constructor(left){
-        super("additive_operation",left,"+",["container_operation","brackets_operation","int","var"])
-        this.operation_type = "+"
-        this.prio = 2
-    }
-
-    operate(val1,val2){
-        if(this.negative_sign){
-            return val1 - val2
-        }else{
-            return val1 + val2
-        }
-    }
-
-    negate(){
-        super.negate()
-        this.operation_type = "-"
+        super("additive_operation",left,"+","+")
     }
 }
 
 class Minus_Element extends Math_Element{
     constructor(left){
-        super("additive_operation",left,"-",["container_operation","brackets_operation","int","var"])
-        this.operation_type = "-"
-        this.prio = 2
-    }
-
-    operate(val1,val2){
-        if(!this.negative_sign){
-            return val1 - val2
-        }else{
-            return val1 + val2
-        }
-    }
-
-    negate(){
-        super.negate()
-        this.operation_type = "+"
+        super("additive_operation",left,"-","-")
     }
 }
 
 class Times_Element extends Math_Element{
     constructor(left){
-        super("multi_operation",left,"×",["container_operation","brackets_operation","int","var"])
-        this.operation_type = "×"
-        this.prio = 3
-    }
-
-    operate(val1,val2){
-        return val1 * val2
+        super("multi_operation",left,"×","*")
     }
 }
 
 class Div_Element extends Math_Element{
     constructor(left){
-        super("multi_operation",left,"÷",["container_operation","brackets_operation","int","var"])
-        this.operation_type = "÷"
-        this.prio = 3
-    }
-
-    operate(val1,val2){
-        if(val2 == 0){
-            return "Math_error"
-        }else{
-            return val1 / val2
-        }
+        super("multi_operation",left,"÷","/")
     }
 }
 
 class Point_Element extends Math_Element{
     constructor(left){
-        super("point_operation",left,",",["int"])
-        this.operation_type = ","
-        this.prio = 99
-    }
-
-    operate(val1,val2){
-        let digits = Math.floor(Math.log10(val2));
-        let sign = 1
-        if(val1 != 0){
-            sign = Math.sign(val1)
-        }
-
-        return sign*(Math.abs(val1) + Math.abs((val2 - Math.pow(10,digits)) / (10 ** digits)))
+        super("point_operation",left,",",".")
     }
 }
 
 class Pow10_Element extends Math_Element{
     constructor(left){
-        super("point_operation",left,"<span class='pow10'>×⒑</span>",["int"])
-        this.operation_type = "pow10"
-        this.prio = 98
-    }
-
-    operate(val1,val2){
-        return val1*Math.pow(10,val2)
+        super("point_operation",left,"<span class='pow10'>×⒑</span>","*10^")
     }
 }
 
 class Brackets_Element extends Math_Element{
     constructor(left,value){
-        super("brackets_operation",left,"(",["additive_operation","container_operation","brackets_operation","int","var"])
-        this.prio = 1
-    }
-
-    operate(val){
-        if(this.negative_sign){
-            return -val
-        }else{
-            return val
-        }
+        super("brackets_operation",left,"(","(")
     }
 }
 
 class Brackets_Close_Element extends Math_Element{
     constructor(left,value){
-        super("brackets_close",left,")",["additive_operation","multi_operation","container","brackets_close","sto"])
-        this.prio = 1
+        super("brackets_close",left,")",")")
     }
 }
 
@@ -310,63 +224,37 @@ class Frac_Element extends Math_Element{
         
         let align_id = next_align_id
         next_align_id++
-        super("container_operation",next_left_neighbor,"<span class='alignLeft" + align_id + "'></span><span class='frac_wrapper'><span class='frac_top'>",["additive_operation","container_operation","brackets_operation","int","var"])
+        super("container_operation",next_left_neighbor,"<span class='alignLeft" + align_id + "'></span><span class='frac_wrapper'><span class='frac_top'>","([")
         if(last_element){
             last_element.neighbors[0] = this
 
             this.children = [
-                new Container_Element(first_element,"</span><span class='frac_bottom alignRight" + align_id + "'>",this,false)
+                new Container_Element(first_element,"</span><span class='frac_bottom alignRight" + align_id + "'>","][1]/[",this,false)
             ]
         }else{
             this.children = [
-                new Container_Element(this,"</span><span class='frac_bottom alignRight" + align_id + "'>",this,false)
+                new Container_Element(this,"</span><span class='frac_bottom alignRight" + align_id + "'>","][1]/[",this,false)
             ]
         }
         
         this.children.push(
-            new Container_Element(this.children[0],"</span></span>",this,true)
+            new Container_Element(this.children[0],"</span></span>","][1])",this,true)
         )
         this.neighbors[1] = this.children[0]
         this.children[0].neighbors[3] = this
-        this.prio = 1
 
         if(last_element){
             this.skip_to_element_after_creation = this.children[0]
-        }
-    }
-
-    operate(child_results){
-        if(child_results[1] == 0){
-            return "Math_error"
-        }
-
-        if(this.negative_sign){
-            return -child_results[0] / child_results[1]
-        }else{
-            return child_results[0] / child_results[1]
         }
     }
 }
 
 class Sqrt_Element extends Math_Element{
     constructor(left){
-        super("container_operation",left,"<span class='sqrt_wrapper'><span class='scale_height'>&#8730;</span><span class='sqrt'>",["additive_operation","container_operation","brackets_operation","int","var"])
+        super("container_operation",left,"<span class='sqrt_wrapper'><span class='scale_height'>&#8730;</span><span class='sqrt'>","([")
         this.children = [
-            new Container_Element(this,"</span></span>",this,true)
+            new Container_Element(this,"</span></span>","][1]^0.5)",this,true)
         ]
-        this.prio = 1
-    }
-
-    operate(child_results){
-        if(child_results[0] < 0){
-            return "Math_error"
-        }
-
-        if(this.negative_sign){
-            return -Math.sqrt(child_results[0])
-        }else{
-            return Math.sqrt(child_results[0])
-        }
     }
 }
 
@@ -374,23 +262,22 @@ class Pow_Element extends Math_Element{
     constructor(left,is_exp_prefilled){
         let [next_left_neighbor,last_element,first_element] = get_left_block(left)
 
-        super("container_operation",next_left_neighbor,"<span class='pow_bottom'>(",["additive_operation","container_operation","brackets_operation","int","var"])
+        super("container_operation",next_left_neighbor,"<span class='pow_bottom'>(","([")
         if(last_element){
             last_element.neighbors[0] = this
 
             this.children = [
-                new Container_Element(first_element,")</span><span class='pow_top'>",this,false)
+                new Container_Element(first_element,")</span><span class='pow_top'>","][1]^[",this,false)
             ]
         }else{
             this.children = [
-                new Container_Element(this,")</span><span class='pow_top'>",this,false)
+                new Container_Element(this,")</span><span class='pow_top'>","][1]^[",this,false)
             ]
         }
                         
         this.children.push(
-            new Container_Element(this.children[0],"</span>",this,true)
+            new Container_Element(this.children[0],"</span>","][1])",this,true)
         )
-        this.prio = 1
         this.is_exp_prefilled = is_exp_prefilled
 
         if(last_element){
@@ -401,52 +288,23 @@ class Pow_Element extends Math_Element{
             }
         }
     }
-
-    operate(child_results){
-        if(child_results[0] == 0 && child_results[1] == 0){
-            return "Math_error"
-        }
-
-        if(this.negative_sign){
-            return -Math.pow(child_results[0],child_results[1])
-        }else{
-            return Math.pow(child_results[0],child_results[1])
-        }
-    }
 }
 class Logx_Element extends Math_Element{
     constructor(left){
-        super("container_operation",left,"log<span class='logn_bottom'>",["additive_operation","container_operation","brackets_operation","int","var"])
+        super("container_operation",left,"log<span class='logn_bottom'>","(1/log([")
         
         this.children = [
-            new Container_Element(this,"</span>(",this,false)
+            new Container_Element(this,"</span>(","][1])*log([",this,false)
         ]
         this.children.push(
-            new Container_Element(this.children[0],")",this,true)
+            new Container_Element(this.children[0],")","][1]))",this,true)
         )
-        this.prio = 1
-    }
-
-    operate(child_results){
-        if(child_results[0] <= 0 || child_results[0] == 1 || child_results[1] <= 0){
-            return "Math_error"
-        }
-        if(this.negative_sign){
-            return -Math.log(child_results[1]) / Math.log(child_results[0])
-        }else{
-            return Math.log(child_results[1]) / Math.log(child_results[0])
-        }
     }
 }
 
 class Container_Element extends Math_Element{
-    constructor(left,value,parent,last_container){
-        if(last_container){
-            super("container",left,value,["additive_operation","multi_operation","container","sto"])
-        }else{
-            super("container",left,value,["additive_operation","brackets_operation","container_operation","container","int","var"])
-        }
-        this.prio = 1
+    constructor(left,value,mathjs_value,parent,last_container){
+        super("container",left,value,mathjs_value)
         this.parent = parent
         this.last_container = last_container
     }
@@ -454,112 +312,53 @@ class Container_Element extends Math_Element{
 
 class Sin_Element extends Math_Element{
     constructor(left){
-        super("brackets_operation",left,"sin(",["additive_operation","container_operation","brackets_operation","int","var"])
-        this.prio = 1
-    }
-
-    operate(val){
-        if(this.negative_sign){
-            return -Math.sin(val/360*(2*Math.PI))
-        }else{
-            return Math.sin(val/360*(2*Math.PI))
-        }
+        super("brackets_operation",left,"sin(","sin(PI/180*")
     }
 }
 
 class Cos_Element extends Math_Element{
     constructor(left){
-        super("brackets_operation",left,"cos(",["additive_operation","container_operation","brackets_operation","int","var"])
-        this.prio = 1
-    }
-
-    operate(val){
-        if(this.negative_sign){
-            return -Math.cos(val/360*(2*Math.PI))
-        }else{
-            return Math.cos(val/360*(2*Math.PI))
-        }
+        super("brackets_operation",left,"cos(","cos(PI/180*")
     }
 }
 
 class Tan_Element extends Math_Element{
     constructor(left){
-        super("brackets_operation",left,"tan(",["additive_operation","container_operation","brackets_operation","int","var"])
-        this.prio = 1
-    }
-
-    operate(val){
-        if(this.negative_sign){
-            return -Math.tan(val/360*(2*Math.PI))
-        }else{
-            return Math.tan(val/360*(2*Math.PI))
-        }
+        super("brackets_operation",left,"tan(","tan(PI/180*")
     }
 }
 
 class Log_Element extends Math_Element{
     constructor(left){
-        super("brackets_operation",left,"log(",["additive_operation","container_operation","brackets_operation","int","var"])
-        this.prio = 1
-    }
-
-    operate(val){
-        if(val <= 0){
-            return "Math_error"
-        }
-        if(this.negative_sign){
-            return -Math.log10(val)
-        }else{
-            return Math.log10(val)
-        }
+        super("brackets_operation",left,"log(","log10(")
     }
 }
 
 class Ln_Element extends Math_Element{
     constructor(left){
-        super("brackets_operation",left,"ln(",["additive_operation","container_operation","brackets_operation","int","var"])
-        this.prio = 1
-    }
-
-    operate(val){
-        if(val <= 0){
-            return "Math_error"
-        }
-        if(this.negative_sign){
-            return -Math.log(val)
-        }else{
-            return Math.log(val)
-        }
+        super("brackets_operation",left,"ln(","log(")
     }
 }
 
 class Ans_Element extends Math_Element{
     constructor(left){
-        super("var",left,"Ans",["additive_operation","multi_operation","container", "brackets_close","sto"])
+        super("var",left,"Ans","")
     }
 
     get_value(){
-        if(this.negative_sign){
-            return -active_input_handler.parent_handler.results[active_input_handler.parent_handler.results.length - 1]
-        }else{
-            return active_input_handler.parent_handler.results[active_input_handler.parent_handler.results.length - 1]
-        }
+        return active_input_handler.parent_handler.results[active_input_handler.parent_handler.results.length - 1]
     }
 }
 
 class User_Var_Element extends Math_Element{
     constructor(left,var_name){
-        super("var",left,var_name,["additive_operation","multi_operation","container", "brackets_close","sto"])
+        super("var",left,var_name,"")
         this.var_name = var_name
     }
 
     get_value(){
         if(active_input_handler.parent_handler.user_var[this.var_name]){
-            if(this.negative_sign){
-                return -active_input_handler.parent_handler.user_var[this.var_name]
-            }else{
-                return active_input_handler.parent_handler.user_var[this.var_name]
-            }
+            return active_input_handler.parent_handler.user_var[this.var_name]
         }else{
             return 0
         }
@@ -612,7 +411,7 @@ class Const_Element extends Math_Element{
             "π",
             "e",
         ]
-        super("var",left,char_map[index],["additive_operation","multi_operation","container", "brackets_close","sto"])
+        super("var",left,char_map[index],"")
         this.index = index
     }
 
@@ -662,11 +461,7 @@ class Const_Element extends Math_Element{
             Math.E
         ]
 
-        if(this.negative_sign){
-            return -value_map[this.index]
-        }else{
-            return value_map[this.index]
-        }
+        return value_map[this.index]
     }
 }
 
@@ -676,67 +471,6 @@ class InputHandler{
         this.display_output_element = display_output_element;
         this.math_input_element = math_input_element;
         this.math_output_element = math_output_element;
-    }
-
-    identify_period(number) {
-        const number_as_string = number.toString();
-        const places_till_decimal = number_as_string.indexOf(".")
-
-        let possible_periods = []
-
-        for(let decimal_index = number_as_string.length - 1; decimal_index > places_till_decimal; decimal_index--){
-            let this_char = number_as_string[decimal_index]
-
-            if(possible_periods.length == 0){
-                possible_periods = [{string:this_char,index:0,repeats:1,ended:false}]
-            }else{
-                for(let period_index in possible_periods){
-                    let period = possible_periods[period_index]
-                    if(period.ended){
-                        continue
-                    }
-
-                    if(this_char == period.string[period.index]){
-                        period.index--
-                        if(period.index < 0){
-                            period.repeats++
-                            period.index = period.string.length - 1
-                        }
-                    }else{
-                        period.ended = true
-                    }
-                }
-
-                possible_periods.push({string:number_as_string.substring(decimal_index),index:number_as_string.length - decimal_index - 1,repeats:1,ended:false})
-            }
-        }
-
-        let best_period_index = -1
-        let most_digits_repeated = 0
-        let shortest_period_string_length = Infinity
-
-        for(let period_index in possible_periods){
-            let period = possible_periods[period_index]
-            let repeated_digits = period.repeats * period.string.length + period.string.length - period.index - 1
-            let period_string_length = period.string.length
-
-            if(repeated_digits >= 9 + period_string_length && (repeated_digits > most_digits_repeated || (repeated_digits == most_digits_repeated && period_string_length < shortest_period_string_length))){
-                best_period_index = period_index
-                most_digits_repeated = repeated_digits
-                shortest_period_string_length = period_string_length
-            }
-        }
-
-        if(best_period_index == -1){
-            return [number,false]
-        }else{
-            let best_period = possible_periods[best_period_index]
-            let shifted_period = best_period.string.substring(best_period.index + 1) + best_period.string.substring(0,best_period.index + 1)
-            let period_begin = number_as_string.length - most_digits_repeated
-            let num_without_period = number_as_string.substring(0,period_begin)
-
-            return [num_without_period,shifted_period]
-        }
     }
 
     round_to_significant_places(num,places){
@@ -990,8 +724,10 @@ class EquationInputHandler extends InputHandler{
 
     math_elements_to_string(math_elements,last_cursor_element,show_cursor) {
         let res = ""
+        let mathjs_res = ""
         let cursor_element = math_elements
         let placeholder_select = false
+        let sto
 
         while(cursor_element){
             switch(cursor_element.type){
@@ -1028,153 +764,29 @@ class EquationInputHandler extends InputHandler{
             if(show_cursor && cursor_element == last_cursor_element && !placeholder_select){
                 res += '<span class="cursor">\uE000</span>'
             }
+            if(sto){
+                mathjs_res = "syntax_error"
+            }else{
+                switch(cursor_element.type){
+                    case "var":
+                        mathjs_res += "(" + cursor_element.get_value() + ")"
+                    break;
+    
+                    case "sto":
+                        sto = cursor_element
+                    break;
+    
+                    default:
+                        mathjs_res += cursor_element.mathjs_value
+                    break;
+                }
+            }
             cursor_element = cursor_element.neighbors[2]
         }
 
         res += '\u00A0'
-
-        return res
-    }
-
-    add_implicit_multiplication(first_element) {
-        let next_element = first_element
-        let last_element;
-        while(next_element){
-            if(
-                ["var","brackets_operation","container_operation"].includes(next_element.type) &&
-                (
-                    !["container_operation","container","start","multi_operation","additive_operation","brackets_operation"].includes(last_element.type) ||
-                    (last_element.type == "container" && last_element.last_container)
-                )
-            ){
-                let this_implicit_multiplication = new Times_Element(last_element)
-                this_implicit_multiplication.neighbors[2] = next_element
-                next_element.neighbors[0] = this_implicit_multiplication
-            }
-            last_element = next_element
-            next_element = next_element.neighbors[2]
-        }
-    }
-//"var","container","container_operation", "brackets_close", "brackets_operation", "point_operation", "multi_operation", "additive_operation", "sto", "int", "start"
-
-    convert_operators_to_signs(first_element){
-        let next_element = first_element
-        let last_element;
-        let second_last_element;
-        while(next_element){
-            if(
-                next_element && last_element && second_last_element &&
-                !["container", "brackets_close", "point_operation", "multi_operation", "sto"].includes(next_element.type) &&
-                (
-                    ["multi_operation", "additive_operation","start","container_operation"].includes(second_last_element.type) ||
-                    (second_last_element.type == "container" && !second_last_element.last_container) ||
-                    (second_last_element.type == "point_operation" && second_last_element.operation_type == "pow10")
-                ) &&
-                ["additive_operation"].includes(last_element.type)
-            ){
-                if(last_element.operation_type == "-"){
-                    next_element.negate()
-                }
-                
-                second_last_element.neighbors[2] = next_element
-                next_element.neighbors[0] = second_last_element
-            }else{
-                second_last_element = last_element
-            }
-            last_element = next_element
-            next_element = next_element.neighbors[2]
-        }
-    }
-
-    calc_math_elements(current_element, last_operation_element, res=0) {
-        if(!current_element){
-            return [res,current_element]
-        }else if(current_element.neighbors[2] && current_element.allowed_right_neighbor[0] != "*" && !current_element.allowed_right_neighbor.includes(current_element.neighbors[2].type)){
-            return ["syntax_error",undefined]
-        }
-
-        switch(current_element.type){
-            case "int":
-                [res,current_element] = this.calc_math_elements(current_element.neighbors[2],last_operation_element,res * 10 + current_element.get_value())
-            break;
-
-            case "var":
-                [res,current_element] = this.calc_math_elements(current_element.neighbors[2],last_operation_element,current_element.get_value())
-            break;
-
-            case "start":
-                [res,current_element] = this.calc_math_elements(current_element.neighbors[2],current_element)
-                if(typeof res != "string" && current_element){
-                    return ["syntax_error",undefined]
-                }
-            break;
-
-            case "additive_operation":
-            case "multi_operation":
-            case "point_operation":
-            case "sto":
-                if(current_element.prio > last_operation_element.prio){
-                    let start_res = 0
-                    if(current_element.value == ","){
-                        start_res++
-                    }
-                    let [sub_res,sub_current_element] = this.calc_math_elements(current_element.neighbors[2],current_element,start_res)
-                    if(typeof sub_res == "string"){
-                        return [sub_res,undefined]
-                    }
-                    res = current_element.operate(res,sub_res)
-                    if(typeof res == "string"){
-                        return [res,undefined]
-                    }
-                    const result = this.calc_math_elements(sub_current_element, last_operation_element, res);
-                    [res, current_element] = result;
-                }
-            break;
-
-            case "brackets_operation":
-                // TODO machen das Klammern selber multiplizieren
-                const result = this.calc_math_elements(current_element.neighbors[2],current_element,0);
-                let [inside_res,bracket_close_element] = result;
-                if(typeof inside_res == "string"){
-                    return [inside_res,undefined]
-                }
-                if(!bracket_close_element){
-                    return ["syntax_error",undefined]
-                }
-
-                inside_res = current_element.operate(inside_res)
-                if(typeof inside_res == "string"){
-                    return [inside_res,undefined]
-                }
-                [res,current_element] = this.calc_math_elements(bracket_close_element.neighbors[2],last_operation_element,inside_res)
-            break;
-
-            case "container_operation":
-                // TODO machen das Klammern selber multiplizieren
-                const child_results = []
-                let current_container = current_element
-                for(let child_index = 0; child_index < current_element.children.length; child_index++){
-                    let [child_result,next_container_element] = this.calc_math_elements(current_container.neighbors[2],current_container,0)
-                    if(typeof child_result == "string"){
-                        return [child_result,undefined]
-                    }
-                    current_container = next_container_element
-                    if(!current_container){
-                        return ["syntax_error",undefined]
-                    }
-                    child_results.push(child_result)
-                }
-                let container_operation_res = current_element.operate(child_results);
-                if(typeof container_operation_res == "string"){
-                    return [container_operation_res,undefined]
-                }
-                current_element = current_container;
-                
-                [res,current_element] = this.calc_math_elements(current_element.neighbors[2],last_operation_element,container_operation_res);
-            break;
-        }
-
-        return [res,current_element]
+        console.log(mathjs_res)
+        return [res,mathjs_res,sto]
     }
 
     parse_input_code_history(input_code_history,show_cursor) {
@@ -1450,10 +1062,14 @@ class EquationInputHandler extends InputHandler{
         }
 
         if(calc_output){
-            let this_math_string = this.math_elements_to_string(res,cursor_element,false)
-            this.add_implicit_multiplication(res)
-            this.convert_operators_to_signs(res)
-            let this_result = this.calc_math_elements(res)[0]
+            let [this_input_string,this_output_string,sto] = this.math_elements_to_string(res,cursor_element,false)
+            let this_result
+            try {
+                this_result = parseFloat(math.evaluate(this_output_string))
+            } catch (error) {
+                this_result = "syntax_error"
+            }
+
             if(typeof this_result == "string"){
                 this.input_code_history.pop()
                 return [
@@ -1461,8 +1077,11 @@ class EquationInputHandler extends InputHandler{
                     ""
                 ]
             }else{
+                if(sto){
+                    sto.operate(this_result)
+                }
                 active_input_handler = this.parent_handler
-                this.parent_handler.input_strings[this.parent_handler.display_equation_index] = this_math_string
+                this.parent_handler.input_strings[this.parent_handler.display_equation_index] = this_input_string
                 this.parent_handler.results[this.parent_handler.display_equation_index] = this_result
                 this.parent_handler.update_display(false)
                 this.parent_handler.update_position()
@@ -1470,7 +1089,7 @@ class EquationInputHandler extends InputHandler{
             }
         }else{
             return [
-                this.math_elements_to_string(res,cursor_element,show_cursor),
+                this.math_elements_to_string(res,cursor_element,show_cursor)[0],
                 ""
             ]
         }
