@@ -27,6 +27,7 @@ fetch("changelog.txt")
         const changelog_content = document.getElementById("changelog-content")
         for(let line_index = 0; line_index < changelogLines.length; line_index++){
             let line = changelogLines[line_index]
+            line = line.replaceAll("- - ","- ")
             let line_class;
 
             if(line.startsWith("- Feature: ")){
