@@ -1,2 +1,2 @@
-- 1.2.9
-- bugfix for empty branch
+- 1.2.10
+- little bugfix
