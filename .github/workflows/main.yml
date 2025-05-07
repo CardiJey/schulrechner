@@ -97,7 +97,8 @@ jobs:
           
           # Push to branch and tag
           git tag -f "$FDROID_TAG"
-          git push origin $GRADLE_BRANCH --follow-tags
+          git push origin $GRADLE_BRANCH
+          git push origin "$FDROID_TAG"
 
       - name: Build Cordova project
         run: |
