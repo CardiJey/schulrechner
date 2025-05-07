@@ -143,34 +143,3 @@ jobs:
             platforms/android/app/build/outputs/apk/release/app-release.apk
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Push Gradle files to `fdroid-gradle` branch
-        run: |
-          GRADLE_BRANCH="fdroid-gradle"
-          TAG_NAME="${GITHUB_REF##*/}"
-          FDROID_TAG="fdroid/$TAG_NAME"
-
-          # Save Gradle files temporarily before switching directories
-          mkdir gradle-temp
-          cp -r platforms/android/* gradle-temp/
-
-          # Clone target branch or create it if it doesn't exist
-          git clone https://github.com/${{ github.repository }} temp-gradle
-          cd temp-gradle
-
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-
-          git checkout $GRADLE_BRANCH
-
-          # Clean branch and copy Gradle project files
-          git rm -rf . || true
-          cp -r ../gradle-temp/* .
-
-          # Commit and tag
-          git add .
-          git commit -m "Gradle project for F-Droid build of ${TAG_NAME}"
-          git tag -f "$FDROID_TAG"
-
-          # Push branch and tag
-          git push origin $GRADLE_BRANCH --follow-tags
