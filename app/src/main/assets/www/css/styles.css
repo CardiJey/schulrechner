@@ -1,0 +1,192 @@
+:root {
+    /* Farbe #3f4266 als CSS-Variable */
+    --main-color: #3f4266;
+}
+
+@font-face {
+    font-family: 'schulrechner';
+    src: url('../fonts/schulrechner.ttf') format('truetype');
+}
+
+@keyframes blink {
+    0%, 50% {
+        visibility: visible;
+    }
+    51%, 100% {
+        visibility: hidden;
+    }
+}
+
+body {
+    font-family: 'schulrechner', monospace;
+    font-size: 1rem;
+    color: var(--main-color);
+}
+
+svg {
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    top: 0;
+    left: 0;
+    box-sizing: border-box;
+}
+
+.math-div{
+    position: absolute;
+    padding-left: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    margin: 0;
+    padding-left: 0.111rem;
+    overflow: hidden;
+    scrollbar-width: 0;
+    white-space: nowrap;
+}
+
+#math-output {
+    text-align: right !important;
+    vertical-align: bottom;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    padding-top: 0;
+}
+
+#math-input {
+    text-align: left !important;
+    padding-top: 0.222rem;
+}
+
+[inkscape\3a label^="label_"] {
+    pointer-events: none;
+}
+
+[inkscape\3a label="display_input"] {
+    position: absolute;
+    overflow: hidden;
+    padding: 0;
+    margin: 0;
+    padding-left: 0.111rem;
+}
+
+
+[inkscape\3a label^="indicator_"] {
+    visibility: hidden;
+}
+
+.sqrt {
+    border-top: 0.111em solid var(--main-color);
+    padding-right: 0.222em;
+    padding-top: 0.111em;
+    display: inline-block;
+}
+
+.scale_height {
+    display: inline-block;
+    transform-origin: bottom;
+}
+
+.sqrt_wrapper {
+    display: inline-block;
+}
+
+.frac_wrapper {
+    display: inline-block;
+    text-align: center;
+    vertical-align: 0px;
+    /*height: calc(2 * 0.667rem + 3 * 0.111rem);*/
+    line-height: 1;
+    margin-right: 0.111rem;
+}
+
+.frac_top, .frac_bottom {
+    position: relative;
+    padding: 0;
+    margin: 0;
+    left: 0;
+    display: block;
+    padding-left: 0.111rem;
+    font-size: 0.667rem;
+    overflow: visible;
+    justify-content: center;
+}
+
+.frac_top {
+    align-items: flex-end;
+}
+
+.frac_bottom {
+    border-top: 0.111rem solid var(--main-color);
+    padding-top: 0.111rem;
+    margin-top: 0.111rem;
+}
+
+.cursor {
+    width: 0;
+    padding: 0;
+    margin: 0;
+    height: 1em;
+    animation: blink 1s infinite;
+}
+
+.period {
+    display: inline-block;
+    border-top: 0.111rem solid var(--main-color);
+}
+
+.pow_top {
+    display: inline-block;
+    vertical-align: 0.667em;
+    font-size: 0.667rem;
+}
+
+.pow_bottom {
+    display: inline-block;
+    padding-left: 0.2rem;
+}
+
+.logn_bottom {
+    display: inline-block;
+    vertical-align: -0.333em;
+    font-size: 0.667rem;
+}
+
+.pressed {
+    filter: brightness(85%);
+    transition: transform 0.1s, filter 0.1s;
+}
+
+.changelog-div {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    font-family: auto;
+    font-size: 0.8rem;
+    padding: 3vw;
+    overflow: hidden;
+    background-color: rgba(0,0,0,0.8);
+    color: white;
+    visibility: hidden;
+}
+
+#version-small {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    font-size: 0.6rem;
+}
+
+.changelog-feature, .changelog-bugfix, .changelog-tweak {
+    display: block;
+}
+
+.changelog-tweak {
+    color: gray;
+}
+
+.changelog-feature {
+    color: rgb(0,255,0);
+}

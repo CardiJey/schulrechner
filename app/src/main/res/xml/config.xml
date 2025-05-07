@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="io.cardijey.schulrechner" version="1.2.9" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>Schulrechner</name>
+    <description>A remake of a familiar calculator many know from school.</description>
+    <author email="your-email@example.com" href="https://yourwebsite.com">
+        Your Name
+    </author>
+    <content src="index.html" />
+    <allow-intent href="http://*/*" />
+    <allow-intent href="https://*/*" />
+    <access origin="*" />
+    <icon background="res/icon/android/background.xml" density="ldpi" foreground="res/icon/android/foreground.xml" monochrome="res/icon/android/monochrome.xml" src="www/img/android-icons/drawable-ldpi-icon.png" />
+    <icon background="res/icon/android/background.xml" density="mdpi" foreground="res/icon/android/foreground.xml" monochrome="res/icon/android/monochrome.xml" src="www/img/android-icons/drawable-mdpi-icon.png" />
+    <icon background="res/icon/android/background.xml" density="hdpi" foreground="res/icon/android/foreground.xml" monochrome="res/icon/android/monochrome.xml" src="www/img/android-icons/drawable-hdpi-icon.png" />
+    <icon background="res/icon/android/background.xml" density="xhdpi" foreground="res/icon/android/foreground.xml" monochrome="res/icon/android/monochrome.xml" src="www/img/android-icons/drawable-xhdpi-icon.png" />
+    <icon background="res/icon/android/background.xml" density="xxhdpi" foreground="res/icon/android/foreground.xml" monochrome="res/icon/android/monochrome.xml" src="www/img/android-icons/drawable-xxhdpi-icon.png" />
+    <icon background="res/icon/android/background.xml" density="xxxhdpi" foreground="res/icon/android/foreground.xml" monochrome="res/icon/android/monochrome.xml" src="www/img/android-icons/drawable-xxxhdpi-icon.png" />
+    <preference name="loglevel" value="DEBUG" />
+    <preference name="AndroidWindowSplashScreenAnimatedIcon" value="res/icon/android/splash.xml" />
+    <preference name="SplashScreenBackgroundColor" value="#000000" />
+</widget>
