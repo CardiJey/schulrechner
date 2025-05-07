@@ -1,2 +1,2 @@
-- 1.2.10
-- little bugfix
+- 1.2.11
+- gradle should now get tags too
