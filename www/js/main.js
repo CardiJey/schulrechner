@@ -141,8 +141,23 @@ class Math_Element {
         this.mathjs_value = mathjs_value
     }
 
-    negate(){
-        this.negative_sign = !this.negative_sign
+    set_neighbor(dir,neighbor){
+        this.neighbors[dir] = neighbor
+    }
+
+    set_container_neighbors(neighbors){
+        for (let dir = 1; dir <= 3; dir = dir + 2){
+            let neighbor = neighbors[dir]
+            if(neighbor){
+                let element = this
+                while(element != this.children[this.children.length - 1].neighbors[2]){
+                    if(!element.neighbors[dir]){
+                        element.neighbors[dir] = neighbor
+                    }
+                    element = element.neighbors[2]
+                }
+            }
+        }
     }
 }
 
@@ -232,6 +247,20 @@ class Frac_Element extends Math_Element{
             this.children = [
                 new Container_Element(first_element,"</span><span class='frac_bottom alignRight" + align_id + "'>","][1]/[",this,false)
             ]
+
+            let block_elements = []
+            let element = first_element
+            while(element != last_element.neighbors[0]){
+                block_elements.push(element)
+                element = element.neighbors[0]
+            }
+            element = first_element
+            while(element != last_element.neighbors[0]){
+                if(!element.neighbors[1] || !block_elements.includes(element.neighbors[1])){
+                    element.neighbors[1] = this.children[0]
+                }
+                element = element.neighbors[0]
+            }
         }else{
             this.children = [
                 new Container_Element(this,"</span><span class='frac_bottom alignRight" + align_id + "'>","][1]/[",this,false)
@@ -242,12 +271,35 @@ class Frac_Element extends Math_Element{
             new Container_Element(this.children[0],"</span></span>","][1])",this,true)
         )
         this.neighbors[1] = this.children[0]
-        this.children[0].neighbors[3] = this
+        this.children[0].neighbors[3] = this.children[0]
 
         if(last_element){
             this.skip_to_element_after_creation = this.children[0]
         }
+    }/*
+
+    set_container_neighbors(copy_from){
+        for (let dir = 1; dir <= 3; dir = dir + 2){
+            let neighbor = copy_from.neighbors[dir]
+            if(neighbor){
+                let element = this
+                while(element != this.children[this.children.length - 1].neighbors[2]){
+                    element.neighbors[dir] = neighbor
+                    element = element.neighbors[2]
+                }
+            }
+        }
     }
+
+    set_container_neighbors(copy_from){
+        for (let dir = 1; dir <= 3; dir = dir + 2){
+            let neighbor = copy_from.neighbors[dir]
+            if(neighbor){
+                [this.children[0],this][(dir - 1)/2].neighbors[dir] = neighbor
+                this.children[1].neighbors[dir] = neighbor
+            }
+        }
+    }*/
 }
 
 class Sqrt_Element extends Math_Element{
@@ -308,6 +360,18 @@ class Container_Element extends Math_Element{
         super("container",left,value,mathjs_value)
         this.parent = parent
         this.last_container = last_container
+    }
+
+    set_neighbor(dir,neighbor){
+        if(!this.last_container){
+            let next_element = this.neighbors[2]
+            while(!is_family(next_element,this)){
+                if(!next_element.neighbors[dir]){
+                    next_element.neighbors[dir] = neighbor
+                }
+            }
+        }
+        super.set_neighbor(dir,neighbor)
     }
 }
 
@@ -786,7 +850,6 @@ class EquationInputHandler extends InputHandler{
         }
 
         res += '\u00A0'
-        console.log(mathjs_res)
         return [res,mathjs_res,sto]
     }
 
@@ -797,9 +860,13 @@ class EquationInputHandler extends InputHandler{
 
         for (const input_index in input_code_history) {
             let input_code = input_code_history[input_index]
-            let old_cursor_element = cursor_element
-            let old_right_neighbour = old_cursor_element.neighbors[2]
-            let new_element;
+            let old_neighbors = [
+                cursor_element.neighbors[0],
+                cursor_element.neighbors[1],
+                cursor_element.neighbors[2],
+                cursor_element.neighbors[3]
+            ]
+            let new_elements = [];
 
             switch(input_code){
                 case "key_0":
@@ -812,8 +879,8 @@ class EquationInputHandler extends InputHandler{
                 case "key_7":
                 case "key_8":
                 case "key_9":
-                    new_element = new Int_Element(cursor_element,input_code.substring(4))
-                    cursor_element = new_element
+                    new_elements.push(new Int_Element(cursor_element,input_code.substring(4)))
+                    cursor_element = new_elements[0]
                 break;
 
                 case "key_dir1":
@@ -828,6 +895,9 @@ class EquationInputHandler extends InputHandler{
                     var dir = input_code.substring(7)
                     if(cursor_element.neighbors[dir]){
                         cursor_element = cursor_element.neighbors[dir]
+                        if(dir == 3){
+                            cursor_element = cursor_element.neighbors[0]
+                        }
                     }
                 break;
 
@@ -853,8 +923,8 @@ class EquationInputHandler extends InputHandler{
                 break;
                 
                 case "key_Ans":
-                    new_element = new Ans_Element(cursor_element)
-                    cursor_element = new_element
+                    new_elements.push(new Ans_Element(cursor_element))
+                    cursor_element = new_elements[0]
                     break;
 
                 case "key_uservar_A":
@@ -866,18 +936,18 @@ class EquationInputHandler extends InputHandler{
                 case "key_uservar_X":
                 case "key_uservar_Y":
                 case "key_uservar_M":
-                    new_element = new User_Var_Element(cursor_element,input_code.substring(12))
-                    cursor_element = new_element
+                    new_elements.push(new User_Var_Element(cursor_element,input_code.substring(12)))
+                    cursor_element = new_elements[0]
                     break;
                 
                 case "key_pi":
-                    new_element = new Const_Element(cursor_element,40)
-                    cursor_element = new_element
+                    new_elements.push(new Const_Element(cursor_element,40))
+                    cursor_element = new_elements[0]
                     break;
                 
                 case "key_e":
-                    new_element = new Const_Element(cursor_element,41)
-                    cursor_element = new_element
+                    new_elements.push(new Const_Element(cursor_element,41))
+                    cursor_element = new_elements[0]
                     break;
 
 
@@ -900,111 +970,113 @@ class EquationInputHandler extends InputHandler{
                         while(cursor_element.neighbors[2]){
                             cursor_element = cursor_element.neighbors[2]
                         }
-                        new_element = new Sto_Element(cursor_element,input_code.substring(8))
-                        cursor_element = new_element
+                        new_elements.push(new Sto_Element(cursor_element,input_code.substring(8)))
+                        cursor_element = new_elements[0]
                     }
                     break;
                 
                 case "key_comma":
-                    new_element = new Point_Element(cursor_element)
-                    cursor_element = new_element
+                    new_elements.push(new Point_Element(cursor_element))
+                    cursor_element = new_elements[0]
                     break;
                 
                 case "key_pow10":
-                    new_element = new Pow10_Element(cursor_element)
-                    cursor_element = new_element
+                    new_elements.push(new Pow10_Element(cursor_element))
+                    cursor_element = new_elements[0]
                     break;
 
                 case "key_x":
-                    new_element = new Times_Element(cursor_element)
-                    cursor_element = new_element
+                    new_elements.push(new Times_Element(cursor_element))
+                    cursor_element = new_elements[0]
                     break;
 
                 case "key_÷":
-                    new_element = new Div_Element(cursor_element)
-                    cursor_element = new_element
+                    new_elements.push(new Div_Element(cursor_element))
+                    cursor_element = new_elements[0]
                     break;
 
                 case "key_+":
-                    new_element = new Plus_Element(cursor_element)
-                    cursor_element = new_element
+                    new_elements.push(new Plus_Element(cursor_element))
+                    cursor_element = new_elements[0]
                     break;
 
                 case "key_-":
-                    new_element = new Minus_Element(cursor_element)
-                    cursor_element = new_element
+                    new_elements.push(new Minus_Element(cursor_element))
+                    cursor_element = new_elements[0]
                     break;
 
                 case "key_(":
-                    new_element = new Brackets_Element(cursor_element)
-                    cursor_element = new_element
+                    new_elements.push(new Brackets_Element(cursor_element))
+                    cursor_element = new_elements[0]
                     break;
                 
                 case "key_)":
-                    new_element = new Brackets_Close_Element(cursor_element)
-                    cursor_element = new_element
+                    new_elements.push(new Brackets_Close_Element(cursor_element))
+                    cursor_element = new_elements[0]
                     break;
 
                 case "key_sin":
-                    new_element = new Sin_Element(cursor_element)
-                    cursor_element = new_element
+                    new_elements.push(new Sin_Element(cursor_element))
+                    cursor_element = new_elements[0]
                     break;
 
                 case "key_cos":
-                    new_element = new Cos_Element(cursor_element)
-                    cursor_element = new_element
+                    new_elements.push(new Cos_Element(cursor_element))
+                    cursor_element = new_elements[0]
                     break;
 
                 case "key_tan":
-                    new_element = new Tan_Element(cursor_element)
-                    cursor_element = new_element
+                    new_elements.push(new Tan_Element(cursor_element))
+                    cursor_element = new_elements[0]
                     break;
 
                 case "key_log":
-                    new_element = new Log_Element(cursor_element)
-                    cursor_element = new_element
+                    new_elements.push(new Log_Element(cursor_element))
+                    cursor_element = new_elements[0]
                     break;
 
                 case "key_ln":
-                    new_element = new Ln_Element(cursor_element)
-                    cursor_element = new_element
+                    new_elements.push(new Ln_Element(cursor_element))
+                    cursor_element = new_elements[0]
                     break;
 
                 case "key_frac":
-                    new_element = new Frac_Element(cursor_element)
-                    cursor_element = new_element
+                    new_elements.push(new Frac_Element(cursor_element))
+                    cursor_element = new_elements[0]
                     break;
 
                 case "key_sqrt":
-                    new_element = new Sqrt_Element(cursor_element)
-                    cursor_element = new_element
+                    new_elements.push(new Sqrt_Element(cursor_element))
+                    cursor_element = new_elements[0]
                     break;
 
                 case "key_pown":
-                    new_element = new Pow_Element(cursor_element,false)
-                    cursor_element = new_element
+                    new_elements.push(new Pow_Element(cursor_element,false))
+                    cursor_element = new_elements[0]
                     break;
 
                 case "key_pow2":
-                    new_element = new Pow_Element(cursor_element,true)
-                    cursor_element = new_element
+                    new_elements.push(new Pow_Element(cursor_element,true))
+                    cursor_element = new_elements[0]
                     var prefilled_element = new Int_Element(cursor_element.children[0],2)
+                    new_elements.push(prefilled_element)
                     prefilled_element.neighbors[2] = cursor_element.children[1]
                     cursor_element.children[1].neighbors[0] = prefilled_element
                     break;
 
                 case "key_pow-1":
-                    new_element = new Pow_Element(cursor_element,true)
-                    cursor_element = new_element
+                    new_elements.push(new Pow_Element(cursor_element,true))
+                    cursor_element = new_elements[0]
                     var prefilled_element1 = new Minus_Element(cursor_element.children[0])
                     var prefilled_element2 = new Int_Element(prefilled_element1,1)
+                    new_elements.push(prefilled_element1,prefilled_element2)
                     prefilled_element2.neighbors[2] = cursor_element.children[1]
                     cursor_element.children[1].neighbors[0] = prefilled_element2
                     break;
 
                 case "key_logn":
-                    new_element = new Logx_Element(cursor_element)
-                    cursor_element = new_element
+                    new_elements.push(new Logx_Element(cursor_element))
+                    cursor_element = new_elements[0]
                     break;
 
                 case "key_del":
@@ -1019,18 +1091,29 @@ class EquationInputHandler extends InputHandler{
                         case "container_operation":
                             let elements_to_delete = [cursor_element].concat(cursor_element.children)
                             cursor_element = cursor_element.neighbors[0]
-                            for(let delete_index = 0; delete_index < elements_to_delete.length; delete_index++){
-                                let element_to_delete = elements_to_delete[delete_index]
-                                element_to_delete.neighbors[0].neighbors[2] = element_to_delete.neighbors[2]
-                                if(element_to_delete.neighbors[0].neighbors[2]){
-                                    element_to_delete.neighbors[0].neighbors[2].neighbors[0] = element_to_delete.neighbors[0]
+                            let element = elements_to_delete[elements_to_delete.length - 1]
+                            while(element != elements_to_delete[0].neighbors[0]){
+                                if(elements_to_delete.includes(element)){
+                                    element.neighbors[0].neighbors[2] = element.neighbors[2]
+                                    if(element.neighbors[0].neighbors[2]){
+                                        element.neighbors[0].neighbors[2].neighbors[0] = element.neighbors[0]
+                                    }
+                                }else{
+                                    if(elements_to_delete.includes(element.neighbors[1])){
+                                        element.neighbors[1] = elements_to_delete[elements_to_delete.length - 1].neighbors[1]
+                                    }
+
+                                    if(elements_to_delete.includes(element.neighbors[3])){
+                                        element.neighbors[3] = elements_to_delete[elements_to_delete.length - 1].neighbors[3]
+                                    }
                                 }
+                                element = element.neighbors[0]
                             }
                             break;
 
                         default:
                             cursor_element = cursor_element.neighbors[0]
-                            cursor_element.neighbors[2] = old_cursor_element.neighbors[2]
+                            cursor_element.neighbors[2] = old_neighbors[2]
                             if(cursor_element.neighbors[2]){
                                 cursor_element.neighbors[2].neighbors[0] = cursor_element
                             }
@@ -1038,26 +1121,32 @@ class EquationInputHandler extends InputHandler{
                     break;
             }
 
-            if(new_element){
-                if(new_element.skip_to_element_after_creation){
-                    cursor_element = new_element.skip_to_element_after_creation
+            if(new_elements.length > 0){
+                if(new_elements[0].skip_to_element_after_creation){
+                    cursor_element = new_elements[0].skip_to_element_after_creation
                 }
                 
-                if(old_right_neighbour){
-                    if(new_element.children){
-                        let last_child = new_element.children[new_element.children.length - 1]
-                        last_child.neighbors[2] = old_right_neighbour
-                        old_right_neighbour.neighbors[0] = last_child
+                if(old_neighbors[2]){
+                    if(new_elements[0].children){
+                        let last_child = new_elements[0].children[new_elements[0].children.length - 1]
+                        last_child.neighbors[2] = old_neighbors[2]
+                        old_neighbors[2].neighbors[0] = last_child
                     }else{
-                        new_element.neighbors[2] = old_right_neighbour
-                        old_right_neighbour.neighbors[0] = new_element
+                        new_elements[0].neighbors[2] = old_neighbors[2]
+                        old_neighbors[2].neighbors[0] = new_elements[0]
                     }
                 }
-                if(!new_element.neighbors[1]){
-                    new_element.neighbors[1] = old_cursor_element.neighbors[1]
-                }
-                if(!new_element.neighbors[3]){
-                    new_element.neighbors[3] = old_cursor_element.neighbors[3]
+                for(let new_element_index = 0; new_element_index < new_elements.length; new_element_index++){
+                    if(new_elements[new_element_index].type == "container_operation"){
+                        new_elements[new_element_index].set_container_neighbors(old_neighbors)
+                    }else{
+                        if(!new_elements[new_element_index].neighbors[1]){
+                            new_elements[new_element_index].set_neighbor(1,old_neighbors[1])
+                        }
+                        if(!new_elements[new_element_index].neighbors[3]){
+                            new_elements[new_element_index].set_neighbor(3,old_neighbors[3])
+                        }
+                    }
                 }
             }
         }
