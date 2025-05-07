@@ -69,9 +69,38 @@ jobs:
       - name: Install Cordova
         run: npm install -g cordova
 
-      - name: Prepare and build Cordova project
+      - name: Prepare Android Gradle project
         run: |
           cordova platform add android
+
+      - name: Push Gradle project to fdroid-gradle branch
+        run: |
+          GRADLE_BRANCH="fdroid-gradle"
+          TAG_NAME="${GITHUB_REF##*/}"
+          FDROID_TAG="fdroid/$TAG_NAME"
+
+          # Clone with access token for pushing
+          git clone --depth=1 --single-branch --branch $GRADLE_BRANCH https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }} temp-gradle
+          cd temp-gradle
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          # Remove all contents from fdroid-gradle branch
+          git rm -rf .
+
+          # Copy unbuilt Android project
+          cp -r ../platforms/android/* .
+
+          git add .
+          git commit -m "Gradle project for F-Droid build of ${TAG_NAME}" || echo "No changes to commit"
+          
+          # Push to branch and tag
+          git tag -f "$FDROID_TAG"
+          git push origin $GRADLE_BRANCH --follow-tags
+
+      - name: Build Cordova project
+        run: |
           cordova build android --release "--" --packageType=apk
 
       - name: Decode Keystore from secret
@@ -144,5 +173,4 @@ jobs:
           git tag -f "$FDROID_TAG"
 
           # Push branch and tag
-          git push origin $GRADLE_BRANCH --force
-          git push origin "$FDROID_TAG" --force
+          git push origin $GRADLE_BRANCH --follow-tags
