@@ -87,7 +87,7 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
           # Remove all contents from fdroid-gradle branch
-          git rm -rf .
+          git rm -rf . --ignore-unmatch
 
           # Copy unbuilt Android project
           cp -r ../platforms/android/* .
