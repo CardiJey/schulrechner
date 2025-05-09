@@ -1,0 +1,34 @@
+<b>This is a very early version in development.
+Unlabeled buttons will be implemented in the future, and bugs may be frequent. If you experience issues or have feature requests, please file an issue (link below).</b>
+
+Frustrated by the lack of free, open-source scientific calculators that feel like the ones I am used to, I decided to reverse-engineer my old calculator from school.
+
+With features like:
+
+- input of complex equations,
+
+- output as fractions as well as decimals,
+
+- result storage and reuse,
+
+- selection and editing of equations from input history,
+
+- and support for implicit multiplication (like 5π instead of 5*π),
+
+this calculator produces math that looks like the math on your paper. That makes it much more suitable for higher-level math in school and university—especially if you've grown accustomed to this kind of interface from a young age and just forgot your calculator at home.
+
+Some additional features include:
+
+- A well-established open-source math.js library as the math engine—so you’re not relying on some sketchy, hand-rolled math logic (just my sketchy hand-rolled input method 😛)
+
+- A familiar, intuitive design
+
+- 100% offline usability and fully open source
+
+- Written entirely in HTML, JS, and CSS, which means:
+
+	+ inherently cross-platform (a Flatpak release is planned)
+
+	+ easy for other web developers to contribute
+
+	+ admittedly a bit heavy for a calculator. If you're interested in helping make a lighter version (Flutter, Kotlin, etc.), you're very welcome!

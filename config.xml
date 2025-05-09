@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="io.cardijey.schulrechner" version="Set automatically by update_version.js" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Schulrechner</name>
-    <description>A remake of a familiar calculator many know from school.</description>
-    <author email="your-email@example.com" href="https://yourwebsite.com">
-        Your Name
+    <description>The calculator you know from school</description>
+    <author email="joris.scholl@posteo.de" href="https://cardijey.github.io/">
+        Joris Yidong Scholl
     </author>
 
     <!-- Point to your index.html -->

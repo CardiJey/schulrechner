@@ -3,7 +3,7 @@
   "displayName": "Schulrechner",
   "version": "1.2.17",
   "versionCode": 10217,
-  "description": "A remake of a familiar calculator many know from school.",
+  "description": "The calculator you know from school",
   "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -12,13 +12,13 @@
   },
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "https://github.com/CardiJey/schulrechner"
   },
   "keywords": [
     "ecosystem:cordova"
   ],
-  "author": "CardiJey",
-  "license": "ISC",
+  "author": "Joris Yidong Scholl",
+  "license": "GPL-3.0-only",
   "devDependencies": {
     "cordova": "^12.0.0",
     "cordova-android": "^14.0.0",

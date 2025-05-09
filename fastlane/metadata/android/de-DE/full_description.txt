@@ -1,0 +1,33 @@
+<b>Dies ist eine sehr frühe Version in der Entwicklung. Unbeschriftete Tasten werden in naher Zukunft implementiert, und Bugs können häufig auftreten. Wenn du auf Probleme stößt oder Feature-Wünsche hast, erstelle bitte ein Issue (Link unten).</b>
+
+Frustriert über den Mangel an freien, Open-Source wissenschaftlichen Taschenrechnern, die sich vertraut anfühlen, habe ich beschlossen, meinen alten Taschenrechner nachzubasteln.
+
+Mit Funktionen wie:
+
+- Eingabe komplexer Gleichungen,
+
+- Ausgabe als Brüche sowie Dezimalzahlen,
+
+- Speichern und Wiederverwenden von Ergebnissen,
+
+- Auswahl und Bearbeitung von Gleichungen aus dem Eingabeverlauf,
+
+- und Unterstützung für implizite Multiplikation (wie 5π statt 5*π),
+
+erzeugt dieser Rechner Gleichungen, die aussehen wie die auf deinem Papier. Das macht ihn deutlich besser geeignet für höhere Mathematik in Schule und Uni – besonders wenn du von klein auf an diese Art der Bedienung gewöhnt bist und gerade deinen Taschenrechner vergessen hast.
+
+Einige zusätzliche Features:
+
+- Eine etablierte Open-Source-Bibliothek (math.js) berechnet die Ergebnisse. Du verlässt dich also nicht auf irgendeine unzuverlässige Eigenentwicklung (nur auf meine Marke-Eigenbau Eingabemethode 😛)
+
+- Ein vertrautes, intuitives Design
+
+- 100 % offline nutzbar und vollständig Open-Source
+
+- Komplett in HTML, JS und CSS geschrieben, was bedeutet:
+
+	+ plattformübergreifend (ein Flatpak release ist angesetzt)
+
+	+ einfacher Einstieg als Webentwickler*innen, falls ihr mitarbeiten wollt.
+
+	+ zugegeben etwas schwergewichtig für einen Taschenrechner. Wenn du Interesse hast, eine leichtere Version (Flutter, Kotlin etc.) mitzuentwickeln, bist du herzlich willkommen!
