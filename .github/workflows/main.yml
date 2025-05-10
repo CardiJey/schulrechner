@@ -29,6 +29,15 @@ jobs:
         run: |
           npm install
 
+      - name: Build and move math.js bundle
+        run: |
+          git submodule update --init --recursive
+          cd mathjs
+          npm install
+          npm run build
+          cd ..
+          mv mathjs/lib/browser/math.js www/js/math.js
+
       - name: Update XML Version and Copy Fastlane Changelog
         run: npm run update_version
 
