@@ -1,5 +1,19 @@
 # SCHULRECHNER
 
+This is the repository for the Schulrechner App.
+You can get the APK directly from the releases https://github.com/CardiJey/schulrechner/releases/latest/ or from F-Droid (Release upcoming!).
+Alternatively you can build it yourself by installing [Cordova](https://cordova.apache.org/) and then running
+
+	cordova platform add android
+	
+	cordova build android --release "--" --packageType=apk
+
+or just take a look at how it is done in the [Github CI](https://github.com/CardiJey/schulrechner/blob/main/.github/workflows/main.yml).
+
+# Contributing
+
+If you want to contribute, just fork this repo and create a merge request. Please also create a quick issue with the label "Feature Request" where you describe what you plan to contribute. Maybe someone is already working on that.
+
 # Copyright
 
 https://github.com/CardiJey/schulrechner
