@@ -12,6 +12,7 @@ fetch("version.txt")
 
         document.getElementById("version").innerText = "What's new in " + version + "?";
         document.getElementById("version-small").innerText = version;
+        fetchChangelog(version.endsWith(".0"))
     })
     .catch((e) => console.error(e));
 
@@ -28,23 +29,26 @@ fetch("versionCode.txt")
     })
     .catch((e) => console.error(e));
 
-async function fetchChangelog() {
+async function fetchChangelog(fdroid) {
     const langsToTry = [];
-    
-    // Normalize language code (e.g., en_US → en-US)
-    const normalizedLang = userLang.replace('_', '-');
-    
-    // Break apart lang subtags (e.g., 'en-GB' → ['en-GB', 'en'])
-    if (normalizedLang.includes('-')) {
-        langsToTry.push(normalizedLang);
-        langsToTry.push(normalizedLang.split('-')[0]);
-    } else {
-        langsToTry.push(normalizedLang);
-    }
-    
-    // Always fall back to 'en-US'
-    if (!langsToTry.includes('en-US')) {
-        langsToTry.push('en-US');
+    if(fdroid){
+        // Normalize language code (e.g., en_US → en-US)
+        const normalizedLang = userLang.replace('_', '-');
+        
+        // Break apart lang subtags (e.g., 'en-GB' → ['en-GB', 'en'])
+        if (normalizedLang.includes('-')) {
+            langsToTry.push(normalizedLang);
+            langsToTry.push(normalizedLang.split('-')[0]);
+        } else {
+            langsToTry.push(normalizedLang);
+        }
+        
+        // Always fall back to 'en-US'
+        if (!langsToTry.includes('en-US')) {
+            langsToTry.push('en-US');
+        }
+    }else{
+        langsToTry.push("commit_messages")
     }
     
     for (const lang of langsToTry) {
@@ -86,8 +90,6 @@ async function fetchChangelog() {
     
     throw new Error('No changelog available in any language.');
 }
-
-fetchChangelog()
 
 function toggle_changelog(){
     changelog_visible = !changelog_visible

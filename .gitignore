@@ -12,5 +12,7 @@ node_modules/
 dist/
 www/vendor
 *.jks
-www/changelog.txt
 temp/
+www/changelog
+www/versionCode.txt
+www/version.txt
