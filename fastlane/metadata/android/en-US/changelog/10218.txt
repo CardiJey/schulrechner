@@ -1,7 +1,0 @@
-This is a test Changelog
-
-- Feature: Test 1
-- Tweak: test 2
-- Bugfix: Test3
-
-See you!
