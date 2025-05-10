@@ -26,6 +26,10 @@ fs.writeFileSync(versionCodeTxtFilePath, packageJson.versionCode.toString(), 'ut
 
 // Get all changelog .txt files in fastlane structure
 const files = glob.sync('fastlane/metadata/android/*/changelog/' + packageJson.versionCode + '.txt');
+const destDir = path.join('www', 'changelog');
+
+// Ensure destination directory exists
+fs.mkdirSync(destDir, { recursive: true });
 
 files.forEach(file => {
   // Extract language and file name
@@ -33,11 +37,7 @@ files.forEach(file => {
   const lang = parts[3]; // e.g., 'en-US'
   const filename = lang + ".txt"
 
-  const destDir = path.join('www', 'changelog');
   const destPath = path.join(destDir, filename);
-
-  // Ensure destination directory exists
-  fs.mkdirSync(destDir, { recursive: true });
 
   // Copy file
   fs.copyFileSync(file, destPath);
