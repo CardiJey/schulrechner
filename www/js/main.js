@@ -2,51 +2,92 @@ let active_input_handler;
 let next_align_id = 0
 let changelog_visible = false
 let version;
+let versionCode;
+let userLang = navigator.language || navigator.userLanguage;
 
-fetch("changelog.txt")
+fetch("version.txt")
     .then((res) => res.text())
     .then((text) => {
-        const lines = text.trim().split("\n");
-
-        if (lines.length === 0) return;
-
-        const versionLine = lines[0]; // First line is the version, e.g. "- 1.1.10"
-        const version = versionLine.replace(/^- /, "").trim(); // remove leading "- "
+        version = text.trim()
 
         document.getElementById("version").innerText = "What's new in " + version + "?";
         document.getElementById("version-small").innerText = version;
+    })
+    .catch((e) => console.error(e));
 
-        const lastSeenVersion = localStorage.getItem("lastSeenVersion");
-        if (lastSeenVersion !== version) {
+fetch("versionCode.txt")
+    .then((res) => res.text())
+    .then((text) => {
+        versionCode = text.trim()
+
+        const lastSeenVersionCode = localStorage.getItem("lastSeenVersionCode");
+        if (lastSeenVersionCode !== versionCode) {
             toggle_changelog(); // Show changelog automatically
-            localStorage.setItem("lastSeenVersion", version);
-        }
-
-        // The rest is the actual changelog
-        const changelogLines = lines.slice(1);
-        const changelog_content = document.getElementById("changelog-content")
-        for(let line_index = 0; line_index < changelogLines.length; line_index++){
-            let line = changelogLines[line_index]
-            line = line.replaceAll("- - ","- ")
-            let line_class;
-
-            if(line.startsWith("- Feature: ")){
-                line_class = "changelog-feature"
-            }else if(line.startsWith("- Bugfix: ")){
-                line_class = "changelog-bugfix"
-            }else if(line.startsWith("- Tweak: ")){
-                line_class = "changelog-tweak"
-            }else{
-                continue
-            }
-
-            let line_element = document.createElement("span")
-            line_element.classList.add(line_class)
-            line_element.innerText = line
-            changelog_content.appendChild(line_element)
+            localStorage.setItem("lastSeenVersionCode", versionCode);
         }
     })
     .catch((e) => console.error(e));
+
+async function fetchChangelog() {
+    const langsToTry = [];
+    
+    // Normalize language code (e.g., en_US → en-US)
+    const normalizedLang = userLang.replace('_', '-');
+    
+    // Break apart lang subtags (e.g., 'en-GB' → ['en-GB', 'en'])
+    if (normalizedLang.includes('-')) {
+        langsToTry.push(normalizedLang);
+        langsToTry.push(normalizedLang.split('-')[0]);
+    } else {
+        langsToTry.push(normalizedLang);
+    }
+    
+    // Always fall back to 'en-US'
+    if (!langsToTry.includes('en-US')) {
+        langsToTry.push('en-US');
+    }
+    
+    for (const lang of langsToTry) {
+        const url = `changelog/${lang}.txt`;
+        try {
+            const response = await fetch(url);
+            if (response.ok) {
+                let text = await response.text();
+
+                const lines = text.trim().split("\n");
+        
+                const changelog_content = document.getElementById("changelog-content")
+                for(let line_index = 0; line_index < lines.length; line_index++){
+                    let line = lines[line_index]
+                    line = line.replaceAll("- - ","- ")
+                    let line_class;
+
+                    if(line.startsWith("- Feature: ")){
+                        line_class = "changelog-feature"
+                    }else if(line.startsWith("- Bugfix: ")){
+                        line_class = "changelog-bugfix"
+                    }else if(line.startsWith("- Tweak: ")){
+                        line_class = "changelog-tweak"
+                    }
+
+                    let line_element = document.createElement("span")
+                    if(line_class){
+                        line_element.classList.add(line_class)
+                    }
+                    line_element.innerText = line
+                    changelog_content.appendChild(line_element)
+                }
+                return
+            }
+        } catch (err) {
+        // ignore and try next
+        }
+    }
+    
+    throw new Error('No changelog available in any language.');
+}
+
+fetchChangelog()
 
 function toggle_changelog(){
     changelog_visible = !changelog_visible

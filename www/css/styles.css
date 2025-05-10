@@ -179,7 +179,7 @@ svg {
     font-size: 0.6rem;
 }
 
-.changelog-feature, .changelog-bugfix, .changelog-tweak {
+#changelog-content span {
     display: block;
 }
 
