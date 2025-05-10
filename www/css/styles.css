@@ -179,6 +179,10 @@ svg {
     font-size: 0.6rem;
 }
 
+#changelog {
+    overflow-y: scroll;
+}
+
 #changelog-content span {
     display: block;
 }
