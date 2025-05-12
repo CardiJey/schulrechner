@@ -1,0 +1,11 @@
+{
+  "background_color": "#FFF",
+  "display": "standalone",
+  "name": "Schulrechner",
+  "short_name": "Schulrechner",
+  "version": "io.cardijey.schulrechner",
+  "description": "The calculator you know from school",
+  "author": "Joris Yidong Scholl",
+  "icons": [],
+  "start_url": "index.html"
+}

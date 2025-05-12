@@ -1,0 +1,202 @@
+- 1.4.2
+- Switched versioncode to 1.4.2
+- Feature: Added Browser release building
+- 1.4.0
+- postponed first fdroid release to 1.4.0
+- 1.3.4
+- updated versionCode
+- Bugfix: Switched to mathjs https link
+- 1.3.3
+- updated versionCode to 1.3.3
+- Tweak: Switched from ready built math.js bundle to building it from source
+- 1.3.2
+- updated versioncode to 1.3.2
+- Tweak: Git commits now scroll
+- Bugfix: update_version now definitely creates folder
+- 1.3.1
+- changed versionCode to 10301
+- Feature: Main FDroid versions now display fastlane changelog, while patch versions display git commits
+- 1.3.0
+- changed versionCode to 1.3.0
+- 1.2.18
+- Changelog now bases on fastlane files
+- Added proper readme
+- adjusted featuregraphic without alpha channel
+- Feature: Added More Store Page Details
+- Feature: Added F-Droid store information and licensing
+- 1.2.17
+- manually adjusting versionCode for now
+- 1.2.16
+- removed version file again
+- 1.2.15
+- removed v before version for fdroid
+- 1.2.14
+- trying different fdroid build process
+- 1.2.13
+- small bugfix
+- 1.2.12
+- hardcoded gradle version
+- 1.2.11
+- gradle should now get tags too
+- 1.2.10
+- little bugfix
+- 1.2.9
+- bugfix for empty branch
+- 1.2.8
+- trying to fix gradle uploading
+- 1.2.7
+- fiexed gradle upload
+- 1.2.6
+- added CI action to push gradle files
+- Bugfix: Moving up and down in a fraction should now work properly
+- 1.2.5
+- Bugfix: Bugfix with double dash now also display correctly
+- Feature: Switched to math.js math engine. Now you don't have to rely on my wonky math engine
+- Feature: power now selects exponent automatically
+- - Bugfix: Pow doesnt ignore sign anymore
+- 1.2.1
+- Bugfix: PI works again
+- Feature: Errors are now split into syntax and math error
+- Bugfix: Comma works again
+- Bugfix: Nested Operations now work again
+- 1.1.16
+- Bugfix: Changelog now lists all changes, even if hotfix has been pushed
+- Bugfix: Fractions now display properly again
+- Feature: You can now use Minus as a sign and not only as an operation
+- lower pow10 prio a bit, so it does not come before a comma
+- Feature: Added x10
+- Bugfix: Fixed Point or Comma not working
+- Feature: Added user variables ABCDEF and XY and M
+- Feature: Added e
+- Feature: Added Alpha Button
+- Tweak: Adjusted brackets buttons color
+- Feature: Added Implicit Multiplication like 2PI as 2*PI
+- 1.1.13
+- Feature: Added PI
+- Feature: Added Shift key
+- Bugfix: Ans doesnt cause error inside brackets anymore
+- 1.1.12
+- Bugfix: Nested power dont cause error anymore
+- Bugfix: Brackets inside containers dont cause syntaxerror anymore
+- Feature: Power and Fraction now detect last input
+- Feature: Added Changelog Colorcoding
+- 1.1.11
+- Bugfix: two adjacent numbers don't cause an error anymore
+- Feature: Added changelog display
+- 1.1.10
+- Bugfix: Two adjacent numbers don't cause a error anymore
+- Feature: Added Changelog display
+- 1.1.9
+- Feature: Added Changelog Display
+- Bugfix: Two adjacent numbers don't cause an error anymore
+- 1.1.8
+- adde brackets close error parsing
+- added basix syntaxerror output
+- added some basic error parsing
+- 1.1.7
+- corrected splash size
+- 1.1.6
+- switched background to black
+- moved splash and icon files
+- 1.1.5
+- trying for splashscreen
+- another xml try
+- 1.1.4
+- trying with png now
+- bugfix
+- 1.1.3
+- try another way to create xml
+- 1.1.2
+- changed structure a bit
+- switched from svg to xml
+- 1.1.1
+- switched to new icon api
+- 1.1.0
+- bugfix
+- bugfix
+- added side switching
+- improved touch feel
+- added splash screen
+- better sqrt look
+- 1.0.13
+- added logn functionalirty
+- added pow-1
+- added pow2
+- added pown functionality
+- added sqrt graphics
+- improved container operation script
+- changed brackets to brackets_operation
+- added log and ln functionality
+- added cos and tan functionality
+- bugfi
+- added sin functionality
+- added assets for the other basic functions
+- 1.0.12
+- improved fraction inputting
+- removed fraciotn display if denonimator 1
+- added vertical alignment in output
+- bugfix
+- 1.0.11
+- better fraction algorithm
+- 1.0.10
+- scroll to 0 on result show
+- bugfix
+- added as_fraction toggle
+- added fraction output
+- added basic period display
+- bugfix
+- added proper result rounding
+- sligh fraction alignment
+- added very complicated fraction align system
+- added vertical scrolling
+- simply reduced font size for fractions
+- 1.0.9
+- added pixel e
+- added horizontal scrolling
+- added cursor blinking
+- added resize handler
+- mproved font and display color and size
+- removed mathjax completely
+- switched to native math rendering
+- added better font
+- some work on font
+- 1.0.8
+- added fractions
+- 1.0.7
+- bugfix and added ans function
+- adde dproper selection
+- added equation select functionality
+- added basic equals button functionality
+- fixed a brackets bug
+- 1.0.6
+- properly added icons
+- 1.0.5
+- removed "Schulrechner" label
+- fixed permissions for asset upload
+- 1.0.4
+- added release aset uploading
+- 1.0.3
+- 1.0.2
+- 1.0.1
+- added version updating
+- now the workflow should only run for new versions?
+- bugfix
+- added some basic version and tagging system
+- readed flatpak building
+- added jks to gitignore
+- Merge branch 'main' of https://github.com/CardiJey/schulrechner
+- updated icon pat
+- Update main.yml
+- updated workflow
+- Update main.yml
+- Update main.yml
+- Update main.yml
+- Update main.yml
+- Update main.yml
+- Update main.yml
+- Merge branch 'main' of https://github.com/CardiJey/schulrechner
+- added package-lock.json
+- Update main.yml
+- Update main.yml
+- Create main.yml
+- first commit
