@@ -126,3 +126,35 @@ jobs:
             platforms/android/app/build/outputs/apk/release/app-release.apk
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Prepare Browser Gradle project
+        run: |
+          cordova platform add browser
+
+      - name: Build Cordova Browser project
+        run: |
+          cordova build browser --release
+
+      - name: Push Browser Files to browser-release branch
+        run: |
+          BROWSER_BRANCH="browser-release"
+          TAG_NAME="${GITHUB_REF##*/}"
+
+          # Clone with access token for pushing
+          git clone --depth=1 --single-branch --branch $BROWSER_BRANCH https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }} temp-browser
+          cd temp-browser
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          # Remove all contents from brwoser branch
+          git rm -rf . --ignore-unmatch
+
+          # Copy unbuilt Android project
+          cp -r ../platforms/browser/* .
+
+          git add .
+          git commit -m "Browser release of ${TAG_NAME}" || echo "No changes to commit"
+          
+          # Push to branch and tag
+          git push origin $GRADLE_BRANCH
