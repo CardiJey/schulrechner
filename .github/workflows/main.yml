@@ -153,6 +153,9 @@ jobs:
           # Copy unbuilt Android project
           cp -r ../platforms/browser/* .
 
+          # Copy browser redirection file
+          cp ../other/browser_redirection.html index.html
+
           git add .
           git commit -m "Browser release of ${TAG_NAME}" || echo "No changes to commit"
           
