@@ -1,3 +1,8 @@
+- 1.4.3
+- Updated versioncode
+- Merge branch 'main' of github.com:CardiJey/schulrechner
+- Added redirection files for browser version
+- Create FUNDING.yml
 - 1.4.2
 - Switched versioncode to 1.4.2
 - Feature: Added Browser release building
