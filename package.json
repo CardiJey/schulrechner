@@ -2,7 +2,7 @@
   "name": "schulrechner",
   "displayName": "Schulrechner",
   "version": "1.5.3",
-  "versionCode": 10503,
+  "versionCode": 10504,
   "description": "The calculator you know from school",
   "main": "main.js",
   "scripts": {
