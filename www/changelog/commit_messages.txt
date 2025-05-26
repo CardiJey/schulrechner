@@ -1,3 +1,9 @@
+- 1.5.4
+- Updated VersionCode
+- Tweak: Added Remove Permissions Plugin as submodule
+- 1.5.3
+- updatedVersionCode
+- Added Remove permissions plugin
 - 1.5.2
 - updated versioncode
 - Tweak: Removed Whitelist plugin
