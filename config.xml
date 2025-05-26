@@ -9,10 +9,6 @@
     <!-- Point to your index.html -->
     <content src="index.html" />
 
-    <!-- Allow all HTTP and HTTPS requests -->
-    <allow-intent href="http://*/*" />
-    <allow-intent href="https://*/*" />
-
     <!-- Add other configurations as needed -->
     <platform name="android">
         <icon monochrome="res/icon/android/monochrome.xml" background="res/icon/android/background.xml" foreground="res/icon/android/foreground.xml" src="www/img/android-icons/drawable-ldpi-icon.png" density="ldpi" />
@@ -24,7 +20,4 @@
         <preference name="AndroidWindowSplashScreenAnimatedIcon" value="res/icon/android/splash.xml" />
         <preference name="SplashScreenBackgroundColor" value="#000000" />
     </platform>
-
-    <!-- Permissions or specific features -->
-    <access origin="*" />
 </widget>
