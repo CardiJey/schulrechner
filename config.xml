@@ -20,4 +20,7 @@
         <preference name="AndroidWindowSplashScreenAnimatedIcon" value="res/icon/android/splash.xml" />
         <preference name="SplashScreenBackgroundColor" value="#000000" />
     </platform>
+
+    <plugin name="cordova-plugin-remove-android-permissions" spec="^1.0.0" />
+    <preference name="remove-permissions" value="android.permission.INTERNET" />
 </widget>

@@ -37,7 +37,9 @@
     }
   },
   "cordova": {
-    "plugins": {},
+    "plugins": {
+      "cordova-plugin-remove-android-permissions": {}
+    },
     "platforms": [
       "android"
     ]
