@@ -1,3 +1,6 @@
+- 1.7.0
+- Updated Changelog
+- Updated VersionCode
 - 1.6.0
 - Updated VersionCode
 - 1.5.4
