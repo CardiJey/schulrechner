@@ -1,3 +1,5 @@
+- 1.6.0
+- Updated VersionCode
 - 1.5.4
 - Updated VersionCode
 - Tweak: Added Remove Permissions Plugin as submodule
