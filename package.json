@@ -22,7 +22,6 @@
   "devDependencies": {
     "cordova": "^12.0.0",
     "cordova-android": "^14.0.0",
-    "cordova-plugin-whitelist": "^1.3.4",
     "electron": "^35.1.2",
     "electron-builder": "^26.0.12"
   },
@@ -38,9 +37,7 @@
     }
   },
   "cordova": {
-    "plugins": {
-      "cordova-plugin-whitelist": {}
-    },
+    "plugins": {},
     "platforms": [
       "android"
     ]
