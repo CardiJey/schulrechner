@@ -1132,6 +1132,16 @@ class EquationInputHandler extends InputHandler{
                     cursor_element = new_elements[0]
                     break;
 
+                case "key_sqrt3":
+                    var exponent = input_code.substring(8)
+                    new_elements.push(new Sqrtn_Element(cursor_element))
+                    cursor_element = new_elements[0].children[0]
+                    var prefilled_element = new Int_Element(new_elements[0],exponent)
+                    new_elements.push(prefilled_element)
+                    prefilled_element.neighbors[2] = new_elements[0].children[0]
+                    new_elements[0].children[0].neighbors[0] = prefilled_element
+                    break;
+
                 case "key_pown":
                     new_elements.push(new Pow_Element(cursor_element,false))
                     cursor_element = new_elements[0]
