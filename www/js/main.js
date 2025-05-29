@@ -1,5 +1,6 @@
 let active_input_handler;
 let next_align_id = 0
+let next_subres_id = 0
 let changelog_visible = false
 let version;
 let versionCode;
@@ -319,30 +320,7 @@ class Frac_Element extends Math_Element{
         if(last_element){
             this.skip_to_element_after_creation = this.children[0]
         }
-    }/*
-
-    set_container_neighbors(copy_from){
-        for (let dir = 1; dir <= 3; dir = dir + 2){
-            let neighbor = copy_from.neighbors[dir]
-            if(neighbor){
-                let element = this
-                while(element != this.children[this.children.length - 1].neighbors[2]){
-                    element.neighbors[dir] = neighbor
-                    element = element.neighbors[2]
-                }
-            }
-        }
     }
-
-    set_container_neighbors(copy_from){
-        for (let dir = 1; dir <= 3; dir = dir + 2){
-            let neighbor = copy_from.neighbors[dir]
-            if(neighbor){
-                [this.children[0],this][(dir - 1)/2].neighbors[dir] = neighbor
-                this.children[1].neighbors[dir] = neighbor
-            }
-        }
-    }*/
 }
 
 class Sqrt_Element extends Math_Element{
@@ -351,6 +329,28 @@ class Sqrt_Element extends Math_Element{
         this.children = [
             new Container_Element(this,"</span></span>","][1]^0.5)",this,true)
         ]
+    }
+}
+
+class Sqrtn_Element extends Math_Element{
+    constructor(left){
+        let subres_id = next_subres_id
+        next_subres_id++
+        super("container_operation",left,"<span class='pow_top'>","subres" + subres_id + "idstart")
+        this.children = [
+            new Container_Element(this,"</span><span class='sqrt_wrapper'><span class='scale_height'>&#8730;</span><span class='sqrt'>","subres" + subres_id + "idend([",this,false)
+        ]
+        
+        this.children.push(
+            new Container_Element(this.children[0],"</span></span>","][1]^(1/[subres" + subres_id + "idinsert][1]))",this,true)
+        )
+    }
+}
+
+
+class Faculty_Element extends Math_Element{
+    constructor(left){
+        super("point_operation",left,"!","!")
     }
 }
 
@@ -704,7 +704,12 @@ class EquationInputHandler extends InputHandler{
         this.mode_maps = {
             "shift": {
                 "key_pow10": "key_pi",
-                "key_rcl": "key_STO"
+                "key_rcl": "key_STO",
+                "key_sqrt": "key_sqrt3",
+                "key_pow2": "key_pow3",
+                "key_pown": "key_sqrtn",
+                "key_pow-1": "key_faculty",
+                "key_ln": "key_epow"
             },
             "alpha": {
                 "key_pow10": "key_e",
@@ -828,6 +833,35 @@ class EquationInputHandler extends InputHandler{
         mathElement.style.top = `${rect.top}px`;
         mathElement.style.width = `${rect.width}px`;
         mathElement.style.height = `${Math.max(0,rect.height - this.padding_top)}px`;
+    }
+
+    handle_subres(mathjs_res){
+        let found_subres = true
+        while(found_subres){
+            let subres_index = mathjs_res.indexOf("subres")
+            if(subres_index == -1){
+                found_subres = false
+            }else{
+                let substring_after_subres = mathjs_res.substring(subres_index + "subres".length)
+                let id_end_index = substring_after_subres.indexOf("id")
+                let this_subres_id = substring_after_subres.substring(0,id_end_index)
+
+                let subres_start_indicator = "subres" + this_subres_id + "idstart"
+                let subres_end_indicator = "subres" + this_subres_id + "idend"
+                let subres_insert_indicator = "subres" + this_subres_id + "idinsert"
+
+                let subres_start_index = mathjs_res.indexOf(subres_start_indicator)
+                let subres_end_index = mathjs_res.indexOf(subres_end_indicator)
+                let subres_insert_index = mathjs_res.indexOf(subres_insert_indicator)
+                let subres = mathjs_res.substring(subres_start_index + subres_start_indicator.length,subres_end_index)
+                mathjs_res = mathjs_res.substring(0,subres_insert_index) + subres + mathjs_res.substring(subres_insert_index + subres_insert_indicator.length)
+
+                subres_start_index = mathjs_res.indexOf(subres_start_indicator)
+                subres_end_index = mathjs_res.indexOf(subres_end_indicator)
+                mathjs_res = mathjs_res.substring(0,subres_start_index) + mathjs_res.substring(subres_end_index + subres_end_indicator.length)
+            }
+        }
+        return mathjs_res
     }
 
     math_elements_to_string(math_elements,last_cursor_element,show_cursor) {
@@ -1093,15 +1127,46 @@ class EquationInputHandler extends InputHandler{
                     cursor_element = new_elements[0]
                     break;
 
+                case "key_sqrtn":
+                    new_elements.push(new Sqrtn_Element(cursor_element))
+                    cursor_element = new_elements[0]
+                    break;
+
+                case "key_sqrt3":
+                    var exponent = input_code.substring(8)
+                    new_elements.push(new Sqrtn_Element(cursor_element))
+                    cursor_element = new_elements[0].children[0]
+                    var prefilled_element = new Int_Element(new_elements[0],exponent)
+                    new_elements.push(prefilled_element)
+                    prefilled_element.neighbors[2] = new_elements[0].children[0]
+                    new_elements[0].children[0].neighbors[0] = prefilled_element
+                    break;
+
                 case "key_pown":
                     new_elements.push(new Pow_Element(cursor_element,false))
                     cursor_element = new_elements[0]
                     break;
 
+                case "key_faculty":
+                    new_elements.push(new Faculty_Element(cursor_element,false))
+                    cursor_element = new_elements[0]
+                    break;
+
+                case "key_epow":
+                    new_elements.push(new Pow_Element(cursor_element,true))
+                    var prefilled_element = new Const_Element(new_elements[0],41)
+                    new_elements.push(prefilled_element)
+                    prefilled_element.neighbors[2] = new_elements[0].children[0]
+                    new_elements[0].children[0].neighbors[0] = prefilled_element
+                    cursor_element = new_elements[0].children[0]
+                    break;
+
                 case "key_pow2":
+                case "key_pow3":
+                    var exponent = input_code.substring(7)
                     new_elements.push(new Pow_Element(cursor_element,true))
                     cursor_element = new_elements[0]
-                    var prefilled_element = new Int_Element(cursor_element.children[0],2)
+                    var prefilled_element = new Int_Element(cursor_element.children[0],exponent)
                     new_elements.push(prefilled_element)
                     prefilled_element.neighbors[2] = cursor_element.children[1]
                     cursor_element.children[1].neighbors[0] = prefilled_element
@@ -1196,6 +1261,7 @@ class EquationInputHandler extends InputHandler{
 
         if(calc_output){
             let [this_input_string,this_output_string,sto] = this.math_elements_to_string(res,cursor_element,false)
+            this_output_string = this.handle_subres(this_output_string)
             let this_result
             try {
                 this_result = parseFloat(math.evaluate(this_output_string))
@@ -1380,10 +1446,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
         keyElements.forEach(element => {
             element.addEventListener("pointerdown", function () {
-                this.classList.add("pressed");
-                setTimeout(() => this.classList.remove("pressed"), 150);
+                let input_code = this.getAttribute('inkscape:label')
+                let key_code = input_code.substring("key_".length)
+                let label_background_name = "label_background_" + key_code
+                let label_background = document.querySelectorAll('[inkscape\\3a label="' + label_background_name + '"]');
+                if(label_background.length != 0){
+                    label_background[0].classList.add("pressed");
+                    setTimeout(() => label_background[0].classList.remove("pressed"), 150);
+                }
             
-                active_input_handler.handle(this.getAttribute('inkscape:label'));
+                active_input_handler.handle(input_code);
             });
         });
         window.addEventListener('resize', handle_resize)
