@@ -338,7 +338,7 @@ class Sqrtn_Element extends Math_Element{
         next_subres_id++
         super("container_operation",left,"<span class='pow_top'>","subres" + subres_id + "idstart")
         this.children = [
-            new Container_Element(this,"</span><span class='sqrt_wrapper'><span class='scale_height'>&#8730;</span><span class='sqrt'>","subres" + subres_id + "idend([",this,true)
+            new Container_Element(this,"</span><span class='sqrt_wrapper'><span class='scale_height'>&#8730;</span><span class='sqrt'>","subres" + subres_id + "idend([",this,false)
         ]
         
         this.children.push(
