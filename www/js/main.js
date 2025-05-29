@@ -1446,10 +1446,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
         keyElements.forEach(element => {
             element.addEventListener("pointerdown", function () {
-                this.classList.add("pressed");
-                setTimeout(() => this.classList.remove("pressed"), 150);
+                let input_code = this.getAttribute('inkscape:label')
+                let key_code = input_code.substring("key_".length)
+                let label_background_name = "label_background_" + key_code
+                let label_background = document.querySelectorAll('[inkscape\\3a label="' + label_background_name + '"]');
+                if(label_background.length != 0){
+                    label_background[0].classList.add("pressed");
+                    setTimeout(() => label_background[0].classList.remove("pressed"), 150);
+                }
             
-                active_input_handler.handle(this.getAttribute('inkscape:label'));
+                active_input_handler.handle(input_code);
             });
         });
         window.addEventListener('resize', handle_resize)
