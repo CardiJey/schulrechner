@@ -1379,6 +1379,14 @@ class EquationSelectInputHandler extends InputHandler{
                 this.add_empty_equation()
                 this.display_equation_index = this.equations.length - 1
                 active_input_handler = this.equations[this.display_equation_index]
+                if([
+                    "key_+",
+                    "key_-",
+                    "key_÷",
+                    "key_x"
+                ].includes(input_code)){
+                    active_input_handler.handle("key_Ans")
+                }
                 active_input_handler.handle(input_code)
                 active_input_handler.update_position();
             break;
