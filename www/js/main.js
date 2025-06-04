@@ -1264,7 +1264,10 @@ class EquationInputHandler extends InputHandler{
             this_output_string = this.handle_subres(this_output_string)
             let this_result
             try {
-                this_result = parseFloat(math.evaluate(this_output_string))
+                this_result = math.evaluate(this_output_string)
+                if(typeof this_result != "number" && typeof this_result != "string"){
+                    throw "invalid"
+                }
             } catch (error) {
                 this_result = "syntax_error"
             }
