@@ -5,7 +5,7 @@
 # SCHULRECHNER
 
 This is the repository for the Schulrechner App.
-You can get the APK directly from the releases https://github.com/CardiJey/schulrechner/releases/latest/ or from F-Droid (Release upcoming!).
+You can get the APK directly from the releases https://github.com/CardiJey/schulrechner/releases/latest/ or from F-Droid https://f-droid.org/packages/io.cardijey.schulrechner .
 Alternatively you can build it yourself by installing [Cordova](https://cordova.apache.org/) and then running
 
 	cordova platform add android
