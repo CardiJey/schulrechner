@@ -1,3 +1,9 @@
+- 1.7.2
+- Updated versioncode
+- Added changelog for 1.8.0
+- Bugfix: Calc now shows Syntax Error on complex result
+- Tweak: Adjusted Colors to be a bit more visible
+- Feature: Beginning with an operation add "Ans"
 - 1.7.1
 - Updated Version Code
 - Tweak: Increased Button Hitboxes

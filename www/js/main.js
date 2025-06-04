@@ -1264,7 +1264,10 @@ class EquationInputHandler extends InputHandler{
             this_output_string = this.handle_subres(this_output_string)
             let this_result
             try {
-                this_result = parseFloat(math.evaluate(this_output_string))
+                this_result = math.evaluate(this_output_string)
+                if(typeof this_result != "number" && typeof this_result != "string"){
+                    throw "invalid"
+                }
             } catch (error) {
                 this_result = "syntax_error"
             }
@@ -1379,6 +1382,14 @@ class EquationSelectInputHandler extends InputHandler{
                 this.add_empty_equation()
                 this.display_equation_index = this.equations.length - 1
                 active_input_handler = this.equations[this.display_equation_index]
+                if([
+                    "key_+",
+                    "key_-",
+                    "key_÷",
+                    "key_x"
+                ].includes(input_code)){
+                    active_input_handler.handle("key_Ans")
+                }
                 active_input_handler.handle(input_code)
                 active_input_handler.update_position();
             break;
