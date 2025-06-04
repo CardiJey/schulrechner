@@ -1,0 +1,5 @@
+Feature: Operationen dritte und n-te Wurzel, hoch 3, Fakultät und e hoch n hinzugefügt
+Feature: Operatoren fügen an erster Stelle nun automatisch das vorherige Ergebnis ein
+Tweak: Hitboxen für Knöpfe vergrößert. Tippen erleichtert.
+Tweak: Besser lesbare Farben
+Bugfixes: Komplexe Ergebnisse geben nun einen Fehler aus
