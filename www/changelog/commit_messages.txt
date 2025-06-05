@@ -1,3 +1,8 @@
+- 1.7.3
+- Updated Versioncode
+- Tweak: Changed Colors again slightly
+- Update README.md
+- Added FDroid Badge in Readme
 - 1.7.2
 - Updated versioncode
 - Added changelog for 1.8.0
