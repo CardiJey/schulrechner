@@ -969,7 +969,7 @@ class EquationInputHandler extends InputHandler{
 
                 case "key_sqrt3":
                     var exponent = input_code.substring(8)
-                    new_elements.push(new Sqrtn_Element(cursor_element))
+                    new_elements.push(new Sqrtn_Element(cursor_element,this.global_logic_vars))
                     cursor_element = new_elements[0].children[0]
                     var prefilled_element = new Int_Element(new_elements[0],exponent)
                     new_elements.push(prefilled_element)
