@@ -718,7 +718,7 @@ class EquationInputHandler extends InputHandler{
                     ){
                         res += cursor_element.value
                         if(show_cursor && cursor_element == last_cursor_element){
-                            res += '<span class="cursor">\uE000</span>'
+                            res += "<span class='cursor'>\uE000</span>"
                             placeholder_select = true
                         }
                         res += "▯"
@@ -739,7 +739,7 @@ class EquationInputHandler extends InputHandler{
                     break;
             }
             if(show_cursor && cursor_element == last_cursor_element && !placeholder_select){
-                res += '<span class="cursor">\uE000</span>'
+                res += "<span class='cursor'>\uE000</span>"
             }
             if(sto){
                 mathjs_res = "syntax_error"
