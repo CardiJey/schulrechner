@@ -511,7 +511,7 @@ class InputHandler{
         return fraction[0] / fraction[1]
     }
 
-    decimal_to_continued_fraction(decimal,epsilon=1e-12){
+    decimal_to_continued_fraction(decimal,epsilon=1e-16){
         let new_decimal = decimal
         let this_int = Math.floor(new_decimal)
         let res = [this_int]
