@@ -226,3 +226,18 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("version-small").addEventListener('pointerdown', ui.toggle_changelog)
     }
 });
+
+function decodeHTMLEntities(str) {
+    const txt = document.createElement('textarea');
+    txt.innerHTML = str;
+    return txt.value;
+}
+
+function log_calculation(){
+    console.log({
+        "name":"INSERT_TEST_NAME",
+        "input_history":global_logic_vars.active_input_handler.equations[global_logic_vars.active_input_handler.equations.length - 1].input_code_history,
+        "rendered_input":decodeHTMLEntities(global_logic_vars.active_input_handler.math_input_element.innerHTML),
+        "rendered_output":decodeHTMLEntities(global_logic_vars.active_input_handler.math_output_element.innerHTML)
+    })
+}
