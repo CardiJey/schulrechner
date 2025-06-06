@@ -1,0 +1,39 @@
+name: NPM Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test-functionality:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Ensures full history is fetched
+          fetch-tags: true
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: |
+          npm install
+
+      - name: Build and move math.js bundle
+        run: |
+          git submodule update --init --recursive
+          cd mathjs
+          npm install
+          npm run build
+          cd ..
+          mv mathjs/lib/browser/math.js www/js/math.js
+
+      - name: Run NPM Tests
+        run: npm test
