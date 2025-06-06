@@ -6,7 +6,7 @@
   "description": "The calculator you know from school",
   "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "node --test tests/*",
     "update_version": "node update_version.js",
     "start": "electron ."
   },
