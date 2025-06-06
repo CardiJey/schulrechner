@@ -7,7 +7,8 @@ let global_logic_vars = {
     "active_input_handler": undefined,
     "next_align_id": 0,
     "next_subres_id": 0,
-    "math_engine": math
+    "math_engine": math,
+    "input_history": []
 }
 
 class UI{
@@ -217,7 +218,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     label_background[0].classList.add("pressed");
                     setTimeout(() => label_background[0].classList.remove("pressed"), 150);
                 }
-            
+                global_logic_vars.input_history.push(input_code)
                 global_logic_vars.active_input_handler.handle(input_code);
             });
         });
@@ -236,7 +237,7 @@ function decodeHTMLEntities(str) {
 function log_calculation(){
     console.log({
         "name":"INSERT_TEST_NAME",
-        "input_history":global_logic_vars.active_input_handler.equations[global_logic_vars.active_input_handler.equations.length - 1].input_code_history,
+        "input_history":global_logic_vars.input_history,
         "rendered_input":decodeHTMLEntities(global_logic_vars.active_input_handler.math_input_element.innerHTML),
         "rendered_output":decodeHTMLEntities(global_logic_vars.active_input_handler.math_output_element.innerHTML)
     })
