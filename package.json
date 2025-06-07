@@ -6,7 +6,7 @@
   "description": "The calculator you know from school",
   "main": "main.js",
   "scripts": {
-    "test": "node --test tests/*",
+    "test": "node --test tests/*.{cjs,mjs,js}",
     "update_version": "node update_version.js",
     "start": "electron ."
   },
