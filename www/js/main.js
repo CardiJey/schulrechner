@@ -1,651 +1,99 @@
-let active_input_handler;
-let next_align_id = 0
-let next_subres_id = 0
 let changelog_visible = false
 let version;
 let versionCode;
 let userLang = navigator.language || navigator.userLanguage;
 
-fetch("version.txt")
-    .then((res) => res.text())
-    .then((text) => {
-        version = text.trim()
+let global_logic_vars = {
+    "active_input_handler": undefined,
+    "next_align_id": 0,
+    "next_subres_id": 0,
+    "math_engine": math,
+    "input_history": []
+}
 
-        document.getElementById("version").innerText = "What's new in " + version + "?";
-        document.getElementById("version-small").innerText = version;
-        fetchChangelog(version.endsWith(".0"))
-    })
-    .catch((e) => console.error(e));
-
-fetch("versionCode.txt")
-    .then((res) => res.text())
-    .then((text) => {
-        versionCode = text.trim()
-
-        const lastSeenVersionCode = localStorage.getItem("lastSeenVersionCode");
-        if (lastSeenVersionCode !== versionCode) {
-            toggle_changelog(); // Show changelog automatically
-            localStorage.setItem("lastSeenVersionCode", versionCode);
-        }
-    })
-    .catch((e) => console.error(e));
-
-async function fetchChangelog(fdroid) {
-    const langsToTry = [];
-    if(fdroid){
-        // Normalize language code (e.g., en_US → en-US)
-        const normalizedLang = userLang.replace('_', '-');
-        
-        // Break apart lang subtags (e.g., 'en-GB' → ['en-GB', 'en'])
-        if (normalizedLang.includes('-')) {
-            langsToTry.push(normalizedLang);
-            langsToTry.push(normalizedLang.split('-')[0]);
-        } else {
-            langsToTry.push(normalizedLang);
-        }
-        
-        // Always fall back to 'en-US'
-        if (!langsToTry.includes('en-US')) {
-            langsToTry.push('en-US');
-        }
-    }else{
-        langsToTry.push("commit_messages")
+class UI{
+    constructor(global_logic_vars){
+        this.global_logic_vars = global_logic_vars
     }
-    
-    for (const lang of langsToTry) {
-        const url = `changelog/${lang}.txt`;
-        try {
-            const response = await fetch(url);
-            if (response.ok) {
-                let text = await response.text();
 
-                const lines = text.trim().split("\n");
+    async fetchChangelog(fdroid) {
+        const langsToTry = [];
+        if(fdroid){
+            // Normalize language code (e.g., en_US → en-US)
+            const normalizedLang = userLang.replace('_', '-');
+            
+            // Break apart lang subtags (e.g., 'en-GB' → ['en-GB', 'en'])
+            if (normalizedLang.includes('-')) {
+                langsToTry.push(normalizedLang);
+                langsToTry.push(normalizedLang.split('-')[0]);
+            } else {
+                langsToTry.push(normalizedLang);
+            }
+            
+            // Always fall back to 'en-US'
+            if (!langsToTry.includes('en-US')) {
+                langsToTry.push('en-US');
+            }
+        }else{
+            langsToTry.push("commit_messages")
+        }
         
-                const changelog_content = document.getElementById("changelog-content")
-                for(let line_index = 0; line_index < lines.length; line_index++){
-                    let line = lines[line_index]
-                    line = line.replaceAll("- - ","- ")
-                    let line_class;
+        for (const lang of langsToTry) {
+            const url = `changelog/${lang}.txt`;
+            try {
+                const response = await fetch(url);
+                if (response.ok) {
+                    let text = await response.text();
 
-                    if(line.startsWith("- Feature: ")){
-                        line_class = "changelog-feature"
-                    }else if(line.startsWith("- Bugfix: ")){
-                        line_class = "changelog-bugfix"
-                    }else if(line.startsWith("- Tweak: ")){
-                        line_class = "changelog-tweak"
+                    const lines = text.trim().split("\n");
+            
+                    const changelog_content = document.getElementById("changelog-content")
+                    for(let line_index = 0; line_index < lines.length; line_index++){
+                        let line = lines[line_index]
+                        line = line.replaceAll("- - ","- ")
+                        let line_class;
+
+                        if(line.startsWith("- Feature: ")){
+                            line_class = "changelog-feature"
+                        }else if(line.startsWith("- Bugfix: ")){
+                            line_class = "changelog-bugfix"
+                        }else if(line.startsWith("- Tweak: ")){
+                            line_class = "changelog-tweak"
+                        }
+
+                        let line_element = document.createElement("span")
+                        if(line_class){
+                            line_element.classList.add(line_class)
+                        }
+                        line_element.innerText = line
+                        changelog_content.appendChild(line_element)
                     }
-
-                    let line_element = document.createElement("span")
-                    if(line_class){
-                        line_element.classList.add(line_class)
-                    }
-                    line_element.innerText = line
-                    changelog_content.appendChild(line_element)
+                    return
                 }
-                return
+            } catch (err) {
+            // ignore and try next
             }
-        } catch (err) {
-        // ignore and try next
-        }
-    }
-    
-    throw new Error('No changelog available in any language.');
-}
-
-function toggle_changelog(){
-    changelog_visible = !changelog_visible
-    if(changelog_visible){
-        document.getElementById("changelog").style.visibility = "visible"
-    }else{
-        document.getElementById("changelog").style.visibility = "hidden"
-    }
-}
-
-function is_family(el1, el2){
-    if(el1 && el2){
-        let parent_el;
-        let child_el;
-        if(el1.type == "container_operation"){
-            parent_el = el1
-            child_el = el2
-        }else if(el2.type == "container_operation"){
-            parent_el = el2
-            child_el = el1
-        }else{
-            if(el1.type == "container" && el2.type == "container"){
-                return el1.parent == el2.parent
-            }else{
-                return false
-            }
-        }
-
-        if(child_el.type == "container"){
-            return parent_el == child_el.parent
-        }
-    }
-    
-    return false
-}
-
-function get_left_block(left){
-    let next_left_neighbor = left
-    let last_element;
-    let first_element;
-    let bracket_counter = 0
-
-    if(next_left_neighbor.type == "brackets_operation"){
-        bracket_counter -= 1
-    }else if(next_left_neighbor.type == "brackets_close"){
-        bracket_counter += 1
-    }
-
-    while(
-        next_left_neighbor.type != "start" && 
-        bracket_counter >= 0 &&
-        (
-            !["additive_operation","multi_operation","sto"].includes(next_left_neighbor.type) ||
-            bracket_counter > 0
-        )
-    ){
-        if(!first_element){
-            first_element = next_left_neighbor
-        }
-        if(next_left_neighbor.type == "container"){
-            if(next_left_neighbor.last_container){
-                next_left_neighbor = next_left_neighbor.parent
-            }else{
-                break;
-            }
-        }else if(next_left_neighbor.type == "container_operation"){
-            break;
-        }
-        last_element = next_left_neighbor
-        next_left_neighbor = next_left_neighbor.neighbors[0]
-
-        if(next_left_neighbor.type == "brackets_operation"){
-            bracket_counter -= 1
-        }else if(next_left_neighbor.type == "brackets_close"){
-            bracket_counter += 1
-        }
-    }
-    
-    return [next_left_neighbor,last_element,first_element]
-}
-
-class Math_Element {
-    constructor(type,left,value,mathjs_value) {
-        this.type = type
-        if(left){
-            this.neighbors = [left,undefined,left.neighbors[2],undefined] //left,bottom,right,top
-            left.neighbors[2] = this
-        }else{
-            this.neighbors = [left,undefined,undefined,undefined] //left,bottom,right,top
-        }
-        this.value = value
-        this.mathjs_value = mathjs_value
-    }
-
-    set_neighbor(dir,neighbor){
-        this.neighbors[dir] = neighbor
-    }
-
-    set_container_neighbors(neighbors){
-        for (let dir = 1; dir <= 3; dir = dir + 2){
-            let neighbor = neighbors[dir]
-            if(neighbor){
-                let element = this
-                while(element != this.children[this.children.length - 1].neighbors[2]){
-                    if(!element.neighbors[dir]){
-                        element.neighbors[dir] = neighbor
-                    }
-                    element = element.neighbors[2]
-                }
-            }
-        }
-    }
-}
-
-class Start_Element extends Math_Element{
-    constructor(){
-        super("start",undefined,NaN,"")
-        this.prio = 0
-    }
-}
-
-class Int_Element extends Math_Element{
-    constructor(left,value){
-        super("int",left,parseInt(value),value)
-    }
-}
-
-class Sto_Element extends Math_Element{
-    constructor(left,var_name){
-        super("sto",left,"→"+var_name,"")
-        this.var_name = var_name
-    }
-
-    operate(val){
-        active_input_handler.parent_handler.user_var[this.var_name] = val
-        return val
-    }
-}
-
-class Plus_Element extends Math_Element{
-    constructor(left){
-        super("additive_operation",left,"+","+")
-    }
-}
-
-class Minus_Element extends Math_Element{
-    constructor(left){
-        super("additive_operation",left,"-","-")
-    }
-}
-
-class Times_Element extends Math_Element{
-    constructor(left){
-        super("multi_operation",left,"×","*")
-    }
-}
-
-class Div_Element extends Math_Element{
-    constructor(left){
-        super("multi_operation",left,"÷","/")
-    }
-}
-
-class Point_Element extends Math_Element{
-    constructor(left){
-        super("point_operation",left,",",".")
-    }
-}
-
-class Pow10_Element extends Math_Element{
-    constructor(left){
-        super("point_operation",left,"<span class='pow10'>×⒑</span>","*10^")
-    }
-}
-
-class Brackets_Element extends Math_Element{
-    constructor(left,value){
-        super("brackets_operation",left,"(","(")
-    }
-}
-
-class Brackets_Close_Element extends Math_Element{
-    constructor(left,value){
-        super("brackets_close",left,")",")")
-    }
-}
-
-class Frac_Element extends Math_Element{
-    constructor(left){
-        let [next_left_neighbor,last_element,first_element] = get_left_block(left)
-        
-        let align_id = next_align_id
-        next_align_id++
-        super("container_operation",next_left_neighbor,"<span class='alignLeft" + align_id + "'></span><span class='frac_wrapper'><span class='frac_top'>","([")
-        if(last_element){
-            last_element.neighbors[0] = this
-
-            this.children = [
-                new Container_Element(first_element,"</span><span class='frac_bottom alignRight" + align_id + "'>","][1]/[",this,false)
-            ]
-
-            let block_elements = []
-            let element = first_element
-            while(element != last_element.neighbors[0]){
-                block_elements.push(element)
-                element = element.neighbors[0]
-            }
-            element = first_element
-            while(element != last_element.neighbors[0]){
-                if(!element.neighbors[1] || !block_elements.includes(element.neighbors[1])){
-                    element.neighbors[1] = this.children[0]
-                }
-                element = element.neighbors[0]
-            }
-        }else{
-            this.children = [
-                new Container_Element(this,"</span><span class='frac_bottom alignRight" + align_id + "'>","][1]/[",this,false)
-            ]
         }
         
-        this.children.push(
-            new Container_Element(this.children[0],"</span></span>","][1])",this,true)
-        )
-        this.neighbors[1] = this.children[0]
-        this.children[0].neighbors[3] = this.children[0]
-
-        if(last_element){
-            this.skip_to_element_after_creation = this.children[0]
-        }
+        throw new Error('No changelog available in any language.');
     }
-}
 
-class Sqrt_Element extends Math_Element{
-    constructor(left){
-        super("container_operation",left,"<span class='sqrt_wrapper'><span class='scale_height'>&#8730;</span><span class='sqrt'>","([")
-        this.children = [
-            new Container_Element(this,"</span></span>","][1]^0.5)",this,true)
-        ]
-    }
-}
-
-class Sqrtn_Element extends Math_Element{
-    constructor(left){
-        let subres_id = next_subres_id
-        next_subres_id++
-        super("container_operation",left,"<span class='pow_top'>","subres" + subres_id + "idstart")
-        this.children = [
-            new Container_Element(this,"</span><span class='sqrt_wrapper'><span class='scale_height'>&#8730;</span><span class='sqrt'>","subres" + subres_id + "idend([",this,false)
-        ]
-        
-        this.children.push(
-            new Container_Element(this.children[0],"</span></span>","][1]^(1/[subres" + subres_id + "idinsert][1]))",this,true)
-        )
-    }
-}
-
-
-class Faculty_Element extends Math_Element{
-    constructor(left){
-        super("point_operation",left,"!","!")
-    }
-}
-
-class Pow_Element extends Math_Element{
-    constructor(left,is_exp_prefilled){
-        let [next_left_neighbor,last_element,first_element] = get_left_block(left)
-
-        super("container_operation",next_left_neighbor,"<span class='pow_bottom'>(","([")
-        if(last_element){
-            last_element.neighbors[0] = this
-
-            this.children = [
-                new Container_Element(first_element,")</span><span class='pow_top'>","][1]^[",this,false)
-            ]
+    toggle_changelog(){
+        changelog_visible = !changelog_visible
+        if(changelog_visible){
+            document.getElementById("changelog").style.visibility = "visible"
         }else{
-            this.children = [
-                new Container_Element(this,")</span><span class='pow_top'>","][1]^[",this,false)
-            ]
-        }
-                        
-        this.children.push(
-            new Container_Element(this.children[0],"</span>","][1])",this,true)
-        )
-        this.is_exp_prefilled = is_exp_prefilled
-
-        if(last_element){
-            if(this.is_exp_prefilled){
-                this.skip_to_element_after_creation = this.children[1]
-            }else{
-                this.skip_to_element_after_creation = this.children[0]
-            }
+            document.getElementById("changelog").style.visibility = "hidden"
         }
     }
-}
-class Logx_Element extends Math_Element{
-    constructor(left){
-        super("container_operation",left,"log<span class='logn_bottom'>","(1/log([")
-        
-        this.children = [
-            new Container_Element(this,"</span>(","][1])*log([",this,false)
-        ]
-        this.children.push(
-            new Container_Element(this.children[0],")","][1]))",this,true)
-        )
-    }
-}
 
-class Container_Element extends Math_Element{
-    constructor(left,value,mathjs_value,parent,last_container){
-        super("container",left,value,mathjs_value)
-        this.parent = parent
-        this.last_container = last_container
+    setRootFontSize(size) {
+        document.documentElement.style.fontSize = size + 'px';
     }
 
-    set_neighbor(dir,neighbor){
-        if(!this.last_container){
-            let next_element = this.neighbors[2]
-            while(!is_family(next_element,this)){
-                if(!next_element.neighbors[dir]){
-                    next_element.neighbors[dir] = neighbor
-                }
-            }
-        }
-        super.set_neighbor(dir,neighbor)
-    }
-}
-
-class Sin_Element extends Math_Element{
-    constructor(left){
-        super("brackets_operation",left,"sin(","sin(PI/180*")
-    }
-}
-
-class Cos_Element extends Math_Element{
-    constructor(left){
-        super("brackets_operation",left,"cos(","cos(PI/180*")
-    }
-}
-
-class Tan_Element extends Math_Element{
-    constructor(left){
-        super("brackets_operation",left,"tan(","tan(PI/180*")
-    }
-}
-
-class Log_Element extends Math_Element{
-    constructor(left){
-        super("brackets_operation",left,"log(","log10(")
-    }
-}
-
-class Ln_Element extends Math_Element{
-    constructor(left){
-        super("brackets_operation",left,"ln(","log(")
-    }
-}
-
-class Ans_Element extends Math_Element{
-    constructor(left){
-        super("var",left,"Ans","")
-    }
-
-    get_value(){
-        return active_input_handler.parent_handler.results[active_input_handler.parent_handler.results.length - 1]
-    }
-}
-
-class User_Var_Element extends Math_Element{
-    constructor(left,var_name){
-        super("var",left,var_name,"")
-        this.var_name = var_name
-    }
-
-    get_value(){
-        if(active_input_handler.parent_handler.user_var[this.var_name]){
-            return active_input_handler.parent_handler.user_var[this.var_name]
-        }else{
-            return 0
-        }
-    }
-}
-
-class Const_Element extends Math_Element{
-    constructor(left,index){
-        const char_map = [
-            "mp",
-            "mn",
-            "me",
-            "mμ",
-            "a0",
-            "h",
-            "μN",
-            "μB",
-            "ħ",
-            "α",
-            "re",
-            "λc",
-            "γp",
-            "λc,p",
-            "λc,n",
-            "R∞",
-            "u",
-            "μp",
-            "μe",
-            "μn",
-            "μμ",
-            "F",
-            "e",
-            "NA",
-            "k",
-            "Vm",
-            "R",
-            "C0",
-            "C1",
-            "C2",
-            "σ",
-            "ε0",
-            "μ0",
-            "Φ0",
-            "g",
-            "G0",
-            "Z0",
-            "t",
-            "G",
-            "atm",
-            "π",
-            "e",
-        ]
-        super("var",left,char_map[index],"")
-        this.index = index
-    }
-
-    get_value(){
-        const value_map = [
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            Math.PI,
-            Math.E
-        ]
-
-        return value_map[this.index]
-    }
-}
-
-class InputHandler{
-    constructor(display_input_element, math_input_element, display_output_element, math_output_element) {
-        this.display_input_element = display_input_element;
-        this.display_output_element = display_output_element;
-        this.math_input_element = math_input_element;
-        this.math_output_element = math_output_element;
-    }
-
-    round_to_significant_places(num,places){
-        const digitsBeforeDecimal = Math.max(0,Math.floor(Math.log10(Math.abs(num))) + 1);
-
-        // If there are fewer than 10 digits before the decimal point, scale up
-        const scaleFactor = Math.pow(10, places - digitsBeforeDecimal);
-        
-        // Round the number to the required precision
-        const rounded = Math.round(num * scaleFactor) / scaleFactor
-        const decimalPart = rounded.toString().split('.')[1];
-        const decimalPlaces = decimalPart ? decimalPart.length : 0;
-
-        return [rounded,digitsBeforeDecimal,decimalPlaces];
-    }
-
-    parse_continued_fraction(continued_fraction){
-        let res = [1,0]
-        for(let level = continued_fraction.length - 1; level >= 0; level--){
-            res = [continued_fraction[level] * res[0] + res[1],res[0]]
-        }
-        return res
-    }
-
-    fraction_to_decimal(fraction){
-        return fraction[0] / fraction[1]
-    }
-
-    decimal_to_continued_fraction(decimal,epsilon=1e-12){
-        let new_decimal = decimal
-        let this_int = Math.floor(new_decimal)
-        let res = [this_int]
-        let remainder = new_decimal - this_int
-        let resulting_fraction = this.parse_continued_fraction(res)
-
-        while(Math.abs(this.fraction_to_decimal(resulting_fraction) - decimal) > epsilon){
-            new_decimal = 1 / remainder
-            this_int = Math.floor(new_decimal)
-            res.push(this_int)
-            remainder = new_decimal - this_int
-            resulting_fraction = this.parse_continued_fraction(res)
-        }
-
-        return [res,resulting_fraction]
-    }
-
-    formatNumber(num,as_fraction=true) {
-        let res_num;
-        if(typeof num == "string"){
-            return num
-        }
-        // Convert to scientific notation if there are 10 or more significant digits
-        if (Math.abs(num) >= 1e10 || (num !== 0 && Math.abs(num) < 1e-10)) {
-            return num.toExponential(9); // Adjust precision as needed
-        }else{
-            if(as_fraction){
-                let resulting_fraction = this.decimal_to_continued_fraction(num)[1]
-                let resulting_fraction_length = (resulting_fraction[0].toString() + resulting_fraction[1].toString()).length
-
-                if(resulting_fraction[1] != 1 && resulting_fraction_length <= 9){
-                    return "<span class='frac_wrapper'><span class='frac_top'>" + resulting_fraction[0] + "</span><span class='frac_bottom'>" + resulting_fraction[1] + "</span></span>"
-                }
-            }
-
-            res_num = this.round_to_significant_places(num,10)[0]
-        }
-        return res_num.toString();
+    handle_resize(){
+        this.setRootFontSize(document.getElementById("layer1").getBoundingClientRect().height * 0.034506)
+        this.global_logic_vars.active_input_handler.update_position()
     }
 
     vertical_align_elements() {
@@ -672,80 +120,11 @@ class InputHandler{
 
             el.parentElement.style.verticalAlign = `calc(${y_shift}px + 0.06rem)`;
         });
-        
-        /*const elements_to_align = document.querySelectorAll(".align")
-
-        for(let element_index = 0; element_index < elements_to_align.length; element_index++){
-            let this_element = elements_to_align[element_index]
-            let parent_element = this_element.parentElement
-            
-            let align_y = this_element.getBoundingClientRect().top
-            let parent_bottom = parent_element.getBoundingClientRect().bottom
-            let parent_height = parent_element.getBoundingClientRect().height
-
-            let vertical_align = 0.5 * parent_height - (parent_bottom - align_y)
-
-            //parent_element.style.verticalAlign = `calc(${vertical_align}px - 0.25rem)`
-        }*/
-    }
-}
-
-class EquationInputHandler extends InputHandler{
-    constructor(display_input_element, math_input_element, display_output_element, math_output_element, parent_handler) {
-        super(display_input_element, math_input_element, display_output_element, math_output_element)
-        this.input_code_history = [];
-        this.parent_handler = parent_handler
-        this.padding_top = 0
-        this.modes = {
-            "shift": false,
-            "alpha": false,
-            "STO": false
-        }
-        this.mode_maps = {
-            "shift": {
-                "key_pow10": "key_pi",
-                "key_rcl": "key_STO",
-                "key_sqrt": "key_sqrt3",
-                "key_pow2": "key_pow3",
-                "key_pown": "key_sqrtn",
-                "key_pow-1": "key_faculty",
-                "key_ln": "key_epow"
-            },
-            "alpha": {
-                "key_pow10": "key_e",
-                "key_(-)": "key_uservar_A",
-                "key_°": "key_uservar_B",
-                "key_hyp": "key_uservar_C",
-                "key_sin": "key_uservar_D",
-                "key_cos": "key_uservar_E",
-                "key_tan": "key_uservar_F",
-                "key_)": "key_uservar_X",
-                "key_SD": "key_uservar_Y",
-                "key_M+": "key_uservar_M",
-            },
-            "STO": {
-                "key_(-)": "key_STO_A",
-                "key_°": "key_STO_B",
-                "key_hyp": "key_STO_C",
-                "key_sin": "key_STO_D",
-                "key_cos": "key_STO_E",
-                "key_tan": "key_STO_F",
-                "key_)": "key_STO_X",
-                "key_SD": "key_STO_Y",
-                "key_M+": "key_STO_M",
-            }
-        }
     }
 
-    toggle_mode(mode_to_toggle){
-        for(let mode in this.modes){
-            if(mode == mode_to_toggle){
-                this.modes[mode] = !this.modes[mode]
-            }else{
-                this.modes[mode] = false
-            }
-
-            if(this.modes[mode]){
+    toggle_indicators(modes){
+        for(let mode in modes){
+            if(modes[mode]){
                 document.querySelector('[inkscape\\3a label="indicator_' + mode + '"]').style.visibility = "visible"
             }else{
                 document.querySelector('[inkscape\\3a label="indicator_' + mode + '"]').style.visibility = "hidden"
@@ -753,664 +132,19 @@ class EquationInputHandler extends InputHandler{
         }
     }
 
-    // Method to handle input
-    handle(input_code) {
-        if(input_code == "key_ac"){
-            this.input_code_history = []
-            this.toggle_mode("none")
-        }else if(input_code == "key_shift"){
-            this.toggle_mode("shift")
-        }else if(input_code == "key_alpha"){
-            this.toggle_mode("alpha")
-        }else{
-            if(this.modes["shift"]){
-                this.toggle_mode("none")
-                let mapped_input_code = this.mode_maps["shift"][input_code]
-                if(mapped_input_code){
-                    if(mapped_input_code == "key_STO"){
-                        this.toggle_mode("STO")
-                    }else{
-                        this.input_code_history.push(mapped_input_code);
-                    }
-                }
-            }else if(this.modes["alpha"]){
-                this.toggle_mode("none")
-                if(this.mode_maps["alpha"][input_code]){
-                    this.input_code_history.push(this.mode_maps["alpha"][input_code]);
-                }
-            }else if(this.modes["STO"]){
-                this.toggle_mode("none")
-                if(this.mode_maps["STO"][input_code]){
-                    this.input_code_history.push(this.mode_maps["STO"][input_code]);
-                    this.input_code_history.push("key_=");
-                }
-            }else{
-                this.input_code_history.push(input_code);
-            }
-        }
-        this.update_display(true);
-        this.update_position()
-    }
+    scroll_element(this_element){
+        let cursor_x = document.getElementsByClassName("cursor")[0].getBoundingClientRect().right
+        let scroll_border_x = document.querySelector('[inkscape\\3a label="scroll_x_border"]').getBoundingClientRect().left
+        let x_dist_to_scroll_border = cursor_x - scroll_border_x
 
-    update_display(show_cursor) {
-        let parse_res = this.parse_input_code_history(this.input_code_history,show_cursor);
-        if(parse_res){
-            let [input_string, output_number] = parse_res
-            this.math_input_element.innerHTML = input_string
-            this.math_output_element.innerHTML = this.formatNumber(output_number)
+        let cursor_y_bot = document.getElementsByClassName("cursor")[0].getBoundingClientRect().bottom
+        let scroll_border_y = document.querySelector('[inkscape\\3a label="scroll_y_border"]').getBoundingClientRect().top
+        let y_dist_to_scroll_border = cursor_y_bot - scroll_border_y
 
-            this.vertical_align_elements()
-
-            /*let cursor_y_top = document.getElementsByClassName("cursor")[0].getBoundingClientRect().top
-            let input_display_top = this.math_input_element.getBoundingClientRect().top
-            let top_overflow = input_display_top - cursor_y_top
-            this.padding_top = Math.max(0,top_overflow)
-            this.math_input_element.style.paddingTop = this.padding_top + "px"*/
-
-            if(show_cursor){
-                let cursor_x = document.getElementsByClassName("cursor")[0].getBoundingClientRect().right
-                let scroll_border_x = document.querySelector('[inkscape\\3a label="scroll_x_border"]').getBoundingClientRect().left
-                let x_dist_to_scroll_border = cursor_x - scroll_border_x
-
-                let cursor_y_bot = document.getElementsByClassName("cursor")[0].getBoundingClientRect().bottom
-                let scroll_border_y = document.querySelector('[inkscape\\3a label="scroll_y_border"]').getBoundingClientRect().top
-                let y_dist_to_scroll_border = cursor_y_bot - scroll_border_y
-
-                this.math_input_element.scrollBy(x_dist_to_scroll_border,y_dist_to_scroll_border)
-            }
-        }
-    }
-
-    update_position() {
-        this.align_element(this.display_input_element, this.math_input_element);
-        this.align_element(this.display_output_element, this.math_output_element);
+        this_element.scrollBy(x_dist_to_scroll_border,y_dist_to_scroll_border)
     }
 
     align_element(displayElement, mathElement) {
-        const rect = displayElement.getBoundingClientRect();
-        mathElement.style.position = "absolute";
-        mathElement.style.left = `${rect.left}px`;
-        mathElement.style.top = `${rect.top}px`;
-        mathElement.style.width = `${rect.width}px`;
-        mathElement.style.height = `${Math.max(0,rect.height - this.padding_top)}px`;
-    }
-
-    handle_subres(mathjs_res){
-        let found_subres = true
-        while(found_subres){
-            let subres_index = mathjs_res.indexOf("subres")
-            if(subres_index == -1){
-                found_subres = false
-            }else{
-                let substring_after_subres = mathjs_res.substring(subres_index + "subres".length)
-                let id_end_index = substring_after_subres.indexOf("id")
-                let this_subres_id = substring_after_subres.substring(0,id_end_index)
-
-                let subres_start_indicator = "subres" + this_subres_id + "idstart"
-                let subres_end_indicator = "subres" + this_subres_id + "idend"
-                let subres_insert_indicator = "subres" + this_subres_id + "idinsert"
-
-                let subres_start_index = mathjs_res.indexOf(subres_start_indicator)
-                let subres_end_index = mathjs_res.indexOf(subres_end_indicator)
-                let subres_insert_index = mathjs_res.indexOf(subres_insert_indicator)
-                let subres = mathjs_res.substring(subres_start_index + subres_start_indicator.length,subres_end_index)
-                mathjs_res = mathjs_res.substring(0,subres_insert_index) + subres + mathjs_res.substring(subres_insert_index + subres_insert_indicator.length)
-
-                subres_start_index = mathjs_res.indexOf(subres_start_indicator)
-                subres_end_index = mathjs_res.indexOf(subres_end_indicator)
-                mathjs_res = mathjs_res.substring(0,subres_start_index) + mathjs_res.substring(subres_end_index + subres_end_indicator.length)
-            }
-        }
-        return mathjs_res
-    }
-
-    math_elements_to_string(math_elements,last_cursor_element,show_cursor) {
-        let res = ""
-        let mathjs_res = ""
-        let cursor_element = math_elements
-        let placeholder_select = false
-        let sto
-
-        while(cursor_element){
-            switch(cursor_element.type){
-                case "start":
-                    break;
-
-                case "container_operation":
-                case "container":
-                    if(
-                        is_family(cursor_element,cursor_element.neighbors[2])
-                    ){
-                        res += cursor_element.value
-                        if(show_cursor && cursor_element == last_cursor_element){
-                            res += '<span class="cursor">\uE000</span>'
-                            placeholder_select = true
-                        }
-                        res += "▯"
-                        break;
-                    }
-
-                case "int":
-                case "additive_operation":
-                case "multi_operation":
-                case "point_operation":
-                case "sto":
-                case "brackets_operation":
-                case "brackets_close":
-                case "var":
-                case "container_operation":
-                case "container":
-                    res += cursor_element.value
-                    break;
-            }
-            if(show_cursor && cursor_element == last_cursor_element && !placeholder_select){
-                res += '<span class="cursor">\uE000</span>'
-            }
-            if(sto){
-                mathjs_res = "syntax_error"
-            }else{
-                switch(cursor_element.type){
-                    case "var":
-                        mathjs_res += "(" + cursor_element.get_value() + ")"
-                    break;
-    
-                    case "sto":
-                        sto = cursor_element
-                    break;
-    
-                    default:
-                        mathjs_res += cursor_element.mathjs_value
-                    break;
-                }
-            }
-            cursor_element = cursor_element.neighbors[2]
-        }
-
-        res += '\u00A0'
-        return [res,mathjs_res,sto]
-    }
-
-    parse_input_code_history(input_code_history,show_cursor) {
-        let res = new Start_Element()
-        let cursor_element = res
-        let calc_output = false
-
-        for (const input_index in input_code_history) {
-            let input_code = input_code_history[input_index]
-            let old_neighbors = [
-                cursor_element.neighbors[0],
-                cursor_element.neighbors[1],
-                cursor_element.neighbors[2],
-                cursor_element.neighbors[3]
-            ]
-            let new_elements = [];
-
-            switch(input_code){
-                case "key_0":
-                case "key_1":
-                case "key_2":
-                case "key_3":
-                case "key_4":
-                case "key_5":
-                case "key_6":
-                case "key_7":
-                case "key_8":
-                case "key_9":
-                    new_elements.push(new Int_Element(cursor_element,input_code.substring(4)))
-                    cursor_element = new_elements[0]
-                break;
-
-                case "key_dir1":
-                case "key_dir3":
-                    if(cursor_element.type == "start" && !cursor_element.neighbors[2]){
-                        active_input_handler = this.parent_handler
-                        this.parent_handler.equations.pop(1)
-                        this.parent_handler.display_equation_index = (input_code == "key_dir1" ? 0 : this.parent_handler.equations.length - 1)
-                        this.parent_handler.update_display()
-                        return undefined
-                    }
-                    var dir = input_code.substring(7)
-                    if(cursor_element.neighbors[dir]){
-                        cursor_element = cursor_element.neighbors[dir]
-                        if(dir == 3){
-                            cursor_element = cursor_element.neighbors[0]
-                        }
-                    }
-                break;
-
-                case "key_dir0":
-                case "key_dir2":
-                    var dir = input_code.substring(7)
-                    if(cursor_element.neighbors[dir]){
-                        cursor_element = cursor_element.neighbors[dir]
-                    }else{
-                        dir = (parseInt(dir) + 2) % 4
-                        while(cursor_element.neighbors[dir]){
-                            cursor_element = cursor_element.neighbors[dir]
-                        }
-                    }
-                break;
-                
-                case "pos1":
-                case "end":
-                    var dir = (input_code == "pos1" ? 0 : 2)
-                    while(cursor_element.neighbors[dir]){
-                        cursor_element = cursor_element.neighbors[dir]
-                    }
-                break;
-                
-                case "key_Ans":
-                    new_elements.push(new Ans_Element(cursor_element))
-                    cursor_element = new_elements[0]
-                    break;
-
-                case "key_uservar_A":
-                case "key_uservar_B":
-                case "key_uservar_C":
-                case "key_uservar_D":
-                case "key_uservar_E":
-                case "key_uservar_F":
-                case "key_uservar_X":
-                case "key_uservar_Y":
-                case "key_uservar_M":
-                    new_elements.push(new User_Var_Element(cursor_element,input_code.substring(12)))
-                    cursor_element = new_elements[0]
-                    break;
-                
-                case "key_pi":
-                    new_elements.push(new Const_Element(cursor_element,40))
-                    cursor_element = new_elements[0]
-                    break;
-                
-                case "key_e":
-                    new_elements.push(new Const_Element(cursor_element,41))
-                    cursor_element = new_elements[0]
-                    break;
-
-
-                case "key_=":
-                    if(cursor_element.type != "start" || cursor_element.neighbors[2]){
-                        calc_output = true
-                    }
-                    break;
-
-                case "key_STO_A":
-                case "key_STO_B":
-                case "key_STO_C":
-                case "key_STO_D":
-                case "key_STO_E":
-                case "key_STO_F":
-                case "key_STO_X":
-                case "key_STO_Y":
-                case "key_STO_M":
-                    if(cursor_element.type != "start" || cursor_element.neighbors[2]){
-                        while(cursor_element.neighbors[2]){
-                            cursor_element = cursor_element.neighbors[2]
-                        }
-                        new_elements.push(new Sto_Element(cursor_element,input_code.substring(8)))
-                        cursor_element = new_elements[0]
-                    }
-                    break;
-                
-                case "key_comma":
-                    new_elements.push(new Point_Element(cursor_element))
-                    cursor_element = new_elements[0]
-                    break;
-                
-                case "key_pow10":
-                    new_elements.push(new Pow10_Element(cursor_element))
-                    cursor_element = new_elements[0]
-                    break;
-
-                case "key_x":
-                    new_elements.push(new Times_Element(cursor_element))
-                    cursor_element = new_elements[0]
-                    break;
-
-                case "key_÷":
-                    new_elements.push(new Div_Element(cursor_element))
-                    cursor_element = new_elements[0]
-                    break;
-
-                case "key_+":
-                    new_elements.push(new Plus_Element(cursor_element))
-                    cursor_element = new_elements[0]
-                    break;
-
-                case "key_-":
-                    new_elements.push(new Minus_Element(cursor_element))
-                    cursor_element = new_elements[0]
-                    break;
-
-                case "key_(":
-                    new_elements.push(new Brackets_Element(cursor_element))
-                    cursor_element = new_elements[0]
-                    break;
-                
-                case "key_)":
-                    new_elements.push(new Brackets_Close_Element(cursor_element))
-                    cursor_element = new_elements[0]
-                    break;
-
-                case "key_sin":
-                    new_elements.push(new Sin_Element(cursor_element))
-                    cursor_element = new_elements[0]
-                    break;
-
-                case "key_cos":
-                    new_elements.push(new Cos_Element(cursor_element))
-                    cursor_element = new_elements[0]
-                    break;
-
-                case "key_tan":
-                    new_elements.push(new Tan_Element(cursor_element))
-                    cursor_element = new_elements[0]
-                    break;
-
-                case "key_log":
-                    new_elements.push(new Log_Element(cursor_element))
-                    cursor_element = new_elements[0]
-                    break;
-
-                case "key_ln":
-                    new_elements.push(new Ln_Element(cursor_element))
-                    cursor_element = new_elements[0]
-                    break;
-
-                case "key_frac":
-                    new_elements.push(new Frac_Element(cursor_element))
-                    cursor_element = new_elements[0]
-                    break;
-
-                case "key_sqrt":
-                    new_elements.push(new Sqrt_Element(cursor_element))
-                    cursor_element = new_elements[0]
-                    break;
-
-                case "key_sqrtn":
-                    new_elements.push(new Sqrtn_Element(cursor_element))
-                    cursor_element = new_elements[0]
-                    break;
-
-                case "key_sqrt3":
-                    var exponent = input_code.substring(8)
-                    new_elements.push(new Sqrtn_Element(cursor_element))
-                    cursor_element = new_elements[0].children[0]
-                    var prefilled_element = new Int_Element(new_elements[0],exponent)
-                    new_elements.push(prefilled_element)
-                    prefilled_element.neighbors[2] = new_elements[0].children[0]
-                    new_elements[0].children[0].neighbors[0] = prefilled_element
-                    break;
-
-                case "key_pown":
-                    new_elements.push(new Pow_Element(cursor_element,false))
-                    cursor_element = new_elements[0]
-                    break;
-
-                case "key_faculty":
-                    new_elements.push(new Faculty_Element(cursor_element,false))
-                    cursor_element = new_elements[0]
-                    break;
-
-                case "key_epow":
-                    new_elements.push(new Pow_Element(cursor_element,true))
-                    var prefilled_element = new Const_Element(new_elements[0],41)
-                    new_elements.push(prefilled_element)
-                    prefilled_element.neighbors[2] = new_elements[0].children[0]
-                    new_elements[0].children[0].neighbors[0] = prefilled_element
-                    cursor_element = new_elements[0].children[0]
-                    break;
-
-                case "key_pow2":
-                case "key_pow3":
-                    var exponent = input_code.substring(7)
-                    new_elements.push(new Pow_Element(cursor_element,true))
-                    cursor_element = new_elements[0]
-                    var prefilled_element = new Int_Element(cursor_element.children[0],exponent)
-                    new_elements.push(prefilled_element)
-                    prefilled_element.neighbors[2] = cursor_element.children[1]
-                    cursor_element.children[1].neighbors[0] = prefilled_element
-                    break;
-
-                case "key_pow-1":
-                    new_elements.push(new Pow_Element(cursor_element,true))
-                    cursor_element = new_elements[0]
-                    var prefilled_element1 = new Minus_Element(cursor_element.children[0])
-                    var prefilled_element2 = new Int_Element(prefilled_element1,1)
-                    new_elements.push(prefilled_element1,prefilled_element2)
-                    prefilled_element2.neighbors[2] = cursor_element.children[1]
-                    cursor_element.children[1].neighbors[0] = prefilled_element2
-                    break;
-
-                case "key_logn":
-                    new_elements.push(new Logx_Element(cursor_element))
-                    cursor_element = new_elements[0]
-                    break;
-
-                case "key_del":
-                    switch(cursor_element.type){
-                        case "start":
-                            break;
-
-                        case "container":
-                            cursor_element = cursor_element.neighbors[0]
-                            break;
-                        
-                        case "container_operation":
-                            let elements_to_delete = [cursor_element].concat(cursor_element.children)
-                            cursor_element = cursor_element.neighbors[0]
-                            let element = elements_to_delete[elements_to_delete.length - 1]
-                            while(element != elements_to_delete[0].neighbors[0]){
-                                if(elements_to_delete.includes(element)){
-                                    element.neighbors[0].neighbors[2] = element.neighbors[2]
-                                    if(element.neighbors[0].neighbors[2]){
-                                        element.neighbors[0].neighbors[2].neighbors[0] = element.neighbors[0]
-                                    }
-                                }else{
-                                    if(elements_to_delete.includes(element.neighbors[1])){
-                                        element.neighbors[1] = elements_to_delete[elements_to_delete.length - 1].neighbors[1]
-                                    }
-
-                                    if(elements_to_delete.includes(element.neighbors[3])){
-                                        element.neighbors[3] = elements_to_delete[elements_to_delete.length - 1].neighbors[3]
-                                    }
-                                }
-                                element = element.neighbors[0]
-                            }
-                            break;
-
-                        default:
-                            cursor_element = cursor_element.neighbors[0]
-                            cursor_element.neighbors[2] = old_neighbors[2]
-                            if(cursor_element.neighbors[2]){
-                                cursor_element.neighbors[2].neighbors[0] = cursor_element
-                            }
-                    }
-                    break;
-            }
-
-            if(new_elements.length > 0){
-                if(new_elements[0].skip_to_element_after_creation){
-                    cursor_element = new_elements[0].skip_to_element_after_creation
-                }
-                
-                if(old_neighbors[2]){
-                    if(new_elements[0].children){
-                        let last_child = new_elements[0].children[new_elements[0].children.length - 1]
-                        last_child.neighbors[2] = old_neighbors[2]
-                        old_neighbors[2].neighbors[0] = last_child
-                    }else{
-                        new_elements[0].neighbors[2] = old_neighbors[2]
-                        old_neighbors[2].neighbors[0] = new_elements[0]
-                    }
-                }
-                for(let new_element_index = 0; new_element_index < new_elements.length; new_element_index++){
-                    if(new_elements[new_element_index].type == "container_operation"){
-                        new_elements[new_element_index].set_container_neighbors(old_neighbors)
-                    }else{
-                        if(!new_elements[new_element_index].neighbors[1]){
-                            new_elements[new_element_index].set_neighbor(1,old_neighbors[1])
-                        }
-                        if(!new_elements[new_element_index].neighbors[3]){
-                            new_elements[new_element_index].set_neighbor(3,old_neighbors[3])
-                        }
-                    }
-                }
-            }
-        }
-
-        if(calc_output){
-            let [this_input_string,this_output_string,sto] = this.math_elements_to_string(res,cursor_element,false)
-            this_output_string = this.handle_subres(this_output_string)
-            let this_result
-            try {
-                this_result = math.evaluate(this_output_string)
-                if(typeof this_result != "number" && typeof this_result != "string"){
-                    throw "invalid"
-                }
-            } catch (error) {
-                this_result = "syntax_error"
-            }
-
-            if(typeof this_result == "string"){
-                this.input_code_history.pop()
-                return [
-                    this_result,
-                    ""
-                ]
-            }else{
-                if(sto){
-                    sto.operate(this_result)
-                }
-                active_input_handler = this.parent_handler
-                this.parent_handler.input_strings[this.parent_handler.display_equation_index] = this_input_string
-                this.parent_handler.results[this.parent_handler.display_equation_index] = this_result
-                this.parent_handler.update_display(false)
-                this.parent_handler.update_position()
-                return undefined
-            }
-        }else{
-            return [
-                this.math_elements_to_string(res,cursor_element,show_cursor)[0],
-                ""
-            ]
-        }
-    }
-}
-
-class EquationSelectInputHandler extends InputHandler{
-    constructor(display_input_element, math_input_element, display_output_element, math_output_element) {
-        super(display_input_element, math_input_element, display_output_element, math_output_element)
-        this.equations = []
-        this.add_empty_equation()
-        this.display_equation_index = 0
-        this.max_equations = 15
-        this.ans_value = 0
-        this.input_strings = []
-        this.results = []
-        this.as_fraction = true
-        this.user_var = {}
-
-        active_input_handler = this.equations[this.display_equation_index]
-    }
-
-    add_empty_equation(){
-        this.equations.push(new EquationInputHandler(this.display_input_element, this.math_input_element, this.display_output_element, this.math_output_element, this))
-        this.as_fraction = true
-    }
-
-    select_equation(up){
-        let index_before = this.display_equation_index
-        if(up){
-            this.display_equation_index = Math.max( 0, Math.min(this.display_equation_index - 1, this.equations.length - 1) )
-        }else{
-            this.display_equation_index = Math.max( 0, Math.min(this.display_equation_index + 1, this.equations.length - 1) )
-        }
-        if(index_before != this.display_equation_index){
-            this.as_fraction = true
-        }
-    }
-
-    // Method to handle input
-    handle(input_code) {
-        switch(input_code){
-            case "key_=":
-                this.add_empty_equation()
-                this.equations[this.equations.length - 1].input_code_history = this.equations[this.display_equation_index].input_code_history
-                this.display_equation_index = this.equations.length - 1
-                active_input_handler = this.equations[this.display_equation_index]
-                active_input_handler.update_display()
-                active_input_handler.update_position();
-            break;
-
-            case "key_dir0":
-                this.add_empty_equation()
-                this.equations[this.equations.length - 1].input_code_history = this.equations[this.display_equation_index].input_code_history.slice(0, -1)
-                this.display_equation_index = this.equations.length - 1
-                active_input_handler = this.equations[this.display_equation_index]
-                active_input_handler.handle("end")
-                active_input_handler.update_position();
-            break;
-
-            case "key_dir2":
-                this.add_empty_equation()
-                this.equations[this.equations.length - 1].input_code_history = this.equations[this.display_equation_index].input_code_history.slice(0, -1)
-                this.display_equation_index = this.equations.length - 1
-                active_input_handler = this.equations[this.display_equation_index]
-                active_input_handler.handle("pos1")
-                active_input_handler.update_position();
-            break;
-
-            case "key_SD":
-                this.as_fraction = !this.as_fraction
-                this.update_display();
-            break;
-
-            case "key_dir1":
-                this.select_equation(false)
-                this.update_position();
-                this.update_display();
-            break;
-
-            case "key_dir3":
-                this.select_equation(true)
-                this.update_position();
-                this.update_display();
-            break;
-
-            default:
-                this.add_empty_equation()
-                this.display_equation_index = this.equations.length - 1
-                active_input_handler = this.equations[this.display_equation_index]
-                if([
-                    "key_+",
-                    "key_-",
-                    "key_÷",
-                    "key_x"
-                ].includes(input_code)){
-                    active_input_handler.handle("key_Ans")
-                }
-                active_input_handler.handle(input_code)
-                active_input_handler.update_position();
-            break;
-        }
-    }
-
-    update_display() {
-        if(this.equations.length > 0){
-            this.math_input_element.innerHTML = this.input_strings[this.display_equation_index]
-            this.math_output_element.innerHTML = this.formatNumber(this.results[this.display_equation_index],this.as_fraction)
-            this.math_input_element.scroll(0,0)
-            this.vertical_align_elements()
-        }
-    }
-
-    update_position() {
-        this.align_element(this.display_input_element, this.math_input_element);
-        this.align_element(this.display_output_element, this.math_output_element);
-    }
-
-    align_element(displayElement, mathElement, align) {
         const rect = displayElement.getBoundingClientRect();
         mathElement.style.position = "absolute";
         mathElement.style.left = `${rect.left}px`;
@@ -1420,14 +154,31 @@ class EquationSelectInputHandler extends InputHandler{
     }
 }
 
-function setRootFontSize(size) {
-    document.documentElement.style.fontSize = size + 'px';
-}
+let ui = new UI(global_logic_vars)
 
-function handle_resize(){
-    setRootFontSize(document.getElementById("layer1").getBoundingClientRect().height * 0.034506)
-    active_input_handler.update_position()
-}
+fetch("version.txt")
+    .then((res) => res.text())
+    .then((text) => {
+        version = text.trim()
+
+        document.getElementById("version").innerText = "What's new in " + version + "?";
+        document.getElementById("version-small").innerText = version;
+        ui.fetchChangelog(version.endsWith(".0"))
+    })
+    .catch((e) => console.error(e));
+
+fetch("versionCode.txt")
+    .then((res) => res.text())
+    .then((text) => {
+        versionCode = text.trim()
+
+        const lastSeenVersionCode = localStorage.getItem("lastSeenVersionCode");
+        if (lastSeenVersionCode !== versionCode) {
+            ui.toggle_changelog(); // Show changelog automatically
+            localStorage.setItem("lastSeenVersionCode", versionCode);
+        }
+    })
+    .catch((e) => console.error(e));
 
 document.addEventListener("DOMContentLoaded", () => {
     let expression = "";
@@ -1445,9 +196,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 document.querySelector('[inkscape\\3a label="display_input"]'),
                 document.getElementById("math-input"),
                 document.querySelector('[inkscape\\3a label="display_output"]'),
-                document.getElementById("math-output")
+                document.getElementById("math-output"),
+                global_logic_vars,
+                ui
             );
-            handle_resize()
+            ui.handle_resize()
             attachEventListeners();
         })
         .catch(error => console.error("Error loading SVG:", error));
@@ -1465,12 +218,27 @@ document.addEventListener("DOMContentLoaded", () => {
                     label_background[0].classList.add("pressed");
                     setTimeout(() => label_background[0].classList.remove("pressed"), 150);
                 }
-            
-                active_input_handler.handle(input_code);
+                global_logic_vars.input_history.push(input_code)
+                global_logic_vars.active_input_handler.handle(input_code);
             });
         });
-        window.addEventListener('resize', handle_resize)
-        document.getElementById("changelog").addEventListener('pointerdown', toggle_changelog)
-        document.getElementById("version-small").addEventListener('pointerdown', toggle_changelog)
+        window.addEventListener('resize', ui.handle_resize)
+        document.getElementById("changelog").addEventListener('pointerdown', ui.toggle_changelog)
+        document.getElementById("version-small").addEventListener('pointerdown', ui.toggle_changelog)
     }
 });
+
+function decodeHTMLEntities(str) {
+    const txt = document.createElement('textarea');
+    txt.innerHTML = str;
+    return txt.value;
+}
+
+function log_calculation(){
+    console.log({
+        "name":"INSERT_TEST_NAME",
+        "input_history":global_logic_vars.input_history,
+        "rendered_input":decodeHTMLEntities(global_logic_vars.active_input_handler.math_input_element.innerHTML),
+        "rendered_output":decodeHTMLEntities(global_logic_vars.active_input_handler.math_output_element.innerHTML)
+    })
+}

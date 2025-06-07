@@ -1,3 +1,22 @@
+- 1.7.4
+- Updated VersionCode and ran tests
+- Added Manual UI Test Checklist
+- quick fix for test file endings
+- test script now only executes js files
+- Switched to todo test for third root
+- Added mixed input_to_output test
+- Added more Tests
+- Switched logging function to single global input history
+- Changed single quote class to double quotes
+- Added more tests
+- replaced html entities with unicode characters
+- Bugfix: Sqrtn now works with new system
+- added calculation console logging function
+- Tweak: Require more accurate fractions
+- Added CI Badges
+- Added npm test to CI
+- added testing script
+- Even more color adjustments
 - 1.7.3
 - Updated Versioncode
 - Tweak: Changed Colors again slightly
