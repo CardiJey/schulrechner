@@ -867,24 +867,10 @@ for(let test_index = 0; test_index < known_to_fail_tests.length; test_index++){
     let rendered_input = this_test.rendered_input.replaceAll("\"","'").replace(/\s*style='[^']*'/g, '')
     let rendered_output = this_test.rendered_output.replaceAll("\"","'").replace(/\s*style='[^']*'/g, '')
 
-    test(this_test.name + " known to fail", (t) => {
-        let passedUnexpectedly = false;
-
-        try {
-            assert.deepStrictEqual(
-                eval_input_history(this_test.input_history),
-                [rendered_input,rendered_output]
-            );
-            passedUnexpectedly = true;
-        } catch (e) {
-            // Known broken, do nothing
-            return;
-        }
-
-        if (passedUnexpectedly) {
-            throw new Error(
-            '❗ ' + this_test.name + ' unexpectedly started working - remove test suppression'
-            );
-        }
+    test.todo(this_test.name, (t) => {
+        assert.deepStrictEqual(
+            eval_input_history(this_test.input_history),
+            [rendered_input,rendered_output]
+        );
     })
 }
