@@ -10,7 +10,7 @@ What does this test test?
 Everything from the call of the handle function of the input_handler to setting the innerHTML of the display
 */
 
-const test = require('node:test');
+const { test, describe } = require('node:test');
 const assert = require('node:assert');
 const math = require('../www/js/math.js');
 
@@ -850,27 +850,30 @@ const known_to_fail_tests = [
     }
 ]
 
-for(let test_index = 0; test_index < tests.length; test_index++){
-    let this_test = tests[test_index]
-    let rendered_input = this_test.rendered_input.replaceAll("\"","'").replace(/\s*style='[^']*'/g, '')
-    let rendered_output = this_test.rendered_output.replaceAll("\"","'").replace(/\s*style='[^']*'/g, '')
 
-    test(this_test.name, (t) => {
-        assert.deepStrictEqual(
-            eval_input_history(this_test.input_history),
-            [rendered_input,rendered_output]
-        );
-    })
-}
-for(let test_index = 0; test_index < known_to_fail_tests.length; test_index++){
-    let this_test = known_to_fail_tests[test_index]
-    let rendered_input = this_test.rendered_input.replaceAll("\"","'").replace(/\s*style='[^']*'/g, '')
-    let rendered_output = this_test.rendered_output.replaceAll("\"","'").replace(/\s*style='[^']*'/g, '')
+describe(`⚙️ Automated Tests`, () => {
+    for(let test_index = 0; test_index < tests.length; test_index++){
+        let this_test = tests[test_index]
+        let rendered_input = this_test.rendered_input.replaceAll("\"","'").replace(/\s*style='[^']*'/g, '')
+        let rendered_output = this_test.rendered_output.replaceAll("\"","'").replace(/\s*style='[^']*'/g, '')
 
-    test.todo(this_test.name, (t) => {
-        assert.deepStrictEqual(
-            eval_input_history(this_test.input_history),
-            [rendered_input,rendered_output]
-        );
-    })
-}
+        test(this_test.name, (t) => {
+            assert.deepStrictEqual(
+                eval_input_history(this_test.input_history),
+                [rendered_input,rendered_output]
+            );
+        })
+    }
+    for(let test_index = 0; test_index < known_to_fail_tests.length; test_index++){
+        let this_test = known_to_fail_tests[test_index]
+        let rendered_input = this_test.rendered_input.replaceAll("\"","'").replace(/\s*style='[^']*'/g, '')
+        let rendered_output = this_test.rendered_output.replaceAll("\"","'").replace(/\s*style='[^']*'/g, '')
+
+        test.todo(this_test.name, (t) => {
+            assert.deepStrictEqual(
+                eval_input_history(this_test.input_history),
+                [rendered_input,rendered_output]
+            );
+        })
+    }
+})
