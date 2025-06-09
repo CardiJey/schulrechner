@@ -201,6 +201,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 ui
             );
             ui.handle_resize()
+            setTimeout(ui.handle_resize.bind(ui),1000)
             attachEventListeners();
         })
         .catch(error => console.error("Error loading SVG:", error));
@@ -222,9 +223,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 global_logic_vars.active_input_handler.handle(input_code);
             });
         });
-        window.addEventListener('resize', ui.handle_resize)
-        document.getElementById("changelog").addEventListener('pointerdown', ui.toggle_changelog)
-        document.getElementById("version-small").addEventListener('pointerdown', ui.toggle_changelog)
+        window.addEventListener('resize', ui.handle_resize.bind(ui))
+        document.getElementById("changelog").addEventListener('pointerdown', ui.toggle_changelog.bind(ui))
+        document.getElementById("version-small").addEventListener('pointerdown', ui.toggle_changelog.bind(ui))
     }
 });
 
