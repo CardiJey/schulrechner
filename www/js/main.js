@@ -14,6 +14,7 @@ let global_logic_vars = {
 class UI{
     constructor(global_logic_vars){
         this.global_logic_vars = global_logic_vars
+        this.userLang = userLang
     }
 
     async fetchChangelog(fdroid) {
@@ -192,13 +193,29 @@ document.addEventListener("DOMContentLoaded", () => {
         .then(data => {
             svgContainer.innerHTML = data;
 
+            let decimal_separator = getDecimalSeparator()
+            let gui_lang;
+
+            if(decimal_separator == "."){
+                gui_lang = "en-US"
+            }else{
+                gui_lang = "de-DE"
+            }
+
+            const lang_specific_elements = document.querySelectorAll('[inkscape\\3a label$="' + gui_lang + '"]');
+
+            lang_specific_elements.forEach(element => {
+                element.style.display = "inline"
+            });
+
             new EquationSelectInputHandler(
                 document.querySelector('[inkscape\\3a label="display_input"]'),
                 document.getElementById("math-input"),
                 document.querySelector('[inkscape\\3a label="display_output"]'),
                 document.getElementById("math-output"),
                 global_logic_vars,
-                ui
+                ui,
+                userLang
             );
             ui.handle_resize()
             setTimeout(ui.handle_resize.bind(ui),1000)
@@ -237,6 +254,7 @@ function decodeHTMLEntities(str) {
 
 function log_calculation(){
     console.log({
+        "userLang":userLang,
         "name":"INSERT_TEST_NAME",
         "input_history":global_logic_vars.input_history,
         "rendered_input":decodeHTMLEntities(global_logic_vars.active_input_handler.math_input_element.innerHTML),

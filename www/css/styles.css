@@ -45,12 +45,11 @@ svg {
 }
 
 #math-output {
-    text-align: right !important;
-    vertical-align: bottom;
     display: flex;
-    justify-content: flex-end;
-    align-items: flex-end;
     padding-top: 0;
+    flex-wrap: wrap;
+    align-content: flex-end;
+    justify-content: flex-end;
 }
 
 #math-input {
