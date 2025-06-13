@@ -193,16 +193,19 @@ document.addEventListener("DOMContentLoaded", () => {
         .then(data => {
             svgContainer.innerHTML = data;
 
-            let decimal_separator = getDecimalSeparator()
-            let gui_lang;
+            let decimal_separator = localStorage.getItem("decimalFormat")
+            if (!decimal_separator) {
+                decimal_separator = getDecimalSeparator()
+            }
+            document.getElementById("decimal-format-select").value = decimal_separator;
 
             if(decimal_separator == "."){
-                gui_lang = "en-US"
+                userLang = "en-US"
             }else{
-                gui_lang = "de-DE"
+                userLang = "de-DE"
             }
 
-            const lang_specific_elements = document.querySelectorAll('[inkscape\\3a label$="' + gui_lang + '"]');
+            const lang_specific_elements = document.querySelectorAll('[inkscape\\3a label$="' + userLang + '"]');
 
             lang_specific_elements.forEach(element => {
                 element.style.display = "inline"
@@ -243,6 +246,17 @@ document.addEventListener("DOMContentLoaded", () => {
         window.addEventListener('resize', ui.handle_resize.bind(ui))
         document.getElementById("changelog").addEventListener('pointerdown', ui.toggle_changelog.bind(ui))
         document.getElementById("version-small").addEventListener('pointerdown', ui.toggle_changelog.bind(ui))
+        document.getElementById("open-settings-btn").addEventListener('pointerdown', () => {
+            document.getElementById("settings-menu").classList.toggle("hidden");
+        })
+        document.getElementById("close-settings-btn").addEventListener('pointerdown', () => {
+            document.getElementById("settings-menu").classList.toggle("hidden");
+        })
+        document.getElementById("decimal-format-select").addEventListener("change", () => {
+            const format = document.getElementById("decimal-format-select").value;
+            localStorage.setItem("decimalFormat", format);
+            location.reload();
+        });
     }
 });
 
