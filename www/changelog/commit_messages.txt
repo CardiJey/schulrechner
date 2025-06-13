@@ -1,3 +1,9 @@
+- 1.8.1
+- Updated Versioncode
+- Feature: Added en-US locale with point "." as decimal separator
+- Merge branches 'main' and 'main' of github.com:CardiJey/schulrechner
+- Bugfix: Fixed wrong font size
+- Update README.md
 - 1.8.0
 - Ran tests
 - updated VersionCode

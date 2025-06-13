@@ -22,7 +22,7 @@ OS2Version: 0
 OS2_WeightWidthSlopeOnly: 0
 OS2_UseTypoMetrics: 1
 CreationTime: 1744471654
-ModificationTime: 1748199587
+ModificationTime: 1749754233
 OS2TypoAscent: 0
 OS2TypoAOffset: 1
 OS2TypoDescent: 0
@@ -45,7 +45,7 @@ NameList: AGL For New Fonts
 DisplaySize: -48
 AntiAlias: 1
 FitToEm: 0
-WinInfo: 0 38 14
+WinInfo: 38 38 14
 BeginPrivate: 0
 EndPrivate
 BeginChars: 65536 54
@@ -1352,42 +1352,31 @@ EndChar
 StartChar: period
 Encoding: 46 46 14
 Width: 72
-Flags: HW
+Flags: HWO
 LayerCount: 2
 Fore
 SplineSet
+24 12 m 1
+ 35 12 l 1
+ 35 1 l 1
+ 24 1 l 1
+ 24 12 l 1
 24 24 m 1
  35 24 l 1
  35 13 l 1
  24 13 l 1
  24 24 l 1
-24 36 m 1
- 35 36 l 1
- 35 25 l 1
- 24 25 l 1
- 24 36 l 1
-24 48 m 1
- 35 48 l 1
- 35 37 l 1
- 24 37 l 1
- 24 48 l 1
 12 12 m 1
  23 12 l 1
  23 1 l 1
  12 1 l 1
  12 12 l 1
-12 36 m 1
- 23 36 l 1
- 23 25 l 1
- 12 25 l 1
- 12 36 l 1
-12 48 m 1
- 23 48 l 1
- 23 37 l 1
- 12 37 l 1
- 12 48 l 1
+12 24 m 1
+ 23 24 l 1
+ 23 13 l 1
+ 12 13 l 1
+ 12 24 l 1
 EndSplineSet
-Validated: 1
 EndChar
 
 StartChar: hyphen

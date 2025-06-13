@@ -1,3 +1,11 @@
+function getDecimalSeparator(userLang) {
+    const numberWithDecimal = 1.1;
+    const formatted = new Intl.NumberFormat(userLang, {
+        useGrouping: false
+    }).format(numberWithDecimal);
+    return formatted.replace(/\d/g, '')[0]; // entfernt alle Ziffern, übrig bleibt das Trennzeichen
+}
+
 function is_family(el1, el2){
     if(el1 && el2){
         let parent_el;
@@ -153,8 +161,8 @@ class Div_Element extends Math_Element{
 }
 
 class Point_Element extends Math_Element{
-    constructor(left){
-        super("point_operation",left,",",".")
+    constructor(left,userLang){
+        super("point_operation",left,getDecimalSeparator(userLang),".")
     }
 }
 
@@ -476,13 +484,14 @@ class Const_Element extends Math_Element{
 }
 
 class InputHandler{
-    constructor(display_input_element, math_input_element, display_output_element, math_output_element, global_logic_vars, ui) {
+    constructor(display_input_element, math_input_element, display_output_element, math_output_element, global_logic_vars, ui, userLang) {
         this.display_input_element = display_input_element;
         this.display_output_element = display_output_element;
         this.math_input_element = math_input_element;
         this.math_output_element = math_output_element;
         this.global_logic_vars = global_logic_vars;
         this.ui = ui
+        this.userLang = userLang
     }
 
     round_to_significant_places(num,places){
@@ -530,32 +539,40 @@ class InputHandler{
     }
 
     formatNumber(num,as_fraction=true) {
-        let res_num;
         if(typeof num == "string"){
             return num
         }
-        // Convert to scientific notation if there are 10 or more significant digits
-        if (Math.abs(num) >= 1e10 || (num !== 0 && Math.abs(num) < 1e-10)) {
-            return num.toExponential(9); // Adjust precision as needed
-        }else{
-            if(as_fraction){
-                let resulting_fraction = this.decimal_to_continued_fraction(num)[1]
-                let resulting_fraction_length = (resulting_fraction[0].toString() + resulting_fraction[1].toString()).length
+        
+        if(as_fraction){
+            let resulting_fraction = this.decimal_to_continued_fraction(num)[1]
+            let resulting_fraction_length = (resulting_fraction[0].toString() + resulting_fraction[1].toString()).length
 
-                if(resulting_fraction[1] != 1 && resulting_fraction_length <= 9){
-                    return "<span class='frac_wrapper'><span class='frac_top'>" + resulting_fraction[0] + "</span><span class='frac_bottom'>" + resulting_fraction[1] + "</span></span>"
-                }
+            if(resulting_fraction[1] != 1 && resulting_fraction_length <= 9){
+                return "<span class='frac_wrapper'><span class='frac_top'>" + resulting_fraction[0] + "</span><span class='frac_bottom'>" + resulting_fraction[1] + "</span></span>"
             }
-
-            res_num = this.round_to_significant_places(num,10)[0]
         }
-        return res_num.toString();
+
+        if (Math.abs(num) >= 1e10 || (num !== 0 && Math.abs(num) < 1e-2)) {
+            let [coeff, exp] = num.toExponential(9).split('e');
+            if(exp.startsWith('+')){
+                exp = exp.substring(1)
+            }
+            return new Intl.NumberFormat(this.userLang, {
+                useGrouping: false,
+                maximumSignificantDigits: 10
+            }).format(parseFloat(coeff)) + "<span class='pow10'>×⒑</span><span class='pow_top'>" + exp + "</span>"
+        }
+
+        return new Intl.NumberFormat(this.userLang, {
+            useGrouping: false,
+            maximumSignificantDigits: 10
+        }).format(num)
     }
 }
 
 class EquationInputHandler extends InputHandler{
-    constructor(display_input_element, math_input_element, display_output_element, math_output_element, parent_handler, global_logic_vars, ui) {
-        super(display_input_element, math_input_element, display_output_element, math_output_element, global_logic_vars, ui)
+    constructor(display_input_element, math_input_element, display_output_element, math_output_element, parent_handler, global_logic_vars, ui, userLang) {
+        super(display_input_element, math_input_element, display_output_element, math_output_element, global_logic_vars, ui, userLang)
         this.input_code_history = [];
         this.parent_handler = parent_handler
         this.modes = {
@@ -888,7 +905,7 @@ class EquationInputHandler extends InputHandler{
                     break;
                 
                 case "key_comma":
-                    new_elements.push(new Point_Element(cursor_element))
+                    new_elements.push(new Point_Element(cursor_element,this.userLang))
                     cursor_element = new_elements[0]
                     break;
                 
@@ -1134,8 +1151,8 @@ class EquationInputHandler extends InputHandler{
 }
 
 class EquationSelectInputHandler extends InputHandler{
-    constructor(display_input_element, math_input_element, display_output_element, math_output_element, global_logic_vars, ui) {
-        super(display_input_element, math_input_element, display_output_element, math_output_element, global_logic_vars, ui)
+    constructor(display_input_element, math_input_element, display_output_element, math_output_element, global_logic_vars, ui, userLang) {
+        super(display_input_element, math_input_element, display_output_element, math_output_element, global_logic_vars, ui, userLang)
         this.equations = []
         this.add_empty_equation()
         this.display_equation_index = 0
@@ -1150,7 +1167,7 @@ class EquationSelectInputHandler extends InputHandler{
     }
 
     add_empty_equation(){
-        this.equations.push(new EquationInputHandler(this.display_input_element, this.math_input_element, this.display_output_element, this.math_output_element, this, this.global_logic_vars, this.ui))
+        this.equations.push(new EquationInputHandler(this.display_input_element, this.math_input_element, this.display_output_element, this.math_output_element, this, this.global_logic_vars, this.ui, this.userLang))
         this.as_fraction = true
     }
 

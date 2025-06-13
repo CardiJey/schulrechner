@@ -1,6 +1,0 @@
-Feature: Added operations for cube and n-th root, cube power, factorial, and e to the power of n
-Feature: Operators now automatically insert the previous result at the beginning
-Feature: Added test-procedure during development, to ensure future updates won't break anything
-Tweak: Enlarged hitboxes for buttons. Easier to tap.
-Tweak: More readable colors
-Bugfixes: Complex results now produce an error
