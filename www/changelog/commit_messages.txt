@@ -1,3 +1,6 @@
+- 1.8.2
+- Updated VersionCode
+- Feature: Added Settings Menu and decimal format selector
 - 1.8.1
 - Updated Versioncode
 - Feature: Added en-US locale with point "." as decimal separator

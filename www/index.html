@@ -21,6 +21,16 @@
                 <span id="changelog-content"></span>
             </div>
             <span id="version-small"></span>
+            <button id="open-settings-btn">⚙️</button>
+            <div id="settings-menu" class="hidden">
+                <h3>Settings</h3>
+                <label for="decimal-format-select">Decimal Format:</label>
+                <select id="decimal-format-select">
+                    <option value=".">π = 3.14159...</option>
+                    <option value=",">π = 3,14159...</option>
+                </select>
+                <button id="close-settings-btn">Close</button>
+            </div>
         </div>
         <script src="cordova.js"></script>
         <script src="js/logic.js"></script>

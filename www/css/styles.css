@@ -193,3 +193,96 @@ svg {
 .changelog-feature {
     color: rgb(0,255,0);
 }
+
+#open-settings-btn {
+    position: absolute;
+    bottom: 0.1rem;
+    right: 0.1rem;
+    background-color: #1e1e2f;
+    color: #ffffff;
+    border: none;
+    border-radius: 0.25rem;
+    font-size: 0.7rem;
+    padding: 0.25rem 0.3rem;
+    cursor: pointer;
+}
+
+#open-settings-btn:hover {
+    background-color: #2c2c3e;
+    transform: scale(1.05);
+}
+
+#settings-menu {
+    position: absolute;
+    bottom: 3rem;
+    right: 1rem;
+
+    background-color: #1e1e2f;
+    color: #ffffff;
+    padding: 1rem;
+    border-radius: 0.75rem;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+
+    width: 220px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+
+    font-size: 0.9rem;
+    font-family: auto;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    z-index: 100;
+}
+
+#settings-menu.hidden {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(10px);
+}
+
+#settings-menu h3 {
+    margin: 0;
+    font-size: 1rem;
+    border-bottom: 1px solid #333;
+    padding-bottom: 0.5rem;
+}
+
+#settings-menu label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+}
+
+#close-settings-btn {
+    align-self: flex-end;
+    background-color: #2c2c3e;
+    color: #fff;
+    border: none;
+    padding: 0.3rem 0.6rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: background-color 0.2s ease;
+}
+
+#close-settings-btn:hover {
+    background-color: #3d3d52;
+}
+
+#decimal-format-select {
+  background-color: #2c2c3e;
+  color: #fff;
+  border: 1px solid #444;
+  border-radius: 0.5rem;
+  padding: 0.4rem;
+  font-size: 0.9rem;
+  width: 100%;
+  margin-top: 0.25rem;
+}
+
+#decimal-format-select:focus {
+  outline: none;
+  border-color: #666;
+  box-shadow: 0 0 0 2px rgba(100, 100, 255, 0.4);
+}
