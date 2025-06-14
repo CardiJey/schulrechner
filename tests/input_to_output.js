@@ -950,6 +950,58 @@ const tests = [
         ],
         "rendered_input": "0.000000099999999 ",
         "rendered_output": "9.9999999<span class='pow10'>×⒑</span><span class='pow_top'>-8</span>"
+    },
+    {
+        "userLang": "en-US",
+        "name": "asin test",
+        "input_history": [
+            "key_shift",
+            "key_sin",
+            "key_1",
+            "key_÷",
+            "key_2",
+            "key_)",
+            "key_="
+        ],
+        "rendered_input": "sin<span class=\"pow_top\">-1</span>(1÷2) ",
+        "rendered_output": "30"
+    },
+    {
+        "userLang": "en-US",
+        "name": "acos test",
+        "input_history": [
+            "key_shift",
+            "key_cos",
+            "key_7",
+            "key_÷",
+            "key_9",
+            "key_-",
+            "key_0",
+            "key_comma",
+            "key_0",
+            "key_1",
+            "key_)",
+            "key_="
+        ],
+        "rendered_input": "cos<span class=\"pow_top\">-1</span>(7÷9-0.01) ",
+        "rendered_output": "39.84524752"
+    },
+    {
+        "userLang": "en-US",
+        "name": "atan test",
+        "input_history": [
+            "key_shift",
+            "key_tan",
+            "key_sqrt",
+            "key_0",
+            "key_comma",
+            "key_7",
+            "key_dir2",
+            "key_)",
+            "key_="
+        ],
+        "rendered_input": "tan<span class=\"pow_top\">-1</span>(<span class=\"sqrt_wrapper\"><span class=\"scale_height\">√</span><span class=\"sqrt\">0.7</span></span>) ",
+        "rendered_output": "39.91787569"
     }
 ]
 

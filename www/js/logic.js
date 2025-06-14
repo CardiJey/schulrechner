@@ -344,6 +344,24 @@ class Tan_Element extends Math_Element{
     }
 }
 
+class ASin_Element extends Math_Element{
+    constructor(left){
+        super("brackets_operation",left,"sin<span class='pow_top'>-1</span>(","180/PI*asin(")
+    }
+}
+
+class ACos_Element extends Math_Element{
+    constructor(left){
+        super("brackets_operation",left,"cos<span class='pow_top'>-1</span>(","180/PI*acos(")
+    }
+}
+
+class ATan_Element extends Math_Element{
+    constructor(left){
+        super("brackets_operation",left,"tan<span class='pow_top'>-1</span>(","180/PI*atan(")
+    }
+}
+
 class Log_Element extends Math_Element{
     constructor(left){
         super("brackets_operation",left,"log(","log10(")
@@ -588,7 +606,11 @@ class EquationInputHandler extends InputHandler{
                 "key_pow2": "key_pow3",
                 "key_pown": "key_sqrtn",
                 "key_pow-1": "key_faculty",
-                "key_ln": "key_epow"
+                "key_ln": "key_epow",
+                "key_sin": "key_sin-1",
+                "key_cos": "key_cos-1",
+                "key_tan": "key_tan-1",
+                "key_M+": "key_M-"
             },
             "alpha": {
                 "key_pow10": "key_e",
@@ -956,6 +978,22 @@ class EquationInputHandler extends InputHandler{
 
                 case "key_tan":
                     new_elements.push(new Tan_Element(cursor_element))
+                    cursor_element = new_elements[0]
+                    break;
+
+                
+                case "key_sin-1":
+                    new_elements.push(new ASin_Element(cursor_element))
+                    cursor_element = new_elements[0]
+                    break;
+
+                case "key_cos-1":
+                    new_elements.push(new ACos_Element(cursor_element))
+                    cursor_element = new_elements[0]
+                    break;
+
+                case "key_tan-1":
+                    new_elements.push(new ATan_Element(cursor_element))
                     cursor_element = new_elements[0]
                     break;
 
