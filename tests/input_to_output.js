@@ -1002,6 +1002,43 @@ const tests = [
         ],
         "rendered_input": "tan<span class=\"pow_top\">-1</span>(<span class=\"sqrt_wrapper\"><span class=\"scale_height\">√</span><span class=\"sqrt\">0.7</span></span>) ",
         "rendered_output": "39.91787569"
+    },
+    {
+        "userLang": "en-US",
+        "name": "Memory test",
+        "input_history": [
+            "key_7",
+            "key_÷",
+            "key_8",
+            "key_M+",
+            "key_frac",
+            "key_alpha",
+            "key_M+",
+            "key_dir2",
+            "key_3",
+            "key_dir0",
+            "key_dir0",
+            "key_x",
+            "key_2",
+            "key_M+",
+            "key_-",
+            "key_2",
+            "key_=",
+            "key_Ans",
+            "key_M+",
+            "key_5",
+            "key_-",
+            "key_sqrt",
+            "key_9",
+            "key_9",
+            "key_shift",
+            "key_M+",
+            "key_alpha",
+            "key_M+",
+            "key_="
+        ],
+        "rendered_input": "M ",
+        "rendered_output": "4.991541038"
     }
 ]
 
