@@ -182,8 +182,6 @@ fetch("versionCode.txt")
     .catch((e) => console.error(e));
 
 document.addEventListener("DOMContentLoaded", () => {
-    let expression = "";
-    
     const display = document.getElementById("display");
     const svgContainer = document.getElementById("svg-container");
 
@@ -256,6 +254,20 @@ document.addEventListener("DOMContentLoaded", () => {
             const format = document.getElementById("decimal-format-select").value;
             localStorage.setItem("decimalFormat", format);
             location.reload();
+        });
+        let a_elements = document.querySelectorAll("a")
+        a_elements.forEach(a_element => {
+            a_element.addEventListener("pointerdown", function (e) {
+                var url = e.currentTarget.href;
+                if (url.indexOf('http://') !== -1 || url.indexOf('https://') !== -1) {
+                    e.preventDefault();
+                    window.open(url, '_system');
+                    return false
+                }
+            });
+            a_element.addEventListener("click", function (e) {
+                e.preventDefault();
+            });
         });
     }
 });
