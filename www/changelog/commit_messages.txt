@@ -1,3 +1,8 @@
+- 1.8.3
+- Updated VersionCode
+- Feature: Added M+ and M-
+- Feature: Added ASin, ACos and ATan
+- Feature: Added Links in Settings Menu
 - 1.8.2
 - Updated VersionCode
 - Feature: Added Settings Menu and decimal format selector

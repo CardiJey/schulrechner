@@ -286,3 +286,8 @@ svg {
   border-color: #666;
   box-shadow: 0 0 0 2px rgba(100, 100, 255, 0.4);
 }
+
+#settings-menu a {
+  color: inherit;
+  text-decoration: none;
+}

@@ -136,6 +136,24 @@ class Sto_Element extends Math_Element{
     }
 }
 
+class Memory_Element extends Math_Element{
+    constructor(left,sign,global_logic_vars){
+        super("sto",left,"M" + sign,"")
+        this.var_name = "M"
+        if(sign == "-"){
+            this.sign = -1
+        }else{
+            this.sign = 1
+        }
+        this.global_logic_vars = global_logic_vars
+    }
+
+    operate(val){
+        this.global_logic_vars.active_input_handler.parent_handler.user_var[this.var_name] += this.sign * val
+        return val
+    }
+}
+
 class Plus_Element extends Math_Element{
     constructor(left){
         super("additive_operation",left,"+","+")
@@ -341,6 +359,24 @@ class Cos_Element extends Math_Element{
 class Tan_Element extends Math_Element{
     constructor(left){
         super("brackets_operation",left,"tan(","tan(PI/180*")
+    }
+}
+
+class ASin_Element extends Math_Element{
+    constructor(left){
+        super("brackets_operation",left,"sin<span class='pow_top'>-1</span>(","180/PI*asin(")
+    }
+}
+
+class ACos_Element extends Math_Element{
+    constructor(left){
+        super("brackets_operation",left,"cos<span class='pow_top'>-1</span>(","180/PI*acos(")
+    }
+}
+
+class ATan_Element extends Math_Element{
+    constructor(left){
+        super("brackets_operation",left,"tan<span class='pow_top'>-1</span>(","180/PI*atan(")
     }
 }
 
@@ -588,7 +624,11 @@ class EquationInputHandler extends InputHandler{
                 "key_pow2": "key_pow3",
                 "key_pown": "key_sqrtn",
                 "key_pow-1": "key_faculty",
-                "key_ln": "key_epow"
+                "key_ln": "key_epow",
+                "key_sin": "key_sin-1",
+                "key_cos": "key_cos-1",
+                "key_tan": "key_tan-1",
+                "key_M+": "key_M-"
             },
             "alpha": {
                 "key_pow10": "key_e",
@@ -657,10 +697,25 @@ class EquationInputHandler extends InputHandler{
                 this.toggle_mode("none")
                 if(this.mode_maps["STO"][input_code]){
                     this.input_code_history.push(this.mode_maps["STO"][input_code]);
-                    this.input_code_history.push("key_=");
                 }
             }else{
                 this.input_code_history.push(input_code);
+            }
+            if([
+                "key_STO_A",
+                "key_STO_B",
+                "key_STO_C",
+                "key_STO_D",
+                "key_STO_E",
+                "key_STO_F",
+                "key_STO_X",
+                "key_STO_Y",
+                "key_STO_M",
+                "key_M+",
+                "key_M-"
+            ].includes(this.input_code_history[this.input_code_history.length - 1])){
+                this.input_code_history.splice(this.input_code_history.length - 1,0,"end");
+                this.input_code_history.push("key_=");
             }
         }
         this.update_display(true);
@@ -760,6 +815,7 @@ class EquationInputHandler extends InputHandler{
             }
             if(sto){
                 mathjs_res = "syntax_error"
+                break
             }else{
                 switch(cursor_element.type){
                     case "var":
@@ -895,11 +951,17 @@ class EquationInputHandler extends InputHandler{
                 case "key_STO_X":
                 case "key_STO_Y":
                 case "key_STO_M":
+                case "key_M+":
+                case "key_M-":
                     if(cursor_element.type != "start" || cursor_element.neighbors[2]){
                         while(cursor_element.neighbors[2]){
                             cursor_element = cursor_element.neighbors[2]
                         }
-                        new_elements.push(new Sto_Element(cursor_element,input_code.substring(8),this.global_logic_vars))
+                        if(input_code.startsWith("key_STO")){
+                            new_elements.push(new Sto_Element(cursor_element,input_code.substring(8),this.global_logic_vars))
+                        }else if(input_code.startsWith("key_M")){
+                            new_elements.push(new Memory_Element(cursor_element,input_code.substring(5),this.global_logic_vars))
+                        }
                         cursor_element = new_elements[0]
                     }
                     break;
@@ -956,6 +1018,22 @@ class EquationInputHandler extends InputHandler{
 
                 case "key_tan":
                     new_elements.push(new Tan_Element(cursor_element))
+                    cursor_element = new_elements[0]
+                    break;
+
+                
+                case "key_sin-1":
+                    new_elements.push(new ASin_Element(cursor_element))
+                    cursor_element = new_elements[0]
+                    break;
+
+                case "key_cos-1":
+                    new_elements.push(new ACos_Element(cursor_element))
+                    cursor_element = new_elements[0]
+                    break;
+
+                case "key_tan-1":
+                    new_elements.push(new ATan_Element(cursor_element))
                     cursor_element = new_elements[0]
                     break;
 
@@ -1161,7 +1239,9 @@ class EquationSelectInputHandler extends InputHandler{
         this.input_strings = []
         this.results = []
         this.as_fraction = true
-        this.user_var = {}
+        this.user_var = {
+            "M":0
+        }
 
         this.global_logic_vars.active_input_handler = this.equations[this.display_equation_index]
     }
