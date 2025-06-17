@@ -255,20 +255,22 @@ document.addEventListener("DOMContentLoaded", () => {
             localStorage.setItem("decimalFormat", format);
             location.reload();
         });
-        let a_elements = document.querySelectorAll("a")
-        a_elements.forEach(a_element => {
-            a_element.addEventListener("pointerdown", function (e) {
-                var url = e.currentTarget.href;
-                if (url.indexOf('http://') !== -1 || url.indexOf('https://') !== -1) {
+        if(cordova){
+            let a_elements = document.querySelectorAll("a")
+            a_elements.forEach(a_element => {
+                a_element.addEventListener("pointerdown", function (e) {
+                    var url = e.currentTarget.href;
+                    if (url.indexOf('http://') !== -1 || url.indexOf('https://') !== -1) {
+                        e.preventDefault();
+                        cordova.InAppBrowser.open(url, '_system', 'hidden=yes,location=no');
+                        return false
+                    }
+                });
+                a_element.addEventListener("click", function (e) {
                     e.preventDefault();
-                    window.open(url, '_system');
-                    return false
-                }
+                });
             });
-            a_element.addEventListener("click", function (e) {
-                e.preventDefault();
-            });
-        });
+        }
     }
 });
 
