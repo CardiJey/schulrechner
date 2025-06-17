@@ -40,6 +40,9 @@
     "plugins": {
       "cordova-plugin-android-remove-permissions": {
         "locator": "cordova-plugin-android-remove-permissions"
+      },
+      "cordova-plugin-inappbrowser": {
+        "locator": "cordova-plugin-inappbrowser"
       }
     },
     "platforms": [
