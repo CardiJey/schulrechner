@@ -21,7 +21,7 @@
         <preference name="SplashScreenBackgroundColor" value="#000000" />
     </platform>
 
-    <plugin name="cordova-plugin-android-remove-permissions" spec="cordova-plugin-android-remove-permissions" />
-    <plugin name="cordova-plugin-inappbrowser" spec="cordova-plugin-inappbrowser" />
+    <plugin name="cordova-plugin-android-remove-permissions" spec="./cordova-plugin-android-remove-permissions" />
+    <plugin name="cordova-plugin-inappbrowser" spec="./cordova-plugin-inappbrowser" />
     <preference name="AndroidRemovePermissions" value="INTERNET" />
 </widget>
