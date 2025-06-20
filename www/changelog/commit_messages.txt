@@ -1,3 +1,9 @@
+- 1.8.9
+- Update versioncode
+- Switch to explicit local path
+- 1.8.8
+- udapted versionCode
+- Testing if it acutally uses local version
 - 1.8.7
 - Update VersionCode
 - Rename inappbrowser plugin
