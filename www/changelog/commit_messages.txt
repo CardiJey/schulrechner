@@ -1,3 +1,13 @@
+- 1.8.7
+- Update VersionCode
+- Rename inappbrowser plugin
+- 1.8.6
+- updated versionCode
+- Forgot plugin locator
+- 1.8.5
+- updated versionstring
+- Tweak: Made External links a bit smaller
+- Trying to fix external links with inappbrowser plugin
 - 1.8.4
 - Updated Versioncode
 - Bugfix: App should now open defualt browser
