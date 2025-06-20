@@ -4,6 +4,3 @@
 [submodule "cordova-plugin-android-remove-permissions"]
 	path = cordova-plugin-android-remove-permissions
 	url = https://github.com/globules-io/cordova-plugin-android-remove-permissions.git
-[submodule "cordova-plugin-inappbrowser"]
-	path = cordova-plugin-inappbrowser
-	url = https://github.com/apache/cordova-plugin-inappbrowser.git
