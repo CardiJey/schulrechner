@@ -1,3 +1,19 @@
+- 1.8.11
+- Adjust versioncode for a intermediate test version
+- Added external url opening for flatpak
+- Did manual tests for 1.9.0
+- Updated Versioncode
+- Added Changelog
+- Switch to screenshot hosted at github pages
+- Upate desktop file
+- Move flatpak meta files around a bit
+- Added Flatpak metadata
+- More fun with dependencies
+- Update versions for Flatpak release
+- Readded submodule after succesful test
+- 1.8.10
+- updated Versioncode
+- Testing without remove permissions plugin
 - 1.8.9
 - Update versioncode
 - Switch to explicit local path

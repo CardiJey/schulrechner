@@ -2,6 +2,11 @@ let changelog_visible = false
 let version;
 let versionCode;
 let userLang = navigator.language || navigator.userLanguage;
+let is_electron = isElectron()
+let shell
+if(is_electron){
+    shell = require("electron").shell;
+}
 
 let global_logic_vars = {
     "active_input_handler": undefined,
@@ -255,7 +260,7 @@ document.addEventListener("DOMContentLoaded", () => {
             localStorage.setItem("decimalFormat", format);
             location.reload();
         });
-        if(cordova){
+        if("cordova" in window){
             let a_elements = document.querySelectorAll("a")
             a_elements.forEach(a_element => {
                 a_element.addEventListener("pointerdown", function (e) {
@@ -263,6 +268,21 @@ document.addEventListener("DOMContentLoaded", () => {
                     if (url.indexOf('http://') !== -1 || url.indexOf('https://') !== -1) {
                         e.preventDefault();
                         cordova.InAppBrowser.open(url, '_system', 'hidden=yes,location=no');
+                        return false
+                    }
+                });
+                a_element.addEventListener("click", function (e) {
+                    e.preventDefault();
+                });
+            });
+        }else if(is_electron){
+            let a_elements = document.querySelectorAll("a")
+            a_elements.forEach(a_element => {
+                a_element.addEventListener("pointerdown", function (e) {
+                    var url = e.currentTarget.href;
+                    if (url.indexOf('http://') !== -1 || url.indexOf('https://') !== -1) {
+                        e.preventDefault();
+                        shell.openExternal(url, '_blank');
                         return false
                     }
                 });
@@ -288,4 +308,23 @@ function log_calculation(){
         "rendered_input":decodeHTMLEntities(global_logic_vars.active_input_handler.math_input_element.innerHTML),
         "rendered_output":decodeHTMLEntities(global_logic_vars.active_input_handler.math_output_element.innerHTML)
     })
+}
+
+function isElectron() {
+    // Renderer process
+    if (typeof window !== 'undefined' && typeof window.process === 'object' && window.process.type === 'renderer') {
+        return true;
+    }
+
+    // Main process
+    if (typeof process !== 'undefined' && typeof process.versions === 'object' && !!process.versions.electron) {
+        return true;
+    }
+
+    // Detect the user agent when the `nodeIntegration` option is set to true
+    if (typeof navigator === 'object' && typeof navigator.userAgent === 'string' && navigator.userAgent.indexOf('Electron') >= 0) {
+        return true;
+    }
+
+    return false;
 }
