@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>io.github.CardiJey.schulrechner</id>
+
+  <name>Schulrechner</name>
+  <summary>The calculator you know from school</summary>
+
+  <url type="homepage">https://cardijey.github.io#schulrechner</url>
+
+  <metadata_license>MIT</metadata_license>
+  <project_license>GPL-3.0-only</project_license>
+
+  <supports>
+    <control>pointing</control>
+    <control>keyboard</control>
+    <control>touch</control>
+  </supports>
+
+  <description>
+    <p>
+      &lt;b&gt;This is a very early version in development. Unlabeled buttons will be implemented in the future, and bugs may be frequent. If you experience issues or have feature requests, please file an issue (link below).&lt;/b&gt;
+    </p>
+    <p>
+      Frustrated by the lack of free, open-source scientific calculators that feel like the ones I am used to, I decided to reverse-engineer my old calculator from school.
+    </p>
+    <p>
+      With features like:
+    </p>
+    <p>
+      - input of complex equations,
+    </p>
+    <p>
+      - output as fractions as well as decimals,
+    </p>
+    <p>
+      - result storage and reuse,
+    </p>
+    <p>
+      - selection and editing of equations from input history,
+    </p>
+    <p>
+      - and support for implicit multiplication (like 5π instead of 5*π),
+    </p>
+    <p>
+      this calculator produces math that looks like the math on your paper. That makes it much more suitable for higher-level math in school and university—especially if you&apos;ve grown accustomed to this kind of interface from a young age and just forgot your calculator at home.
+    </p>
+    <p>
+      Some additional features include:
+    </p>
+    <p>
+      - A well-established open-source math.js library as the math engine—so you’re not relying on some sketchy, hand-rolled math logic (just my sketchy hand-rolled input method 😛)
+    </p>
+    <p>
+      - A familiar, intuitive design
+    </p>
+    <p>
+      - 100% offline usability and fully open source
+    </p>
+    <p>
+      - Written entirely in HTML, JS, and CSS, which means:
+    </p>
+    <p>
+      + inherently cross-platform (a Flatpak release is planned)
+    </p>
+    <p>
+      + easy for other web developers to contribute
+    </p>
+    <p>
+      + admittedly a bit heavy for a calculator. If you&apos;re interested in helping make a lighter version (Flutter, Kotlin, etc.), you&apos;re very welcome!
+    </p>
+  </description>
+
+  <launchable type="desktop-id">io.github.CardiJey.schulrechner.desktop</launchable>
+  <screenshots>
+    <screenshot type="default">
+      <image>https://github.com/CardiJey/schulrechner/blob/main/fastlane/metadata/android/en-US/images/featureGraphic.png?raw=true</image>
+    </screenshot>
+  </screenshots>
+  <developer id="io.github.cardijey">
+    <name>Joris Yidong Scholl</name>
+  </developer>
+  <content_rating type="oars-1.0"></content_rating>
+  <releases>
+    <release version="1.9.0" date="2025-06-21">
+      <description>
+        <p>Release description</p>
+          <ul>
+            <li>Schulrechner now also available on Flathub!</li>
+            <li>TODO</li>
+          </ul>
+      </description>
+    </release>
+  </releases>
+</component>

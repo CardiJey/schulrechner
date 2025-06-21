@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+
+Name=Schulrechner
+Comment=The calculator you know from school
+Categories=Education;Math;
+
+Icon=schulrechner
+Exec=run
+Terminal=false
