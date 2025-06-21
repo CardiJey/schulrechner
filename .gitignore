@@ -9,6 +9,7 @@ node_modules/
 
 # Custom
 .flatpak-builder/
+flatpak/
 dist/
 www/vendor
 *.jks

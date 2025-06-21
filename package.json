@@ -8,22 +8,20 @@
   "scripts": {
     "test": "node --test tests/*.js",
     "update_version": "node update_version.js",
-    "start": "electron ."
+    "start": "electron .",
+    "dist": "electron-builder"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/CardiJey/schulrechner"
   },
-  "keywords": [
-    "ecosystem:cordova"
-  ],
   "author": "Joris Yidong Scholl",
   "license": "GPL-3.0-only",
   "devDependencies": {
     "cordova": "^12.0.0",
     "cordova-android": "^14.0.0",
-    "electron": "^35.1.2",
-    "electron-builder": "^26.0.12"
+    "electron": "^29.3.1",
+    "electron-builder": "^24.13.3"
   },
   "build": {
     "linux": {
@@ -32,8 +30,8 @@
       "icon": "www/img/flatpak-icons/icon.png"
     },
     "flatpak": {
-      "runtimeVersion": "24.08",
-      "baseVersion": "24.08"
+      "runtimeVersion": "23.08",
+      "baseVersion": "23.08"
     }
   },
   "cordova": {
