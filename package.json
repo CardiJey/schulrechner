@@ -18,8 +18,6 @@
   "author": "Joris Yidong Scholl",
   "license": "GPL-3.0-only",
   "devDependencies": {
-    "cordova": "^12.0.0",
-    "cordova-android": "^14.0.0",
     "electron": "^29.3.1",
     "electron-builder": "^24.13.3"
   },
@@ -46,5 +44,8 @@
     "platforms": [
       "android"
     ]
+  },
+  "dependencies": {
+    "mathjs": "^14.5.2"
   }
 }
