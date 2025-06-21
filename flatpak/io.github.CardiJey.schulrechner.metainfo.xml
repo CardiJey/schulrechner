@@ -74,6 +74,7 @@
   <screenshots>
     <screenshot type="default">
       <image>https://cardijey.github.io/assets/img/schulrechner/featureGraphic.png</image>
+      <caption>The picture shows three scientific calculators against a monochrome black background. The calculator is rectangular and light gray. There is a brown rectangle in the top right-hand area of the calculator, below which around a quarter of the calculator is taken up by a mint-colored rectangular display area on which various calculator calculations are shown. On the rest of the surface, various calculator buttons are arranged in rows, usually with six buttons. The top one is blue-gray, followed by four dark gray and four light gray rows. The two buttons on the right of the first light gray row are orange. The first of the three calculators is on the left of the picture, with half of the calculator at the bottom outside the picture. This left-hand calculator is leaning slightly to the left. The second calculator is in the center of the picture, with a small part of it at the top outside the picture. The third calculator is on the right of the picture, only two-thirds visible and leaning to the right.</caption>
     </screenshot>
   </screenshots>
   <developer id="io.github.cardijey">
@@ -86,7 +87,11 @@
         <p>Release description</p>
           <ul>
             <li>Schulrechner now also available on Flathub!</li>
-            <li>TODO</li>
+            <li>Bugfix: Output should no longer cut off</li>
+            <li>Feature: Added settings menu with info links</li>
+            <li>Feature: Added option to switch decimal format for other locales</li>
+            <li>Feature: Added ASin, ACos and ATan</li>
+            <li>Feature: Added M+ and M-</li>
           </ul>
       </description>
     </release>
