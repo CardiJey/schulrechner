@@ -1,0 +1,6 @@
+Schulrechner now also available on Flathub!
+Bugfix: Output should no longer cut off
+Feature: Added settings menu with info links
+Feature: Added option to switch decimal format for other locales
+Feature: Added ASin, ACos and ATan
+Feature: Added M+ and M-

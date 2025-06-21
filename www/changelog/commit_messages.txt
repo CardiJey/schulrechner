@@ -1,3 +1,6 @@
+- 1.9.0
+- Update Versioncode
+- Removed flatpak creation from CI
 - 1.8.11
 - Adjust versioncode for a intermediate test version
 - Added external url opening for flatpak
