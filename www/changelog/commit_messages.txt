@@ -1,3 +1,8 @@
+- 1.9.1
+- Updated version
+- Apply suggested changes to metainfo
+- Set fixed Aspect Ratio and disable electron window menu
+- Remove old flatpak build options
 - 1.9.0
 - Update Versioncode
 - Removed flatpak creation from CI
