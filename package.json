@@ -21,17 +21,6 @@
     "electron": "^29.3.1",
     "electron-builder": "^24.13.3"
   },
-  "build": {
-    "linux": {
-      "target": "flatpak",
-      "category": "Utility",
-      "icon": "www/img/flatpak-icons/icon.png"
-    },
-    "flatpak": {
-      "runtimeVersion": "23.08",
-      "baseVersion": "23.08"
-    }
-  },
   "cordova": {
     "plugins": {
       "cordova-plugin-android-remove-permissions": {
