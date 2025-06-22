@@ -5,8 +5,10 @@ let mainWindow;
 
 app.whenReady().then(() => {
     mainWindow = new BrowserWindow({
-        height: 500,
-        width: 250,
+        height: 600,
+        width: 300,
+        minWidth: 300,
+        minHeight: 600,
         webPreferences: {
             nodeIntegration: true, // Allow Node.js integration
             contextIsolation: false, 
