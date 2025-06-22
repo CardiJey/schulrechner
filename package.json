@@ -1,7 +1,7 @@
 {
   "name": "schulrechner",
   "displayName": "Schulrechner",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "versionCode": 10901,
   "description": "The calculator you know from school",
   "main": "main.js",
