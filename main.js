@@ -5,13 +5,18 @@ let mainWindow;
 
 app.whenReady().then(() => {
     mainWindow = new BrowserWindow({
-        width: 800,
-        height: 600,
+        height: 500,
+        width: 250,
         webPreferences: {
             nodeIntegration: true, // Allow Node.js integration
             contextIsolation: false, 
         }
     });
+
+    const { Menu } = require('electron');
+    Menu.setApplicationMenu(null);
+
+    mainWindow.setAspectRatio(1 / 2);
 
     mainWindow.loadFile(path.join(__dirname, 'www', 'index.html'));
 
