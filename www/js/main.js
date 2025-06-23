@@ -191,25 +191,30 @@ async function fetch_design_list(){
     let text = await res.text()
     design_list = JSON.parse(text)
 
-    design_list.forEach(design => {
-        const design_option_div = document.createElement("div")
-        design_option_div.classList.add("design-option")
-        design_option_div.id = "design_" + design
-        const preview_img = document.createElement("img")
-        preview_img.src = "img/gui/" + design + ".svg"
-        design_option_div.appendChild(preview_img)
-        const name_label_div = document.createElement("div")
-        name_label_div.classList.add("design-name-label")
-        let design_name = design.split("_by_")[0]
-        name_label_div.innerText = design_name
-        design_option_div.appendChild(name_label_div)
-        const author_label_div = document.createElement("div")
-        author_label_div.classList.add("design-author-label")
-        let design_author_name = design.split("_by_")[1]
-        author_label_div.innerText = "by " + design_author_name
-        design_option_div.appendChild(author_label_div)
-        document.getElementById("design-select").appendChild(design_option_div)
-    });
+    if(design_list.length > 1){
+        design_list.forEach(design => {
+            const design_option_div = document.createElement("div")
+            design_option_div.classList.add("design-option")
+            design_option_div.id = "design_" + design
+            const preview_img = document.createElement("img")
+            preview_img.src = "img/gui/" + design + ".svg"
+            design_option_div.appendChild(preview_img)
+            const name_label_div = document.createElement("div")
+            name_label_div.classList.add("design-name-label")
+            let design_name = design.split("_by_")[0]
+            name_label_div.innerText = design_name
+            design_option_div.appendChild(name_label_div)
+            const author_label_div = document.createElement("div")
+            author_label_div.classList.add("design-author-label")
+            let design_author_name = design.split("_by_")[1]
+            author_label_div.innerText = "by " + design_author_name
+            design_option_div.appendChild(author_label_div)
+            document.getElementById("design-select").appendChild(design_option_div)
+        });
+    }else{
+        document.getElementById("design-select-label").style.display = "none"
+        document.getElementById("design-select").style.display = "none"
+    }
 }
 
 async function fetch_mode_maps(design){
@@ -248,8 +253,9 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
             document.getElementById("decimal-format-select").value = decimal_separator;
 
-            
-            document.getElementById("design_" + selected_design).classList.add("design-selected")
+            if(design_list.length > 1){
+                document.getElementById("design_" + selected_design).classList.add("design-selected")
+            }
 
             if(decimal_separator == "."){
                 userLang = "en-US"
