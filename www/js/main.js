@@ -24,23 +24,22 @@ class UI{
 
     async fetchChangelog(fdroid) {
         const langsToTry = [];
-        if(fdroid){
-            // Normalize language code (e.g., en_US → en-US)
-            const normalizedLang = userLang.replace('_', '-');
-            
-            // Break apart lang subtags (e.g., 'en-GB' → ['en-GB', 'en'])
-            if (normalizedLang.includes('-')) {
-                langsToTry.push(normalizedLang);
-                langsToTry.push(normalizedLang.split('-')[0]);
-            } else {
-                langsToTry.push(normalizedLang);
-            }
-            
-            // Always fall back to 'en-US'
-            if (!langsToTry.includes('en-US')) {
-                langsToTry.push('en-US');
-            }
-        }else{
+        // Normalize language code (e.g., en_US → en-US)
+        const normalizedLang = userLang.replace('_', '-');
+        
+        // Break apart lang subtags (e.g., 'en-GB' → ['en-GB', 'en'])
+        if (normalizedLang.includes('-')) {
+            langsToTry.push(normalizedLang);
+            langsToTry.push(normalizedLang.split('-')[0]);
+        } else {
+            langsToTry.push(normalizedLang);
+        }
+        
+        // Always fall back to 'en-US'
+        if (!langsToTry.includes('en-US')) {
+            langsToTry.push('en-US');
+        }
+        if(!fdroid){
             langsToTry.push("commit_messages")
         }
         

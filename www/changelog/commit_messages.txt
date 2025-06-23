@@ -1,3 +1,9 @@
+- 1.9.2
+- Update Versioncode
+- Changed changelog version for flathub
+- Improve flathub metainfo description
+- Adjust electron window size settings
+- changelog now also prefered for Patch versions
 - 1.9.1
 - Updated version
 - Apply suggested changes to metainfo
