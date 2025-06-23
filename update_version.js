@@ -25,13 +25,13 @@ fs.writeFileSync(versionTxtFilePath, packageJson.version.toString(), 'utf8');
 fs.writeFileSync(versionCodeTxtFilePath, packageJson.versionCode.toString(), 'utf8');
 
 // Get all changelog .txt files in fastlane structure
-const files = glob.sync('fastlane/metadata/android/*/changelog/' + packageJson.versionCode + '.txt');
+const changelog_files = glob.sync('fastlane/metadata/android/*/changelog/' + packageJson.versionCode + '.txt');
 const destDir = path.join('www', 'changelog');
 
 // Ensure destination directory exists
 fs.mkdirSync(destDir, { recursive: true });
 
-files.forEach(file => {
+changelog_files.forEach(file => {
   // Extract language and file name
   const parts = file.split(path.sep);
   const lang = parts[3]; // e.g., 'en-US'
@@ -44,3 +44,14 @@ files.forEach(file => {
 
   console.log(`Copied ${file} → ${destPath}`);
 });
+
+// Get all changelog .txt files in fastlane structure
+const design_files = glob.sync('www/img/gui/*.svg');
+const design_list_destDir = path.join('www', 'img', 'gui', 'list.json');
+const design_list = []
+
+design_files.forEach(file => {
+  design_list.push(file.split(path.sep)[3].split(".")[0])
+});
+
+fs.writeFileSync(design_list_destDir, JSON.stringify(design_list), 'utf8');

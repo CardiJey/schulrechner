@@ -1,6 +1,8 @@
 let changelog_visible = false
 let version;
 let versionCode;
+let selected_design
+let design_list
 let userLang = navigator.language || navigator.userLanguage;
 let is_electron = isElectron()
 let shell
@@ -161,36 +163,69 @@ class UI{
 
 let ui = new UI(global_logic_vars)
 
-fetch("version.txt")
-    .then((res) => res.text())
-    .then((text) => {
-        version = text.trim()
+async function fetch_version(){
+    let res = await fetch("version.txt")
+    let text = await res.text()
+    version = text.trim()
 
-        document.getElementById("version").innerText = "What's new in " + version + "?";
-        document.getElementById("version-small").innerText = version;
-        ui.fetchChangelog(version.endsWith(".0"))
-    })
-    .catch((e) => console.error(e));
+    document.getElementById("version").innerText = "What's new in " + version + "?";
+    document.getElementById("version-small").innerText = version;
+    ui.fetchChangelog(version.endsWith(".0"))
+}
 
-fetch("versionCode.txt")
-    .then((res) => res.text())
-    .then((text) => {
-        versionCode = text.trim()
+async function fetch_versionCode(){
+    let res = await fetch("versionCode.txt")
+    let text = await res.text()
+    versionCode = text.trim()
 
-        const lastSeenVersionCode = localStorage.getItem("lastSeenVersionCode");
-        if (lastSeenVersionCode !== versionCode) {
-            ui.toggle_changelog(); // Show changelog automatically
-            localStorage.setItem("lastSeenVersionCode", versionCode);
-        }
-    })
-    .catch((e) => console.error(e));
+    const lastSeenVersionCode = localStorage.getItem("lastSeenVersionCode");
+    if (lastSeenVersionCode !== versionCode) {
+        ui.toggle_changelog(); // Show changelog automatically
+        localStorage.setItem("lastSeenVersionCode", versionCode);
+    }
+}
 
-document.addEventListener("DOMContentLoaded", () => {
+async function fetch_design_list(){
+    let res = await fetch("img/gui/list.json")
+    let text = await res.text()
+    design_list = JSON.parse(text)
+
+    design_list.forEach(design => {
+        const design_option_div = document.createElement("div")
+        design_option_div.classList.add("design-option")
+        design_option_div.id = "design_" + design
+        const preview_img = document.createElement("img")
+        preview_img.src = "img/gui/" + design + ".svg"
+        design_option_div.appendChild(preview_img)
+        const name_label_div = document.createElement("div")
+        name_label_div.classList.add("design-name-label")
+        let design_name = design.split("_by_")[0]
+        name_label_div.innerText = design_name
+        design_option_div.appendChild(name_label_div)
+        const author_label_div = document.createElement("div")
+        author_label_div.classList.add("design-author-label")
+        let design_author_name = design.split("_by_")[1]
+        author_label_div.innerText = "by " + design_author_name
+        design_option_div.appendChild(author_label_div)
+        document.getElementById("design-select").appendChild(design_option_div)
+    });
+}
+
+document.addEventListener("DOMContentLoaded", async () => {
+    await fetch_version()
+    await fetch_versionCode()
+    await fetch_design_list()
+
     const display = document.getElementById("display");
     const svgContainer = document.getElementById("svg-container");
 
+    selected_design = localStorage.getItem("selectedDesign")
+    if (!selected_design || !design_list.includes(selected_design)) {
+        selected_design = "Classic_by_Joris Yidong Scholl"
+    }
+
     // Load the SVG dynamically
-    fetch("img/gui.svg")
+    fetch("img/gui/" + selected_design + ".svg")
         .then(response => response.text())
         .then(data => {
             svgContainer.innerHTML = data;
@@ -200,6 +235,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 decimal_separator = getDecimalSeparator()
             }
             document.getElementById("decimal-format-select").value = decimal_separator;
+
+            
+            document.getElementById("design_" + selected_design).classList.add("design-selected")
 
             if(decimal_separator == "."){
                 userLang = "en-US"
@@ -229,6 +267,16 @@ document.addEventListener("DOMContentLoaded", () => {
         .catch(error => console.error("Error loading SVG:", error));
 
     function attachEventListeners() {
+        const designElements = document.querySelectorAll('.design-option')
+
+        designElements.forEach(element => {
+            element.addEventListener("pointerdown", function (e) {
+                const design = e.currentTarget.id.substring("design_".length);
+                localStorage.setItem("selectedDesign", design);
+                location.reload();
+            });
+        });
+        
         const keyElements = document.querySelectorAll('[inkscape\\3a label^="key_"]');
 
         keyElements.forEach(element => {
