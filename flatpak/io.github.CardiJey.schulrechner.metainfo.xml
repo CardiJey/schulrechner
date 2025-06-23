@@ -34,13 +34,9 @@
       <li>A well-established open-source math.js library as the math engine—so you're not relying on some sketchy, hand-rolled math logic (just my sketchy hand-rolled input method 😛)</li>
       <li>A familiar, intuitive design</li>
       <li>100% offline usability and fully open source</li>
-      <li>Written entirely in HTML, JS, and CSS, which means:
-        <ul>
-          <li>inherently cross-platform</li>
-          <li>easy for other web developers to contribute</li>
-          <li>admittedly a bit heavy for a calculator. If you're interested in helping make a lighter version (Flutter, Kotlin, etc.), you're very welcome!</li>
-        </ul>
-      </li>
+      <li>Written entirely in HTML, JS, and CSS, which means it is inherently cross-platform, ...</li>
+      <li>easy for other web developers to contribute and ...</li>
+      <li>admittedly a bit heavy for a calculator. If you're interested in helping make a lighter version (Flutter, Kotlin, etc.), you're very welcome!</li>
     </ul>
   </description>
 
