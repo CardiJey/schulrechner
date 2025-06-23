@@ -17,9 +17,8 @@
   </supports>
 
   <description>
-    This is a very early version in development. Unlabeled buttons will be implemented in the future, and bugs may be frequent. If you experience issues or have feature requests, please file an issue (link below).
-
-    Frustrated by the lack of free, open-source scientific calculators that feel like the ones I am used to, I decided to reverse-engineer my old calculator from school.
+    <p><em>This is a very early version in development. Unlabeled buttons will be implemented in the future, and bugs may be frequent. If you experience issues or have feature requests, please file an issue (link below).</em></p>
+    <p>Frustrated by the lack of free, open-source scientific calculators that feel like the ones I am used to, I decided to reverse-engineer my old calculator from school.</p>
 
     With features like:
     <ul>
