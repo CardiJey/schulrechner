@@ -15,7 +15,8 @@ let global_logic_vars = {
     "next_align_id": 0,
     "next_subres_id": 0,
     "math_engine": math,
-    "input_history": []
+    "input_history": [],
+    "mode_maps": {}
 }
 
 class UI{
@@ -211,6 +212,15 @@ async function fetch_design_list(){
     });
 }
 
+async function fetch_mode_maps(design){
+    let res = await fetch("img/gui/" + design + ".json")
+    let text = await res.text()
+    let json_res = JSON.parse(text)
+    global_logic_vars.mode_maps = json_res.mode_maps
+    document.getElementById("math-input").style.color = json_res.font_color
+    document.getElementById("math-output").style.color = json_res.font_color
+}
+
 document.addEventListener("DOMContentLoaded", async () => {
     await fetch_version()
     await fetch_versionCode()
@@ -223,6 +233,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (!selected_design || !design_list.includes(selected_design)) {
         selected_design = "Classic_by_Joris Yidong Scholl"
     }
+
+    await fetch_mode_maps(selected_design)
 
     // Load the SVG dynamically
     fetch("img/gui/" + selected_design + ".svg")
