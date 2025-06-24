@@ -1,14 +1,27 @@
 [![Check Fastlane](https://github.com/CardiJey/schulrechner/actions/workflows/fastlane.yml/badge.svg)](https://github.com/CardiJey/schulrechner/actions/workflows/fastlane.yml)
 [![NPM Tests](https://github.com/CardiJey/schulrechner/actions/workflows/npm_tests.yml/badge.svg)](https://github.com/CardiJey/schulrechner/actions/workflows/npm_tests.yml)
 
-[<img src="https://f-droid.org/badge/get-it-on.png"
-    alt="Get it on F-Droid"
-    height="80">](https://f-droid.org/packages/io.cardijey.schulrechner)
+<table>
+    <tr>
+        <td>
+            <a href="https://f-droid.org/packages/io.cardijey.schulrechner" class="badge-link">
+                <img src="https://f-droid.org/badge/get-it-on.png"
+                alt="Get it on F-Droid"
+                height="80">
+            </a>
+        </td>
+        <td>
+            <a href='https://flathub.org/apps/io.github.CardiJey.schulrechner' class="badge-link">
+                <img height='54' alt='Get it on Flathub' src='https://flathub.org/api/badge?locale=en'/>
+            </a> 
+        </td>
+    </tr>
+</table>
 
 # SCHULRECHNER
 
 This is the repository for the Schulrechner App.
-You can get the APK directly from the releases https://github.com/CardiJey/schulrechner/releases/latest/ or from F-Droid https://f-droid.org/packages/io.cardijey.schulrechner .
+You can get the APK directly from the [releases](https://github.com/CardiJey/schulrechner/releases/latest/) or from [F-Droid](https://f-droid.org/packages/io.cardijey.schulrechner). You can also install the Linux-desktop version from [Flathub](https://flathub.org/apps/io.github.CardiJey.schulrechner)
 Alternatively you can build it yourself by installing [Cordova](https://cordova.apache.org/) and then running the steps in the [Github CI](https://github.com/CardiJey/schulrechner/blob/main/.github/workflows/main.yml).
 
 # Contributing
