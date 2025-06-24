@@ -15,6 +15,32 @@ Alternatively you can build it yourself by installing [Cordova](https://cordova.
 
 If you want to contribute, just fork this repo and create a merge request. Please also create a quick issue with the label "Feature Request" where you describe what you plan to contribute. Maybe someone is already working on that.
 
+For contributing new calculator designs please read the following:
+
+### Adding New GUI Designs
+
+This project supports multiple GUI designs, which can be switched dynamically.
+
+To add a new GUI design:
+
+1. **Create your SVG file**  
+   - Design your GUI as an SVG file, ensuring it meets the following requirements:  
+     - Use proper element labels (via the `inkscape:label` property) matching the keys found in `www/img/gui/Classic_by_Joris Yidong Scholl.svg`.  
+     - Include polygon elements named `display_input` and `display_output`.  
+     - Include elements `scroll_x_order` and `scroll_y_border` to define scrolling behavior.  
+     - For each key element (`key_*`), include a corresponding `label_background_*` element for button press animations (these are handled by CSS).  
+     - Optionally, add locale-specific labels by appending locale codes like `label_,de-DE` or `label,_en-US`. Only `de-DE` and `en-US` are supported for now.  
+   - Add SVG metadata specifying **author**, **date**, and an **open-source license** (e.g., CC0, CC-BY, CC-BY-SA) for compatibility with this GPL3 project.
+
+2. **Create your JSON file**  
+   - There are some additional settings needed for a working calculator design
+   - Please take a look at `www/img/gui/Classic_by_Joris Yidong Scholl.json` to see what these are
+
+3. **Create a pull request to add your SVG file to the repository**  
+   - Place your GUI SVG and JSON in the `www/img/gui/` folder in a pull request. They should be named "Design Name\_by\_Author Name.svg" and ".json"
+
+4. **I'll come test it then and we'll fix any possible errors together**
+
 # Copyright
 
 https://github.com/CardiJey/schulrechner
