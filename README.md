@@ -4,6 +4,11 @@
 <table>
     <tr>
         <td>
+            <a href='https://cardijey.github.io/schulrechner' class="badge-link">
+                <img height='54' alt='Open in Browser' src='https://cardijey.github.io/assets/img/web_badge.png'/>
+            </a> 
+        </td>
+        <td>
             <a href="https://f-droid.org/packages/io.cardijey.schulrechner" class="badge-link">
                 <img src="https://f-droid.org/badge/get-it-on.png"
                 alt="Get it on F-Droid"
@@ -21,7 +26,7 @@
 # SCHULRECHNER
 
 This is the repository for the Schulrechner App.
-You can get the APK directly from the [releases](https://github.com/CardiJey/schulrechner/releases/latest/) or from [F-Droid](https://f-droid.org/packages/io.cardijey.schulrechner). You can also install the Linux-desktop version from [Flathub](https://flathub.org/apps/io.github.CardiJey.schulrechner)
+You can get the APK directly from the [releases](https://github.com/CardiJey/schulrechner/releases/latest/) or from [F-Droid](https://f-droid.org/packages/io.cardijey.schulrechner). You can also install the Linux-desktop version from [Flathub](https://flathub.org/apps/io.github.CardiJey.schulrechner) or just open the [web version](https://cardijey.github.io/schulrechner).
 Alternatively you can build it yourself by installing [Cordova](https://cordova.apache.org/) and then running the steps in the [Github CI](https://github.com/CardiJey/schulrechner/blob/main/.github/workflows/main.yml).
 
 # Contributing
