@@ -13,6 +13,7 @@ Everything from the call of the handle function of the input_handler to setting 
 const { test, describe } = require('node:test');
 const assert = require('node:assert');
 const math = require('../www/js/math.js');
+const mode_maps = require('../www/img/gui/Classic_by_Joris Yidong Scholl.json').mode_maps
 
 const { InputHandler, EquationSelectInputHandler } = require('../www/js/logic')
 
@@ -47,7 +48,8 @@ function eval_input_history(input_history,userLang){
         "active_input_handler": undefined,
         "next_align_id": 0,
         "next_subres_id": 0,
-        "math_engine": math
+        "math_engine": math,
+        "mode_maps": mode_maps
     }
     global_logic_vars.active_input_handler = new EquationSelectInputHandler(dummy_display_input_element, dummy_math_input_element, dummy_display_output_element, dummy_math_output_element, global_logic_vars, dummy_ui, userLang)
 
