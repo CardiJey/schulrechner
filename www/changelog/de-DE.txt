@@ -1,6 +1,0 @@
-Schulrechner jetzt auch auf Flathub verfügbar!
-Bugfix: Die Ausgabe sollte nicht mehr abgeschnitten werden
-Feature: Einstellungsmenü mit Info-Links hinzugefügt
-Feature: Option zum Umschalten des Dezimalformats für andere Sprachräume hinzugefügt
-Feature: ASin, ACos und ATan hinzugefügt
-Feature: M+ und M- hinzugefügt

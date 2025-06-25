@@ -288,5 +288,44 @@ svg {
 }
 
 #settings-menu a {
-  color: inherit;
+    color: inherit;
+}
+
+.design-select{
+    display: flex;
+    overflow: auto;
+}
+
+.design-option img{
+    height: 3rem;
+}
+
+.design-option{
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: space-between;
+    min-width: 3rem;
+    max-width: 3rem;
+    width: 3rem;
+    flex-wrap: wrap;
+    background-color: #2c2c3e;
+    color: #fff;
+    border: 1px solid #444;
+    border-radius: 0.5rem;
+    padding: 0.1rem;
+    font-size: 0.9rem;
+}
+
+.design-selected{
+    background-color: #696982;
+}
+
+.design-name-label{
+    text-align: center;
+}
+
+.design-author-label {
+    text-align: center;
+    font-size: 0.5rem;
 }

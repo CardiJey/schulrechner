@@ -1,3 +1,17 @@
+- 1.9.3
+- Updated versionCode
+- Trying different font scaling approach
+- Fix npm test dependency bug
+- Add CI Test for svg validity
+- Merge branch 'main' of github.com:CardiJey/schulrechner
+- NPM tests adapted to customizable mode maps
+- Added Web Badge
+- Add Flathub Badge to Readme
+- Include Design Contribution in Readme
+- Design select now hidden until mukltiple deseigns are available
+- Added customization for mode maps and design font size
+- Feature: Added Design Switching
+- Removed nested List
 - 1.9.2
 - Update Versioncode
 - Changed changelog version for flathub
