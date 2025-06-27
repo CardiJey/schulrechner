@@ -1041,6 +1041,20 @@ const tests = [
         ],
         "rendered_input": "M ",
         "rendered_output": "4.991541038"
+    },
+    {
+        "userLang": "en-US",
+        "name": "Throw error on Infinity test",
+        "input_history": [
+            "key_1",
+            "key_7",
+            "key_1",
+            "key_shift",
+            "key_pow-1",
+            "key_="
+        ],
+        "rendered_input": "error",
+        "rendered_output": ""
     }
 ]
 

@@ -15,8 +15,10 @@ app.whenReady().then(() => {
         }
     });
 
-    const { Menu } = require('electron');
-    Menu.setApplicationMenu(null);
+    if(app.isPackaged){
+        const { Menu } = require('electron');
+        Menu.setApplicationMenu(null);
+    }
 
     mainWindow.setAspectRatio(1 / 2);
 
