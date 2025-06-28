@@ -1,3 +1,6 @@
+- 1.9.5
+- Update Versioncode
+- Switched to applying the no font adjust to the whole app
 - 1.9.4
 - Update versioncode
 - Bugfix: Device font scaling ignored for math output
