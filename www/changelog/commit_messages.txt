@@ -1,3 +1,7 @@
+- 1.9.4
+- Update versioncode
+- Bugfix: Device font scaling ignored for math output
+- Bugfix: Infinity should not hang anymore
 - 1.9.3
 - Updated versionCode
 - Trying different font scaling approach

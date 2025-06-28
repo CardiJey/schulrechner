@@ -777,7 +777,7 @@ class EquationInputHandler extends InputHandler{
                 res += "<span class='cursor'>\uE000</span>"
             }
             if(sto){
-                mathjs_res = "syntax_error"
+                mathjs_res = "error"
                 break
             }else{
                 switch(cursor_element.type){
@@ -1158,11 +1158,11 @@ class EquationInputHandler extends InputHandler{
             let this_result
             try {
                 this_result = this.global_logic_vars.math_engine.evaluate(this_output_string)
-                if(typeof this_result != "number" && typeof this_result != "string"){
+                if((typeof this_result != "number" || !isFinite(this_result)) && typeof this_result != "string"){
                     throw "invalid"
                 }
             } catch (error) {
-                this_result = "syntax_error"
+                this_result = "error"
             }
 
             if(typeof this_result == "string"){
