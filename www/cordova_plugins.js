@@ -19,6 +19,7 @@ module.exports.metadata =
 // TOP OF METADATA
 {
     "cordova-plugin-inappbrowser": "6.0.1-dev",
+    "schulrechner-cordova-plugin": "1.0.0",
     "@globules-io/cordova-plugin-android-remove-permissions": "1.0.5"
 }
 // BOTTOM OF METADATA

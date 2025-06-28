@@ -10,6 +10,9 @@
     "cordova-plugin-inappbrowser": {
       "PACKAGE_NAME": "io.cardijey.schulrechner"
     },
+    "schulrechner-cordova-plugin": {
+      "PACKAGE_NAME": "io.cardijey.schulrechner"
+    },
     "@globules-io/cordova-plugin-android-remove-permissions": {
       "PACKAGE_NAME": "io.cardijey.schulrechner"
     }
@@ -33,6 +36,7 @@
   ],
   "plugin_metadata": {
     "cordova-plugin-inappbrowser": "6.0.1-dev",
+    "schulrechner-cordova-plugin": "1.0.0",
     "@globules-io/cordova-plugin-android-remove-permissions": "1.0.5"
   }
 }

@@ -1,3 +1,12 @@
+- 1.9.6
+- Update versionCode
+- Set onload to true for schulrechnerPlugin
+- Trying different approach
+- Trying with TextZoom100 instead of NORMAL
+- Rename main.yml workflow as it no longer builds flatpak
+- Added basic package.json for custom plugin
+- Prevent workflow dispatch CI from creating new browser releases
+- Add custom cordova plugin to disable font zoom
 - 1.9.5
 - Update Versioncode
 - Switched to applying the no font adjust to the whole app
