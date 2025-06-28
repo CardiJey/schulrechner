@@ -1,0 +1,8 @@
+{
+  "name": "schulrechner-cordova-plugin",
+  "version": "1.0.0",
+  "cordova": {
+    "id": "schulrechner-cordova-plugin",
+    "platforms": ["android"]
+  }
+}
