@@ -3,6 +3,13 @@
         id="schulrechner-cordova-plugin" version="1.0.0">
     <name>SchulrechnerPlugin</name>
     <platform name="android">
+        <config-file target="res/xml/config.xml" parent="/*">
+            <feature name="SchulrechnerPlugin">
+                <param name="android-package" value="com.schulrechner.plugin.SchulrechnerPlugin"/>
+                <param name="onload" value="true"/>
+            </feature>
+        </config-file>
+
         <source-file src="src/android/SchulrechnerPlugin.java" target-dir="src/com/schulrechner/plugin"/>
     </platform>
 </plugin>
