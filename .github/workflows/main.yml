@@ -108,14 +108,17 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Prepare Browser Gradle project
+        if: ${{ github.event_name != 'workflow_dispatch' }}
         run: |
           cordova platform add browser
 
       - name: Build Cordova Browser project
+        if: ${{ github.event_name != 'workflow_dispatch' }}
         run: |
           cordova build browser --release
 
       - name: Push Browser Files to browser-release branch
+        if: ${{ github.event_name != 'workflow_dispatch' }}
         run: |
           BROWSER_BRANCH="browser-release"
           TAG_NAME="${GITHUB_REF##*/}"
