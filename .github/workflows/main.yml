@@ -1,4 +1,4 @@
-name: Build Electron App (Flatpak) and Cordova APK
+name: Build Cordova APK
 
 on:
   push:
