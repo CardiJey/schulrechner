@@ -12,7 +12,7 @@ public class SchulrechnerPlugin extends CordovaPlugin {
         super.initialize(cordova, webView);
         WebView view = (WebView) webView.getEngine().getView();
         WebSettings settings = view.getSettings();
-        settings.setTextSize(WebSettings.TextSize.NORMAL);
+        settings.setTextZoom(100);
     }
 
     @Override
