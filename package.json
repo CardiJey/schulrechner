@@ -28,6 +28,9 @@
       },
       "cordova-plugin-inappbrowser": {
         "locator": "cordova-plugin-inappbrowser"
+      },
+      "schulrechner-cordova-plugin": {
+        "locator": "schulrechner-cordova-plugin"
       }
     },
     "platforms": [

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+        id="schulrechner-cordova-plugin" version="1.0.0">
+    <name>SchulrechnerPlugin</name>
+    <platform name="android">
+        <source-file src="src/android/SchulrechnerPlugin.java" target-dir="src/com/schulrechner/plugin"/>
+    </platform>
+</plugin>

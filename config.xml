@@ -23,5 +23,6 @@
 
     <plugin name="cordova-plugin-android-remove-permissions" spec="./cordova-plugin-android-remove-permissions" />
     <plugin name="cordova-plugin-inappbrowser" spec="./cordova-plugin-inappbrowser" />
+    <plugin name="schulrechner-cordova-plugin" spec="./schulrechner-cordova-plugin" />
     <preference name="AndroidRemovePermissions" value="INTERNET" />
 </widget>
