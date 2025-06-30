@@ -471,16 +471,16 @@ class Const_Element extends Math_Element{
 
     get_value(){
         const value_map = [
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
+            1.672621637e-27,
+            1.674927211e-27,
+            9.10938215e-31,
+            1.8835313e-28,
+            5.291772086e-11,
+            6.62606896e-34,
+            5.05078324e-27,
+            9.27400915e-24,
+            1.054571628e-34,
+            7.297352538e-3,
             0,
             0,
             0,
@@ -611,7 +611,7 @@ class ConstSelectInput extends InputHandler{
         super(display_input_element, math_input_element, display_output_element, math_output_element, global_logic_vars, ui, userLang)
         this.numbers = []
         this.parent_handler = parent_handler
-        this.max_input = [4,0]
+        this.max_input = [1,0]
     }
 
     // Method to handle input
