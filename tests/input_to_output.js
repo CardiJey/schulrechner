@@ -353,7 +353,7 @@ const tests = [
     },
     {
         "userLang":'de-DE',
-        "name": "INSERT_TEST_NAME",
+        "name": "sqrtn test",
         "input_history": [
             "key_sqrtn",
             "key_7",
@@ -383,13 +383,13 @@ const tests = [
     },
     {
         "userLang":'de-DE',
-        "name": "INSERT_TEST_NAME",
+        "name": "epow test",
         "input_history": [
             "key_epow",
             "key_8",
             "key_="
         ],
-        "rendered_input": "<span class=\"pow_bottom\">(e)</span><span class=\"pow_top\">8</span> ",
+        "rendered_input": "<span class=\"pow_bottom\">(<i>e</i>)</span><span class=\"pow_top\">8</span> ",
         "rendered_output": "2980,957987"
     },
     {
@@ -399,17 +399,17 @@ const tests = [
             "key_pi",
             "key_="
         ],
-        "rendered_input": "π ",
+        "rendered_input": "<i>π</i> ",
         "rendered_output": "3,141592654"
     },
     {
         "userLang":'de-DE',
-        "name": "INSERT_TEST_NAME",
+        "name": "e test",
         "input_history": [
             "key_e",
             "key_="
         ],
-        "rendered_input": "e ",
+        "rendered_input": "<i>e</i> ",
         "rendered_output": "2,718281828"
     },
     {
@@ -518,7 +518,7 @@ const tests = [
             "key_)",
             "key_="
         ],
-        "rendered_input": "12π+5(3-7)-8log(4) ",
+        "rendered_input": "12<i>π</i>+5(3-7)-8log(4) ",
         "rendered_output": "12,88263191"
     },
     {
@@ -867,7 +867,7 @@ const tests = [
             "key_rcl",
             "key_(-)"
         ],
-        "rendered_input": "<span class=\"alignLeft118\"></span><span class=\"frac_wrapper\" style=\"vertical-align: calc(-15.3875px + 0.06rem);\"><span class=\"frac_top\">Ans</span><span class=\"frac_bottom alignRight118\">5×log<span class=\"logn_bottom\">3</span>(85×<span class=\"pow_bottom\">(8)</span><span class=\"pow_top\">2</span>-<span class=\"pow_bottom\">(e)</span><span class=\"pow_top\">4</span>)</span></span>-<span class=\"alignLeft119\"></span><span class=\"frac_wrapper\" style=\"vertical-align: calc(-6.58749px + 0.06rem);\"><span class=\"frac_top\">7!</span><span class=\"frac_bottom alignRight119\">(8+9-4)!</span></span>→A ",
+        "rendered_input": "<span class=\"alignLeft118\"></span><span class=\"frac_wrapper\" style=\"vertical-align: calc(-15.3875px + 0.06rem);\"><span class=\"frac_top\">Ans</span><span class=\"frac_bottom alignRight118\">5×log<span class=\"logn_bottom\">3</span>(85×<span class=\"pow_bottom\">(8)</span><span class=\"pow_top\">2</span>-<span class=\"pow_bottom\">(<i>e</i>)</span><span class=\"pow_top\">4</span>)</span></span>-<span class=\"alignLeft119\"></span><span class=\"frac_wrapper\" style=\"vertical-align: calc(-6.58749px + 0.06rem);\"><span class=\"frac_top\">7!</span><span class=\"frac_bottom alignRight119\">(8+9-4)!</span></span>→A ",
         "rendered_output": "705438210,2"
     },
     {

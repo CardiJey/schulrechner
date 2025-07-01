@@ -462,8 +462,8 @@ class Const_Element extends Math_Element{
             "t",
             "G",
             "atm",
-            "π",
-            "e",
+            "<i>π</i>",
+            "<i>e</i>",
         ]
         super("var",left,char_map[index],"")
         this.index = index
