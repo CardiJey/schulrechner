@@ -422,16 +422,16 @@ class User_Var_Element extends Math_Element{
 class Const_Element extends Math_Element{
     constructor(left,index){
         const char_map = [
-            "mp",
+            "mP",
             "mn",
             "me",
-            "mμ",
-            "a0",
+            "m<i>μ</i>",
+            "aO",
             "h",
-            "μN",
-            "μB",
+            "<i>μ</i>N",
+            "<i>μ</i>B",
             "ħ",
-            "α",
+            "<i>α</i>",
             "re",
             "λc",
             "γp",
@@ -636,6 +636,17 @@ class ConstSelectInput extends InputHandler{
                         }else if(this.numbers[i] > this.max_input[i]){
                             input_allowed = false
                             break
+                        }
+                    }
+                    if(input_allowed){
+                        let all_zero = true
+                        for(let i = 0; i < this.numbers.length; i++){
+                            if(this.numbers[i] != "0"){
+                                all_zero = false
+                            }
+                        }
+                        if(this.numbers.length >= this.max_input.length && all_zero){
+                            input_allowed = false
                         }
                     }
                     if(!input_allowed){

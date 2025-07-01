@@ -22,7 +22,7 @@ OS2Version: 0
 OS2_WeightWidthSlopeOnly: 0
 OS2_UseTypoMetrics: 1
 CreationTime: 1744471654
-ModificationTime: 1751357250
+ModificationTime: 1751362343
 OS2TypoAscent: 0
 OS2TypoAOffset: 1
 OS2TypoDescent: 0
@@ -36,6 +36,7 @@ HheadAscent: 0
 HheadAOffset: 1
 HheadDescent: 0
 HheadDOffset: 1
+OS2Vendor: 'PfEd'
 MarkAttachClasses: 1
 DEI: 91125
 LangName: 1033 "" "" "" "" "" "" "" "" "" "" "" "" "" "This Font Software is licensed under the SIL Open Font License, Version 1.1.+AAoA-This license is copied below, and is also available with a FAQ at:+AAoA-http://scripts.sil.org/OFL+AAoACgAK------------------------------------------------------------+AAoA-SIL OPEN FONT LICENSE Version 1.1 - 26 February 2007+AAoA------------------------------------------------------------+AAoACgAA-PREAMBLE+AAoA-The goals of the Open Font License (OFL) are to stimulate worldwide+AAoA-development of collaborative font projects, to support the font creation+AAoA-efforts of academic and linguistic communities, and to provide a free and+AAoA-open framework in which fonts may be shared and improved in partnership+AAoA-with others.+AAoACgAA-The OFL allows the licensed fonts to be used, studied, modified and+AAoA-redistributed freely as long as they are not sold by themselves. The+AAoA-fonts, including any derivative works, can be bundled, embedded, +AAoA-redistributed and/or sold with any software provided that any reserved+AAoA-names are not used by derivative works. The fonts and derivatives,+AAoA-however, cannot be released under any other type of license. The+AAoA-requirement for fonts to remain under this license does not apply+AAoA-to any document created using the fonts or their derivatives.+AAoACgAA-DEFINITIONS+AAoAIgAA-Font Software+ACIA refers to the set of files released by the Copyright+AAoA-Holder(s) under this license and clearly marked as such. This may+AAoA-include source files, build scripts and documentation.+AAoACgAi-Reserved Font Name+ACIA refers to any names specified as such after the+AAoA-copyright statement(s).+AAoACgAi-Original Version+ACIA refers to the collection of Font Software components as+AAoA-distributed by the Copyright Holder(s).+AAoACgAi-Modified Version+ACIA refers to any derivative made by adding to, deleting,+AAoA-or substituting -- in part or in whole -- any of the components of the+AAoA-Original Version, by changing formats or by porting the Font Software to a+AAoA-new environment.+AAoACgAi-Author+ACIA refers to any designer, engineer, programmer, technical+AAoA-writer or other person who contributed to the Font Software.+AAoACgAA-PERMISSION & CONDITIONS+AAoA-Permission is hereby granted, free of charge, to any person obtaining+AAoA-a copy of the Font Software, to use, study, copy, merge, embed, modify,+AAoA-redistribute, and sell modified and unmodified copies of the Font+AAoA-Software, subject to the following conditions:+AAoACgAA-1) Neither the Font Software nor any of its individual components,+AAoA-in Original or Modified Versions, may be sold by itself.+AAoACgAA-2) Original or Modified Versions of the Font Software may be bundled,+AAoA-redistributed and/or sold with any software, provided that each copy+AAoA-contains the above copyright notice and this license. These can be+AAoA-included either as stand-alone text files, human-readable headers or+AAoA-in the appropriate machine-readable metadata fields within text or+AAoA-binary files as long as those fields can be easily viewed by the user.+AAoACgAA-3) No Modified Version of the Font Software may use the Reserved Font+AAoA-Name(s) unless explicit written permission is granted by the corresponding+AAoA-Copyright Holder. This restriction only applies to the primary font name as+AAoA-presented to the users.+AAoACgAA-4) The name(s) of the Copyright Holder(s) or the Author(s) of the Font+AAoA-Software shall not be used to promote, endorse or advertise any+AAoA-Modified Version, except to acknowledge the contribution(s) of the+AAoA-Copyright Holder(s) and the Author(s) or with their explicit written+AAoA-permission.+AAoACgAA-5) The Font Software, modified or unmodified, in part or in whole,+AAoA-must be distributed entirely under this license, and must not be+AAoA-distributed under any other license. The requirement for fonts to+AAoA-remain under this license does not apply to any document created+AAoA-using the Font Software.+AAoACgAA-TERMINATION+AAoA-This license becomes null and void if any of the above conditions are+AAoA-not met.+AAoACgAA-DISCLAIMER+AAoA-THE FONT SOFTWARE IS PROVIDED +ACIA-AS IS+ACIA, WITHOUT WARRANTY OF ANY KIND,+AAoA-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTIES OF+AAoA-MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT+AAoA-OF COPYRIGHT, PATENT, TRADEMARK, OR OTHER RIGHT. IN NO EVENT SHALL THE+AAoA-COPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,+AAoA-INCLUDING ANY GENERAL, SPECIAL, INDIRECT, INCIDENTAL, OR CONSEQUENTIAL+AAoA-DAMAGES, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING+AAoA-FROM, OUT OF THE USE OR INABILITY TO USE THE FONT SOFTWARE OR FROM+AAoA-OTHER DEALINGS IN THE FONT SOFTWARE." "http://scripts.sil.org/OFL"
@@ -45,10 +46,10 @@ NameList: AGL For New Fonts
 DisplaySize: -48
 AntiAlias: 1
 FitToEm: 0
-WinInfo: 76 38 14
+WinInfo: 760 38 14
 BeginPrivate: 0
 EndPrivate
-BeginChars: 65536 5
+BeginChars: 65536 7
 
 StartChar: uni0000
 Encoding: 0 0 0
@@ -608,6 +609,176 @@ SplineSet
  0 84 l 1
 EndSplineSet
 Validated: 1
+EndChar
+
+StartChar: uni03BC
+Encoding: 956 956 5
+Width: 72
+Flags: HW
+LayerCount: 2
+Fore
+SplineSet
+48 24 m 1
+ 59 24 l 1
+ 59 13 l 1
+ 48 13 l 1
+ 48 24 l 1
+48 36 m 1
+ 59 36 l 1
+ 59 25 l 1
+ 48 25 l 1
+ 48 36 l 1
+36 48 m 1
+ 47 48 l 1
+ 47 37 l 1
+ 36 37 l 1
+ 36 48 l 1
+36 60 m 1
+ 47 60 l 1
+ 47 49 l 1
+ 36 49 l 1
+ 36 60 l 1
+36 72 m 1
+ 47 72 l 1
+ 47 61 l 1
+ 36 61 l 1
+ 36 72 l 1
+36 84 m 1
+ 47 84 l 1
+ 47 73 l 1
+ 36 73 l 1
+ 36 84 l 1
+24 36 m 1
+ 35 36 l 1
+ 35 25 l 1
+ 24 25 l 1
+ 24 36 l 1
+12 48 m 1
+ 23 48 l 1
+ 23 37 l 1
+ 12 37 l 1
+ 12 48 l 1
+12 60 m 1
+ 23 60 l 1
+ 23 49 l 1
+ 12 49 l 1
+ 12 60 l 1
+12 72 m 1
+ 23 72 l 1
+ 23 61 l 1
+ 12 61 l 1
+ 12 72 l 1
+12 84 m 1
+ 23 84 l 1
+ 23 73 l 1
+ 12 73 l 1
+ 12 84 l 1
+0 12 m 1
+ 11 12 l 1
+ 11 1 l 1
+ 0 1 l 1
+ 0 12 l 1
+0 24 m 1
+ 11 24 l 1
+ 11 13 l 1
+ 0 13 l 1
+ 0 24 l 1
+0 36 m 1
+ 11 36 l 1
+ 11 25 l 1
+ 0 25 l 1
+ 0 36 l 1
+EndSplineSet
+EndChar
+
+StartChar: alpha
+Encoding: 945 945 6
+Width: 72
+Flags: HW
+LayerCount: 2
+Fore
+SplineSet
+48 12 m 1
+ 59 12 l 1
+ 59 1 l 1
+ 48 1 l 1
+ 48 12 l 1
+48 72 m 1
+ 59 72 l 1
+ 59 61 l 1
+ 48 61 l 1
+ 48 72 l 1
+48 84 m 1
+ 59 84 l 1
+ 59 73 l 1
+ 48 73 l 1
+ 48 84 l 1
+36 24 m 1
+ 47 24 l 1
+ 47 13 l 1
+ 36 13 l 1
+ 36 24 l 1
+36 36 m 1
+ 47 36 l 1
+ 47 25 l 1
+ 36 25 l 1
+ 36 36 l 1
+36 48 m 1
+ 47 48 l 1
+ 47 37 l 1
+ 36 37 l 1
+ 36 48 l 1
+36 60 m 1
+ 47 60 l 1
+ 47 49 l 1
+ 36 49 l 1
+ 36 60 l 1
+24 24 m 1
+ 35 24 l 1
+ 35 13 l 1
+ 24 13 l 1
+ 24 24 l 1
+24 72 m 1
+ 35 72 l 1
+ 35 61 l 1
+ 24 61 l 1
+ 24 72 l 1
+12 12 m 1
+ 23 12 l 1
+ 23 1 l 1
+ 12 1 l 1
+ 12 12 l 1
+12 84 m 1
+ 23 84 l 1
+ 23 73 l 1
+ 12 73 l 1
+ 12 84 l 1
+0 24 m 1
+ 11 24 l 1
+ 11 13 l 1
+ 0 13 l 1
+ 0 24 l 1
+0 36 m 1
+ 11 36 l 1
+ 11 25 l 1
+ 0 25 l 1
+ 0 36 l 1
+0 48 m 1
+ 11 48 l 1
+ 11 37 l 1
+ 0 37 l 1
+ 0 48 l 1
+0 60 m 1
+ 11 60 l 1
+ 11 49 l 1
+ 0 49 l 1
+ 0 60 l 1
+0 72 m 1
+ 11 72 l 1
+ 11 61 l 1
+ 0 61 l 1
+ 0 72 l 1
+EndSplineSet
 EndChar
 EndChars
 EndSplineFont
