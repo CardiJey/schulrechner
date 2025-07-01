@@ -231,7 +231,7 @@ class Frac_Element extends Math_Element{
                 element = element.neighbors[0]
             }
         }else{
-            this.global_logic_vars.active_input_handler.children = [
+            this.children = [
                 new Container_Element(this,"</span><span class='frac_bottom alignRight" + align_id + "'>","][1]/[",this,false)
             ]
         }
