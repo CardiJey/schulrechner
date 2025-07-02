@@ -1,3 +1,15 @@
+- 1.9.7
+- Updated versionCode
+- Bugfix: Sums in trignometric function now work properly
+- Added tests and chraacters for CONST 1-10
+- Add font characters for CONST Menu
+- Made e and PI italic
+- Fixed typo
+- Split to italic and regular fnt
+- Add first 10 CONST values
+- Add CONST Input menu
+- Added important to test-size-adjust
+- Drew more buttons (but they are still hidden)
 - 1.9.6
 - Update versionCode
 - Set onload to true for schulrechnerPlugin

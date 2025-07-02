@@ -1,3 +1,17 @@
+function import_custom_math(math_engine){
+    math_engine.import({
+        sind: function(input){
+            return math_engine.sin(math_engine.pi/180*input)
+        },
+        cosd: function(input){
+            return math_engine.cos(math_engine.pi/180*input)
+        },
+        tand: function(input){
+            return math_engine.tan(math_engine.pi/180*input)
+        }
+    })
+}
+
 function getDecimalSeparator(userLang) {
     const numberWithDecimal = 1.1;
     const formatted = new Intl.NumberFormat(userLang, {
@@ -346,19 +360,19 @@ class Container_Element extends Math_Element{
 
 class Sin_Element extends Math_Element{
     constructor(left){
-        super("brackets_operation",left,"sin(","sin(PI/180*")
+        super("brackets_operation",left,"sin(","sind(")
     }
 }
 
 class Cos_Element extends Math_Element{
     constructor(left){
-        super("brackets_operation",left,"cos(","cos(PI/180*")
+        super("brackets_operation",left,"cos(","cosd(")
     }
 }
 
 class Tan_Element extends Math_Element{
     constructor(left){
-        super("brackets_operation",left,"tan(","tan(PI/180*")
+        super("brackets_operation",left,"tan(","tand(")
     }
 }
 
@@ -422,16 +436,16 @@ class User_Var_Element extends Math_Element{
 class Const_Element extends Math_Element{
     constructor(left,index){
         const char_map = [
-            "mp",
+            "mP",
             "mn",
             "me",
-            "mμ",
-            "a0",
+            "m<i>μ</i>",
+            "aO",
             "h",
-            "μN",
-            "μB",
+            "<i>μ</i>N",
+            "<i>μ</i>B",
             "ħ",
-            "α",
+            "<i>α</i>",
             "re",
             "λc",
             "γp",
@@ -462,8 +476,8 @@ class Const_Element extends Math_Element{
             "t",
             "G",
             "atm",
-            "π",
-            "e",
+            "<i>π</i>",
+            "<i>e</i>",
         ]
         super("var",left,char_map[index],"")
         this.index = index
@@ -471,16 +485,16 @@ class Const_Element extends Math_Element{
 
     get_value(){
         const value_map = [
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
+            1.672621637e-27,
+            1.674927211e-27,
+            9.10938215e-31,
+            1.8835313e-28,
+            5.291772086e-11,
+            6.62606896e-34,
+            5.05078324e-27,
+            9.27400915e-24,
+            1.054571628e-34,
+            7.297352538e-3,
             0,
             0,
             0,
@@ -606,6 +620,84 @@ class InputHandler{
     }
 }
 
+class ConstSelectInput extends InputHandler{
+    constructor(display_input_element, math_input_element, display_output_element, math_output_element, parent_handler, global_logic_vars, ui, userLang){
+        super(display_input_element, math_input_element, display_output_element, math_output_element, global_logic_vars, ui, userLang)
+        this.numbers = []
+        this.parent_handler = parent_handler
+        this.max_input = [1,0]
+    }
+
+    // Method to handle input
+    handle(input_code) {
+        switch(input_code){
+                case "key_0":
+                case "key_1":
+                case "key_2":
+                case "key_3":
+                case "key_4":
+                case "key_5":
+                case "key_6":
+                case "key_7":
+                case "key_8":
+                case "key_9":
+                    let number = input_code.substring(4)
+                    let input_allowed = true
+                    this.numbers.push(number)
+                    for(let i = 0; i < this.numbers.length; i++){
+                        if(this.numbers[i] < this.max_input[i]){
+                            break
+                        }else if(this.numbers[i] > this.max_input[i]){
+                            input_allowed = false
+                            break
+                        }
+                    }
+                    if(input_allowed){
+                        let all_zero = true
+                        for(let i = 0; i < this.numbers.length; i++){
+                            if(this.numbers[i] != "0"){
+                                all_zero = false
+                            }
+                        }
+                        if(this.numbers.length >= this.max_input.length && all_zero){
+                            input_allowed = false
+                        }
+                    }
+                    if(!input_allowed){
+                        this.numbers.pop()
+                    }
+                break;
+        }
+        if(this.numbers.length >= 2){
+            this.global_logic_vars.active_input_handler = this.parent_handler
+            this.parent_handler.input_code_history.push("key_CONST_" + this.numbers[0] + this.numbers[1])
+        }
+        this.global_logic_vars.active_input_handler.update_display(true);
+        this.global_logic_vars.active_input_handler.update_position()
+    }
+
+    update_display() {
+        this.math_input_element.innerHTML = "KONSTANTE<br>Nummer 01~40?"
+        let out_string = "["
+        for(let i = 0; i < 2; i++){
+            if(this.numbers.length > i){
+                out_string += this.numbers[i]
+            }else{
+                out_string += "_"
+            }
+        }
+        out_string += "]"
+        this.math_output_element.innerHTML = out_string
+        this.math_input_element.scroll(0,0)
+        this.ui.vertical_align_elements()
+    }
+
+    update_position() {
+        this.ui.align_element(this.display_input_element, this.math_input_element);
+        this.ui.align_element(this.display_output_element, this.math_output_element);
+    }
+}
+
 class EquationInputHandler extends InputHandler{
     constructor(display_input_element, math_input_element, display_output_element, math_output_element, parent_handler, global_logic_vars, ui, userLang) {
         super(display_input_element, math_input_element, display_output_element, math_output_element, global_logic_vars, ui, userLang)
@@ -680,9 +772,22 @@ class EquationInputHandler extends InputHandler{
                 this.input_code_history.splice(this.input_code_history.length - 1,0,"end");
                 this.input_code_history.push("key_=");
             }
+            if(this.input_code_history[this.input_code_history.length - 1] == "key_CONST"){
+                this.global_logic_vars.active_input_handler = new ConstSelectInput(
+                    this.display_input_element,
+                    this.math_input_element,
+                    this.display_output_element,
+                    this.math_output_element,
+                    this,
+                    this.global_logic_vars,
+                    this.ui,
+                    this.userLang
+                )
+                this.input_code_history.pop(2)
+            }
         }
-        this.update_display(true);
-        this.update_position()
+        this.global_logic_vars.active_input_handler.update_display(true);
+        this.global_logic_vars.active_input_handler.update_position()
     }
 
     update_display(show_cursor) {
@@ -816,7 +921,12 @@ class EquationInputHandler extends InputHandler{
             ]
             let new_elements = [];
 
-            switch(input_code){
+            let input_code_for_switch = input_code
+            if(input_code_for_switch.startsWith("key_CONST")){
+                input_code_for_switch = "key_CONST"
+            }
+
+            switch(input_code_for_switch){
                 case "key_0":
                 case "key_1":
                 case "key_2":
@@ -898,6 +1008,10 @@ class EquationInputHandler extends InputHandler{
                     cursor_element = new_elements[0]
                     break;
 
+                case "key_CONST":
+                    new_elements.push(new Const_Element(cursor_element,parseInt(input_code.substring(10))-1))
+                    cursor_element = new_elements[0]
+                break;
 
                 case "key_=":
                     if(cursor_element.type != "start" || cursor_element.neighbors[2]){
@@ -1306,4 +1420,4 @@ class EquationSelectInputHandler extends InputHandler{
     }
 }
 
-module.exports = { InputHandler, EquationSelectInputHandler }
+module.exports = { InputHandler, EquationSelectInputHandler, import_custom_math }
