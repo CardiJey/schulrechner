@@ -10,6 +10,8 @@ if(is_electron){
     shell = require("electron").shell;
 }
 
+import_custom_math(math)
+
 let global_logic_vars = {
     "active_input_handler": undefined,
     "next_align_id": 0,
@@ -226,7 +228,7 @@ async function fetch_mode_maps(design){
     document.getElementById("math-output").style.color = json_res.font_color
 }
 
-document.addEventListener("DOMContentLoaded", async () => {
+document.addEventListener("DOMContentLoaded", async () => {    
     await fetch_version()
     await fetch_versionCode()
     await fetch_design_list()

@@ -15,7 +15,9 @@ const assert = require('node:assert');
 const math = require('../www/js/math.js');
 const mode_maps = require('../www/img/gui/Classic_by_Joris Yidong Scholl.json').mode_maps
 
-const { InputHandler, EquationSelectInputHandler } = require('../www/js/logic')
+const { InputHandler, EquationSelectInputHandler, import_custom_math } = require('../www/js/logic')
+
+import_custom_math(math)
 
 class Dummy_Element{
     constructor(){
@@ -51,6 +53,7 @@ function eval_input_history(input_history,userLang){
         "math_engine": math,
         "mode_maps": mode_maps
     }
+
     global_logic_vars.active_input_handler = new EquationSelectInputHandler(dummy_display_input_element, dummy_math_input_element, dummy_display_output_element, dummy_math_output_element, global_logic_vars, dummy_ui, userLang)
 
     for(input_index = 0; input_index < input_history.length; input_index++){
@@ -1160,6 +1163,36 @@ const tests = [
         ],
         "rendered_input": "1<span class=\"pow10\">×⒑</span>34h×1<span class=\"pow10\">×⒑</span>27<i>μ</i>N×1<span class=\"pow10\">×⒑</span>24<i>μ</i>B×1<span class=\"pow10\">×⒑</span>34ħ×1<span class=\"pow10\">×⒑</span>3<i>α</i> ",
         "rendered_output": "2388.49102"
+    },
+    {
+        "userLang": "en-US",
+        "name": "rad to degree test",
+        "input_history": [
+            "key_sin",
+            "key_4",
+            "key_5",
+            "key_-",
+            "key_2",
+            "key_8",
+            "key_)",
+            "key_+",
+            "key_cos",
+            "key_1",
+            "key_3",
+            "key_+",
+            "key_8",
+            "key_)",
+            "key_-",
+            "key_tan",
+            "key_5",
+            "key_6",
+            "key_+",
+            "key_3",
+            "key_)",
+            "key_="
+        ],
+        "rendered_input": "sin(45-28)+cos(13+8)-tan(56+3) ",
+        "rendered_output": "-0.4383273511"
     }
 ]
 

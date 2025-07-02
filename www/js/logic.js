@@ -1,3 +1,17 @@
+function import_custom_math(math_engine){
+    math_engine.import({
+        sind: function(input){
+            return math_engine.sin(math_engine.pi/180*input)
+        },
+        cosd: function(input){
+            return math_engine.cos(math_engine.pi/180*input)
+        },
+        tand: function(input){
+            return math_engine.tan(math_engine.pi/180*input)
+        }
+    })
+}
+
 function getDecimalSeparator(userLang) {
     const numberWithDecimal = 1.1;
     const formatted = new Intl.NumberFormat(userLang, {
@@ -346,19 +360,19 @@ class Container_Element extends Math_Element{
 
 class Sin_Element extends Math_Element{
     constructor(left){
-        super("brackets_operation",left,"sin(","sin(PI/180*")
+        super("brackets_operation",left,"sin(","sind(")
     }
 }
 
 class Cos_Element extends Math_Element{
     constructor(left){
-        super("brackets_operation",left,"cos(","cos(PI/180*")
+        super("brackets_operation",left,"cos(","cosd(")
     }
 }
 
 class Tan_Element extends Math_Element{
     constructor(left){
-        super("brackets_operation",left,"tan(","tan(PI/180*")
+        super("brackets_operation",left,"tan(","tand(")
     }
 }
 
@@ -1406,4 +1420,4 @@ class EquationSelectInputHandler extends InputHandler{
     }
 }
 
-module.exports = { InputHandler, EquationSelectInputHandler }
+module.exports = { InputHandler, EquationSelectInputHandler, import_custom_math }
