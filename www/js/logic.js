@@ -667,6 +667,10 @@ class ConstSelectInput extends InputHandler{
                         this.numbers.pop()
                     }
                 break;
+
+                case "key_ac":
+                    this.global_logic_vars.active_input_handler = this.parent_handler
+                break;
         }
         if(this.numbers.length >= 2){
             this.global_logic_vars.active_input_handler = this.parent_handler

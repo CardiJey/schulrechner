@@ -1275,6 +1275,24 @@ const tests = [
         ],
         "rendered_input": "log(re)+log(λc)+log(γP)+log(λCP)+log(λCN)+log(R∞)+log(u)+log(<i>μ</i>P)+log(-<i>μ</i>e)+log(-<i>μ</i>n) ",
         "rendered_output": "-142.1334217"
+    },
+    {
+        "userLang": "en-US",
+        "name": "CONST abort test",
+        "input_history": [
+            "key_4",
+            "key_5",
+            "key_shift",
+            "key_7",
+            "key_5",
+            "key_2",
+            "key_ac",
+            "key_-",
+            "key_6",
+            "key_="
+        ],
+        "rendered_input": "45-6 ",
+        "rendered_output": "39"
     }
 ]
 
