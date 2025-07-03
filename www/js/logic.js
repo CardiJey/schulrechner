@@ -456,7 +456,7 @@ class Const_Element extends Math_Element{
             "<i>μ</i>P",
             "<i>μ</i>e",
             "<i>μ</i>n",
-            "μμ",
+            "<i>μμ</i>",
             "F",
             "e",
             "NA",
@@ -505,16 +505,16 @@ class Const_Element extends Math_Element{
             1.410606662e-26,//18
             -9.28476377e-24,//19
             -9.6623641e-27,//20
-            0,//21
-            0,//22
-            0,//23
-            0,//24
-            0,//25
-            0,//26
-            0,//27
-            0,//28
-            0,//29
-            0,//30
+            -4.49044786e-26,//21
+            96485.3399,//22
+            1.602176487e-19,//23
+            6.02214179e23,//24
+            1.3806504e-23,//25
+            0.022413996,//26
+            8.314472,//27
+            299792458,//28
+            3.74177118e-16,//29
+            0.014387752,//30
             0,//31
             0,//32
             0,//33
@@ -625,7 +625,7 @@ class ConstSelectInput extends InputHandler{
         super(display_input_element, math_input_element, display_output_element, math_output_element, global_logic_vars, ui, userLang)
         this.numbers = []
         this.parent_handler = parent_handler
-        this.max_input = [2,0]
+        this.max_input = [3,0]
     }
 
     // Method to handle input
