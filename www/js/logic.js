@@ -448,14 +448,14 @@ class Const_Element extends Math_Element{
             "<i>α</i>",
             "re",
             "λc",
-            "γp",
-            "λc,p",
-            "λc,n",
+            "γP",
+            "λCP",
+            "λCN",
             "R∞",
             "u",
-            "μp",
-            "μe",
-            "μn",
+            "<i>μ</i>P",
+            "<i>μ</i>e",
+            "<i>μ</i>n",
             "μμ",
             "F",
             "e",
@@ -485,48 +485,48 @@ class Const_Element extends Math_Element{
 
     get_value(){
         const value_map = [
-            1.672621637e-27,
-            1.674927211e-27,
-            9.10938215e-31,
-            1.8835313e-28,
-            5.291772086e-11,
-            6.62606896e-34,
-            5.05078324e-27,
-            9.27400915e-24,
-            1.054571628e-34,
-            7.297352538e-3,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            Math.PI,
-            Math.E
+            1.672621637e-27,//1
+            1.674927211e-27,//2
+            9.10938215e-31,//3
+            1.8835313e-28,//4
+            5.291772086e-11,//5
+            6.62606896e-34,//6
+            5.05078324e-27,//7
+            9.27400915e-24,//8
+            1.054571628e-34,//9
+            7.297352538e-3,//10
+            2.817940289e-15,//11
+            2.426310218e-12,//12
+            267522209.9,//13
+            1.321409845e-15,//14
+            1.319590895e-15,//15
+            10973731.57,//16
+            1.660538782e-27,//17
+            1.410606662e-26,//18
+            -9.28476377e-24,//19
+            -9.6623641e-27,//20
+            0,//21
+            0,//22
+            0,//23
+            0,//24
+            0,//25
+            0,//26
+            0,//27
+            0,//28
+            0,//29
+            0,//30
+            0,//31
+            0,//32
+            0,//33
+            0,//34
+            0,//35
+            0,//36
+            0,//37
+            0,//38
+            0,//39
+            0,//40
+            Math.PI,//41
+            Math.E//42
         ]
 
         return value_map[this.index]
@@ -625,7 +625,7 @@ class ConstSelectInput extends InputHandler{
         super(display_input_element, math_input_element, display_output_element, math_output_element, global_logic_vars, ui, userLang)
         this.numbers = []
         this.parent_handler = parent_handler
-        this.max_input = [1,0]
+        this.max_input = [2,0]
     }
 
     // Method to handle input
@@ -677,7 +677,7 @@ class ConstSelectInput extends InputHandler{
     }
 
     update_display() {
-        this.math_input_element.innerHTML = "KONSTANTE<br>Nummer 01~40?"
+        this.math_input_element.innerHTML = "KONSTANTE<br>Nummer 01~20?"
         let out_string = "["
         for(let i = 0; i < 2; i++){
             if(this.numbers.length > i){
