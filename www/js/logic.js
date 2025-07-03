@@ -466,10 +466,10 @@ class Const_Element extends Math_Element{
             "C0",
             "C1",
             "C2",
-            "σ",
-            "ε0",
-            "μ0",
-            "Φ0",
+            "<i>σ</i>",
+            "<i>ε</i>0",
+            "<i>μ</i>0",
+            "<i>Φ</i>0",
             "g",
             "G0",
             "Z0",
@@ -515,16 +515,16 @@ class Const_Element extends Math_Element{
             299792458,//28
             3.74177118e-16,//29
             0.014387752,//30
-            0,//31
-            0,//32
-            0,//33
-            0,//34
-            0,//35
-            0,//36
-            0,//37
-            0,//38
-            0,//39
-            0,//40
+            5.6704e-8,//31
+            8.854187817e-12,//32
+            1.256637061e-6,//33
+            2.067833667e-15,//34
+            9.80665,//35
+            7.7480917e-5,//36
+            376.7303134,//37
+            273.15,//38
+            6.67428e-11,//39
+            101325,//40
             Math.PI,//41
             Math.E//42
         ]
@@ -625,7 +625,7 @@ class ConstSelectInput extends InputHandler{
         super(display_input_element, math_input_element, display_output_element, math_output_element, global_logic_vars, ui, userLang)
         this.numbers = []
         this.parent_handler = parent_handler
-        this.max_input = [3,0]
+        this.max_input = [4,0]
     }
 
     // Method to handle input
@@ -681,7 +681,7 @@ class ConstSelectInput extends InputHandler{
     }
 
     update_display() {
-        this.math_input_element.innerHTML = "KONSTANTE<br>Nummer 01~20?"
+        this.math_input_element.innerHTML = "KONSTANTE<br>Nummer 01~40?"
         let out_string = "["
         for(let i = 0; i < 2; i++){
             if(this.numbers.length > i){
