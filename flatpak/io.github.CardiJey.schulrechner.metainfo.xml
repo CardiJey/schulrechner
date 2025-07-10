@@ -69,5 +69,16 @@
         </ul>
       </description>
     </release>
+    <release version="1.10.0" date="2025-07-10">
+      <description>
+        <ul>
+          <li>Feature: Added option to switch between multiple designs (although currently only the default is available, more designs are coming!)</li>
+          <li>Feature: Added constants (a way to view the list of constants is planned)</li>
+          <li>Bugfix: Very large results no longer cause the app to hang</li>
+          <li>Bugfix: Font scaling fixed, preventing cutoff and incorrect line wrapping</li>
+          <li>Bugfix: Sums in trigonometric functions are now input correctly</li>
+        </ul>
+      </description>
+    </release>
   </releases>
 </component>
