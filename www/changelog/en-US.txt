@@ -1,0 +1,5 @@
+Feature: Added option to switch between multiple designs (although currently only the default is available, more designs are coming!)
+Feature: Added constants (a way to view the list of constants is planned)
+Bugfix: Very large results no longer cause the app to hang
+Bugfix: Font scaling fixed, preventing cutoff and incorrect line wrapping
+Bugfix: Sums in trigonometric functions are now input correctly

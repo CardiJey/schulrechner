@@ -448,15 +448,15 @@ class Const_Element extends Math_Element{
             "<i>α</i>",
             "re",
             "λc",
-            "γp",
-            "λc,p",
-            "λc,n",
+            "γP",
+            "λCP",
+            "λCN",
             "R∞",
             "u",
-            "μp",
-            "μe",
-            "μn",
-            "μμ",
+            "<i>μ</i>P",
+            "<i>μ</i>e",
+            "<i>μ</i>n",
+            "<i>μμ</i>",
             "F",
             "e",
             "NA",
@@ -466,10 +466,10 @@ class Const_Element extends Math_Element{
             "C0",
             "C1",
             "C2",
-            "σ",
-            "ε0",
-            "μ0",
-            "Φ0",
+            "<i>σ</i>",
+            "<i>ε</i>0",
+            "<i>μ</i>0",
+            "<i>Φ</i>0",
             "g",
             "G0",
             "Z0",
@@ -485,48 +485,48 @@ class Const_Element extends Math_Element{
 
     get_value(){
         const value_map = [
-            1.672621637e-27,
-            1.674927211e-27,
-            9.10938215e-31,
-            1.8835313e-28,
-            5.291772086e-11,
-            6.62606896e-34,
-            5.05078324e-27,
-            9.27400915e-24,
-            1.054571628e-34,
-            7.297352538e-3,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            Math.PI,
-            Math.E
+            1.672621637e-27,//1
+            1.674927211e-27,//2
+            9.10938215e-31,//3
+            1.8835313e-28,//4
+            5.291772086e-11,//5
+            6.62606896e-34,//6
+            5.05078324e-27,//7
+            9.27400915e-24,//8
+            1.054571628e-34,//9
+            7.297352538e-3,//10
+            2.817940289e-15,//11
+            2.426310218e-12,//12
+            267522209.9,//13
+            1.321409845e-15,//14
+            1.319590895e-15,//15
+            10973731.57,//16
+            1.660538782e-27,//17
+            1.410606662e-26,//18
+            -9.28476377e-24,//19
+            -9.6623641e-27,//20
+            -4.49044786e-26,//21
+            96485.3399,//22
+            1.602176487e-19,//23
+            6.02214179e23,//24
+            1.3806504e-23,//25
+            0.022413996,//26
+            8.314472,//27
+            299792458,//28
+            3.74177118e-16,//29
+            0.014387752,//30
+            5.6704e-8,//31
+            8.854187817e-12,//32
+            1.256637061e-6,//33
+            2.067833667e-15,//34
+            9.80665,//35
+            7.7480917e-5,//36
+            376.7303134,//37
+            273.15,//38
+            6.67428e-11,//39
+            101325,//40
+            Math.PI,//41
+            Math.E//42
         ]
 
         return value_map[this.index]
@@ -625,7 +625,7 @@ class ConstSelectInput extends InputHandler{
         super(display_input_element, math_input_element, display_output_element, math_output_element, global_logic_vars, ui, userLang)
         this.numbers = []
         this.parent_handler = parent_handler
-        this.max_input = [1,0]
+        this.max_input = [4,0]
     }
 
     // Method to handle input
@@ -666,6 +666,10 @@ class ConstSelectInput extends InputHandler{
                     if(!input_allowed){
                         this.numbers.pop()
                     }
+                break;
+
+                case "key_ac":
+                    this.global_logic_vars.active_input_handler = this.parent_handler
                 break;
         }
         if(this.numbers.length >= 2){

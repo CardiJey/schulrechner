@@ -1,3 +1,15 @@
+- 1.10.0
+- Update versionCode
+- Did manual tests
+- Added flathub changelog
+- Shortened caption
+- shrunk icon a bit
+- Added branding colors
+- Added F-Droid Changelogs
+- Added CONST 31-40
+- Added CONST 21-30
+- Feature: AC can now abort the CONST selection
+- Added CONST 11-20
 - 1.9.7
 - Updated versionCode
 - Bugfix: Sums in trignometric function now work properly
