@@ -1450,6 +1450,24 @@ const tests = [
         ],
         "rendered_input": "log(<i>σ</i>)+log(<i>ε</i>0)+log(<i>μ</i>0)+log(<i>Φ</i>0)+log(g)+log(G0)+log(Z0)+log(t)+log(G)+log(atm) ",
         "rendered_output": "-42.16124387"
+    },
+    {
+        "userLang": "en-US",
+        "name": "(-) test",
+        "input_history": [
+            "key_5",
+            "key_=",
+            "key_-",
+            "key_2",
+            "key_=",
+            "key_(-)",
+            "key_2",
+            "key_x",
+            "key_Ans",
+            "key_="
+        ],
+        "rendered_input": "-2×Ans ",
+        "rendered_output": "-6"
     }
 ]
 
