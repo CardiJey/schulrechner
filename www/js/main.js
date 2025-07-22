@@ -358,6 +358,39 @@ document.addEventListener("DOMContentLoaded", async () => {
                 });
             });
         }
+        document.addEventListener("keydown",function(e){
+            let key = e.key
+            switch(key){
+                case "0":
+                case "1":
+                case "2":
+                case "3":
+                case "4":
+                case "5":
+                case "6":
+                case "7":
+                case "8":
+                case "9":
+                case "+":
+                case "-":
+                case "(":
+                case ")":
+                    global_logic_vars.active_input_handler.handle("key_" + key)
+                    break;
+
+                case "*":
+                    global_logic_vars.active_input_handler.handle("key_x")
+                    break;
+
+                case "/":
+                    global_logic_vars.active_input_handler.handle("key_÷")
+                    break;
+
+                case "Enter":
+                    global_logic_vars.active_input_handler.handle("key_=")
+                    break;
+            }
+        })
     }
 });
 
