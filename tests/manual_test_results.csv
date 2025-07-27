@@ -1,5 +1,5 @@
-versionCode,ui_loads_test,buttons_work_test,overflow_scrolling_x_test,overflow_scrolling_y_test,nested_fractions_display_test,brackets_display_test,sqrt_display_test,urls_work_phone,urls_work_desktop
-10704,y,y,y,y,y,todo,todo,todo,todo
-10800,y,y,y,y,y,todo,todo,todo,todo
-10900,y,y,y,y,y,todo,todo,todo,todo
-11000,y,y,y,y,y,todo,todo,y,y
+versionCode,ui_loads_test,buttons_work_test,overflow_scrolling_x_test,overflow_scrolling_y_test,nested_fractions_display_test,brackets_display_test,sqrt_display_test,urls_work_phone,urls_work_desktop,hotkeys_work
+10704,y,y,y,y,y,todo,todo,todo,todo,todo
+10800,y,y,y,y,y,todo,todo,todo,todo,todo
+10900,y,y,y,y,y,todo,todo,todo,todo,todo
+11000,y,y,y,y,y,todo,todo,y,y,todo
