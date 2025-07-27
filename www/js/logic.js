@@ -1073,6 +1073,7 @@ class EquationInputHandler extends InputHandler{
                     break;
 
                 case "key_-":
+                case "key_(-)":
                     new_elements.push(new Minus_Element(cursor_element))
                     cursor_element = new_elements[0]
                     break;

@@ -1,3 +1,9 @@
+- 1.10.1
+- Updated versioncode
+- Feature: Added common keyboard hotkeys
+- Feature: Added basic keyboard support
+- Feature: Added (-)
+- Changed release order
 - 1.10.0
 - Update versionCode
 - Did manual tests

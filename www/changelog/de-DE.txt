@@ -1,5 +1,0 @@
-Feature: Option zum Wechseln zwischen mehreren Designs hinzugefügt (derzeit ist nur das Standarddesign verfügbar, aber weitere Designs folgen!)
-Feature: Konstanten hinzugefügt (eine Möglichkeit zur Anzeige der Konstantenliste ist geplant)
-Bugfix: Sehr große Ergebnisse lassen die App nicht mehr hängen
-Bugfix: Schriftgrößenanpassung korrigiert, sodass kein Abschneiden oder falscher Zeilenumbruch mehr erfolgt
-Bugfix: Summen in trigonometrischen Funktionen werden jetzt korrekt berechnet
