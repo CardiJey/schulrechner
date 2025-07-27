@@ -360,6 +360,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
         document.addEventListener("keydown",function(e){
             let key = e.key
+            console.log(key)
             switch(key){
                 case "0":
                 case "1":
@@ -388,6 +389,67 @@ document.addEventListener("DOMContentLoaded", async () => {
 
                 case "Enter":
                     global_logic_vars.active_input_handler.handle("key_=")
+                    break;
+
+                case "Delete":
+                case "Backspace":
+                    global_logic_vars.active_input_handler.handle("key_del")
+                    break;
+
+                case "Dead":
+                    global_logic_vars.active_input_handler.handle("key_pown")
+                    break;
+
+                case "Tab":
+                case " ":
+                    e.preventDefault()
+                    global_logic_vars.active_input_handler.handle("key_ac")
+                    break;
+
+                case "x":
+                case "X":
+                    global_logic_vars.active_input_handler.handle("key_uservar_X")
+                    break;
+
+                case ".":
+                case ",":
+                    global_logic_vars.active_input_handler.handle("key_comma")
+                    break;
+
+                case "ArrowLeft":
+                    global_logic_vars.active_input_handler.handle("key_dir0")
+                    break;
+
+                case "ArrowDown":
+                    global_logic_vars.active_input_handler.handle("key_dir1")
+                    break;
+
+                case "ArrowRight":
+                    global_logic_vars.active_input_handler.handle("key_dir2")
+                    break;
+
+                case "ArrowUp":
+                    global_logic_vars.active_input_handler.handle("key_dir3")
+                    break;
+
+                case "Home":
+                    global_logic_vars.active_input_handler.handle("key_mode")
+                    break;
+
+                case "F1":
+                    global_logic_vars.active_input_handler.handle("key_shift")
+                    break;
+
+                case "F2":
+                    global_logic_vars.active_input_handler.handle("key_alpha")
+                    break;
+
+                case "F3":
+                    global_logic_vars.active_input_handler.handle("key_mode")
+                    break;
+
+                case "F4":
+                    global_logic_vars.active_input_handler.handle("key_on")
                     break;
             }
         })
