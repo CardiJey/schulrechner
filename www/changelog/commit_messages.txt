@@ -1,3 +1,21 @@
+- 1.10.2
+- Updated versionCode
+- Feature: Added Hyperbolis functions
+- Merge pull request #19 from CardiJey/renovate/electron-builder-26.x
+- Merge pull request #20 from CardiJey/renovate/softprops-action-gh-release-2.x
+- Update softprops/action-gh-release action to v2
+- Update dependency electron-builder to v26
+- Merge pull request #18 from CardiJey/renovate/electron-37.x
+- Merge pull request #17 from CardiJey/renovate/actions-checkout-4.x
+- Update dependency electron to v37
+- Merge pull request #15 from CardiJey/renovate/mathjs-14.x-lockfile
+- Update actions/checkout action to v4
+- Merge pull request #14 from CardiJey/renovate/mathjs-digest
+- Update dependency mathjs to v14.6.0
+- Update mathjs digest to e84ade6
+- Add renovate to automate dependency updating
+- Add submodule updating
+- Add renovate.json
 - 1.10.1
 - Updated versioncode
 - Feature: Added common keyboard hotkeys

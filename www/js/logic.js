@@ -394,6 +394,42 @@ class ATan_Element extends Math_Element{
     }
 }
 
+class Sinh_Element extends Math_Element{
+    constructor(left){
+        super("brackets_operation",left,"sinh(","sinh(")
+    }
+}
+
+class Cosh_Element extends Math_Element{
+    constructor(left){
+        super("brackets_operation",left,"cosh(","cosh(")
+    }
+}
+
+class Tanh_Element extends Math_Element{
+    constructor(left){
+        super("brackets_operation",left,"tanh(","tanh(")
+    }
+}
+
+class ASinh_Element extends Math_Element{
+    constructor(left){
+        super("brackets_operation",left,"sinh<span class='pow_top'>-1</span>(","asinh(")
+    }
+}
+
+class ACosh_Element extends Math_Element{
+    constructor(left){
+        super("brackets_operation",left,"cosh<span class='pow_top'>-1</span>(","acosh(")
+    }
+}
+
+class ATanh_Element extends Math_Element{
+    constructor(left){
+        super("brackets_operation",left,"tanh<span class='pow_top'>-1</span>(","atanh(")
+    }
+}
+
 class Log_Element extends Math_Element{
     constructor(left){
         super("brackets_operation",left,"log(","log10(")
@@ -620,12 +656,12 @@ class InputHandler{
     }
 }
 
-class ConstSelectInput extends InputHandler{
-    constructor(display_input_element, math_input_element, display_output_element, math_output_element, parent_handler, global_logic_vars, ui, userLang){
+class SelectInput extends InputHandler{
+    constructor(display_input_element, math_input_element, display_output_element, math_output_element, parent_handler, global_logic_vars, ui, userLang, max_input){
         super(display_input_element, math_input_element, display_output_element, math_output_element, global_logic_vars, ui, userLang)
         this.numbers = []
         this.parent_handler = parent_handler
-        this.max_input = [4,0]
+        this.max_input = max_input
     }
 
     // Method to handle input
@@ -672,12 +708,27 @@ class ConstSelectInput extends InputHandler{
                     this.global_logic_vars.active_input_handler = this.parent_handler
                 break;
         }
-        if(this.numbers.length >= 2){
+        if(this.numbers.length >= this.max_input.length){
             this.global_logic_vars.active_input_handler = this.parent_handler
-            this.parent_handler.input_code_history.push("key_CONST_" + this.numbers[0] + this.numbers[1])
+            this.parent_handler.input_code_history.push(this.give_resulting_key())
         }
         this.global_logic_vars.active_input_handler.update_display(true);
         this.global_logic_vars.active_input_handler.update_position()
+    }
+
+    update_position() {
+        this.ui.align_element(this.display_input_element, this.math_input_element);
+        this.ui.align_element(this.display_output_element, this.math_output_element);
+    }
+}
+
+class ConstSelectInput extends SelectInput{
+    constructor(display_input_element, math_input_element, display_output_element, math_output_element, parent_handler, global_logic_vars, ui, userLang){
+        super(display_input_element, math_input_element, display_output_element, math_output_element, parent_handler, global_logic_vars, ui, userLang, [4,0])
+    }
+
+    give_resulting_key(){
+        return "key_CONST_" + this.numbers[0] + this.numbers[1]
     }
 
     update_display() {
@@ -695,10 +746,33 @@ class ConstSelectInput extends InputHandler{
         this.math_input_element.scroll(0,0)
         this.ui.vertical_align_elements()
     }
+}
 
-    update_position() {
-        this.ui.align_element(this.display_input_element, this.math_input_element);
-        this.ui.align_element(this.display_output_element, this.math_output_element);
+class HypSelectInput extends SelectInput{
+    constructor(display_input_element, math_input_element, display_output_element, math_output_element, parent_handler, global_logic_vars, ui, userLang){
+        super(display_input_element, math_input_element, display_output_element, math_output_element, parent_handler, global_logic_vars, ui, userLang, [6])
+        this.hyp_keys = [
+            "key_sinh",
+            "key_cosh",
+            "key_tanh",
+            "key_asinh",
+            "key_acosh",
+            "key_atanh"
+        ]
+    }
+
+    give_resulting_key(){
+        return this.hyp_keys[parseInt(this.numbers[0])-1]
+    }
+
+    update_display() {
+        let out_string = "1:sinh&nbsp;&nbsp;&nbsp;2:cosh<br>"
+        out_string += "3:tanh&nbsp;&nbsp;&nbsp;4:sinh-1<br>"
+        out_string += "5:cosh-1&nbsp;6:tanh-1"
+        this.math_output_element.innerHTML = ""
+        this.math_input_element.innerHTML = "<span class='frac_top'>" + out_string + "</span>"
+        this.math_input_element.scroll(0,0)
+        this.ui.vertical_align_elements()
     }
 }
 
@@ -776,18 +850,35 @@ class EquationInputHandler extends InputHandler{
                 this.input_code_history.splice(this.input_code_history.length - 1,0,"end");
                 this.input_code_history.push("key_=");
             }
-            if(this.input_code_history[this.input_code_history.length - 1] == "key_CONST"){
-                this.global_logic_vars.active_input_handler = new ConstSelectInput(
-                    this.display_input_element,
-                    this.math_input_element,
-                    this.display_output_element,
-                    this.math_output_element,
-                    this,
-                    this.global_logic_vars,
-                    this.ui,
-                    this.userLang
-                )
-                this.input_code_history.pop(2)
+            const last_input_code = this.input_code_history[this.input_code_history.length - 1]
+            switch(last_input_code){
+                case "key_CONST":
+                    this.global_logic_vars.active_input_handler = new ConstSelectInput(
+                        this.display_input_element,
+                        this.math_input_element,
+                        this.display_output_element,
+                        this.math_output_element,
+                        this,
+                        this.global_logic_vars,
+                        this.ui,
+                        this.userLang
+                    )
+                    this.input_code_history.pop(2)
+                break;
+
+                case "key_hyp":
+                    this.global_logic_vars.active_input_handler = new HypSelectInput(
+                        this.display_input_element,
+                        this.math_input_element,
+                        this.display_output_element,
+                        this.math_output_element,
+                        this,
+                        this.global_logic_vars,
+                        this.ui,
+                        this.userLang
+                    )
+                    this.input_code_history.pop(2)
+                break;
             }
         }
         this.global_logic_vars.active_input_handler.update_display(true);
@@ -1102,7 +1193,6 @@ class EquationInputHandler extends InputHandler{
                     new_elements.push(new Tan_Element(cursor_element))
                     cursor_element = new_elements[0]
                     break;
-
                 
                 case "key_sin-1":
                     new_elements.push(new ASin_Element(cursor_element))
@@ -1116,6 +1206,36 @@ class EquationInputHandler extends InputHandler{
 
                 case "key_tan-1":
                     new_elements.push(new ATan_Element(cursor_element))
+                    cursor_element = new_elements[0]
+                    break;
+
+                case "key_sinh":
+                    new_elements.push(new Sinh_Element(cursor_element))
+                    cursor_element = new_elements[0]
+                    break;
+
+                case "key_cosh":
+                    new_elements.push(new Cosh_Element(cursor_element))
+                    cursor_element = new_elements[0]
+                    break;
+
+                case "key_tanh":
+                    new_elements.push(new Tanh_Element(cursor_element))
+                    cursor_element = new_elements[0]
+                    break;
+                
+                case "key_asinh":
+                    new_elements.push(new ASinh_Element(cursor_element))
+                    cursor_element = new_elements[0]
+                    break;
+
+                case "key_acosh":
+                    new_elements.push(new ACosh_Element(cursor_element))
+                    cursor_element = new_elements[0]
+                    break;
+
+                case "key_atanh":
+                    new_elements.push(new ATanh_Element(cursor_element))
                     cursor_element = new_elements[0]
                     break;
 
