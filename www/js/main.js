@@ -360,7 +360,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
         document.addEventListener("keydown",function(e){
             let key = e.key
-            console.log(key)
             switch(key){
                 case "0":
                 case "1":
