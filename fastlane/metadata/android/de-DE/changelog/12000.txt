@@ -1,0 +1,5 @@
+Feature: (-) hinzugefügt
+Feature: Tastatur-Support für die Desktop Version
+Feature: Hyperbelfunktionen hinzugefügt
+Tweak: "Renovate" integriert um Dependencies up-to-date zu halten
+Tweak: Dependencies aktualisiert
