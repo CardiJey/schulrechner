@@ -1,3 +1,10 @@
+- 1.11.0
+- Did manual tets
+- updated versioncpde
+- wrapped free description text in elements
+- Bugfix
+- Updated gitignore
+- updated Changelog
 - 1.10.2
 - Updated versionCode
 - Feature: Added Hyperbolis functions
