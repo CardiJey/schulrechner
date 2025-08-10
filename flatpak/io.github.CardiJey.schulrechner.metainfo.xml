@@ -20,7 +20,7 @@
     <p><em>This is a very early version in development. Unlabeled buttons will be implemented in the future, and bugs may be frequent. If you experience issues or have feature requests, please file an issue (link below).</em></p>
     <p>Frustrated by the lack of free, open-source scientific calculators that feel like the ones I am used to, I decided to reverse-engineer my old calculator from school.</p>
 
-    With features like:
+    <p>With features like:</p>
     <ul>
       <li>input of complex equations,</li>
       <li>output as fractions as well as decimals,</li>
@@ -29,7 +29,7 @@
       <li>and support for implicit multiplication (like 5π instead of 5*π),</li>
       <li>this calculator produces math that looks like the math on your paper. That makes it much more suitable for higher-level math in school and university—especially if you've grown accustomed to this kind of interface from a young age and just forgot your calculator at home.</li>
     </ul>
-    Some additional features include:
+    <p>Some additional features include:</p>
     <ul>
       <li>A well-established open-source math.js library as the math engine—so you're not relying on some sketchy, hand-rolled math logic (just my sketchy hand-rolled input method 😛)</li>
       <li>A familiar, intuitive design</li>
