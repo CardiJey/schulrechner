@@ -104,7 +104,7 @@ class UI{
     }
 
     handle_resize(){
-        this.setRootFontSize(document.querySelector('[inkscape\\3a label="display_output"]').getBoundingClientRect().height * 0.034506 * 16.91331)
+        this.setRootFontSize(document.querySelector('[inkscape\\3a label="display_output"]').getBoundingClientRect().height * 0.034506 * 16.91331 / 2)
         this.global_logic_vars.active_input_handler.update_position()
     }
 

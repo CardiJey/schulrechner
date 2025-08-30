@@ -68,6 +68,7 @@ svg {
     flex-wrap: wrap;
     align-content: flex-end;
     justify-content: flex-end;
+    text-align: right;
 }
 
 #math-input {

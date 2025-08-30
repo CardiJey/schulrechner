@@ -639,14 +639,17 @@ class InputHandler{
             return num
         }
         if(typeof num == "object"){
-            let re_string = this.formatNumber(num.re)
-            let im_string = this.formatNumber(num.im)
+            let re_string = this.formatNumber(num.re,as_fraction)
+            let im_string = this.formatNumber(num.im,as_fraction)
             let res_string = ""
             if(re_string != "0"){
                 res_string += re_string
             }
             if(im_string != "0"){
                 if(re_string != "0"){
+                    if(!as_fraction){
+                        res_string += "<br>"
+                    }
                     res_string += "+"
                 }
                 if(im_string != "1"){
