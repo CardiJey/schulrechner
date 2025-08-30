@@ -338,6 +338,16 @@ class Logx_Element extends Math_Element{
     }
 }
 
+class Cmplx_i_Element extends Math_Element{
+    constructor(left){
+        super("var",left,"i","")
+    }
+
+    get_value(){
+        return "i"
+    }
+}
+
 class Container_Element extends Math_Element{
     constructor(left,value,mathjs_value,parent,last_container){
         super("container",left,value,mathjs_value)
@@ -627,6 +637,28 @@ class InputHandler{
     formatNumber(num,as_fraction=true) {
         if(typeof num == "string"){
             return num
+        }
+        if(typeof num == "object"){
+            let re_string = this.formatNumber(num.re)
+            let im_string = this.formatNumber(num.im)
+            let res_string = ""
+            if(re_string != "0"){
+                res_string += re_string
+            }
+            if(im_string != "0"){
+                if(re_string != "0"){
+                    res_string += "+"
+                }
+                if(im_string != "1"){
+                    res_string += im_string
+                }
+                res_string += "i"
+            }
+            if(res_string != ""){
+                return res_string
+            }else{
+                return "0"
+            }
         }
         
         if(as_fraction){
@@ -1319,6 +1351,11 @@ class EquationInputHandler extends InputHandler{
                     cursor_element = new_elements[0]
                     break;
 
+                case "key_i":
+                    new_elements.push(new Cmplx_i_Element(cursor_element))
+                    cursor_element = new_elements[0]
+                    break;
+
                 case "key_del":
                     switch(cursor_element.type){
                         case "start":
@@ -1397,7 +1434,11 @@ class EquationInputHandler extends InputHandler{
             let this_result
             try {
                 this_result = this.global_logic_vars.math_engine.evaluate(this_output_string)
-                if((typeof this_result != "number" || !isFinite(this_result)) && typeof this_result != "string"){
+                if(
+                    (typeof this_result != "number" || !isFinite(this_result)) && 
+                    (typeof this_result != "object" || !"re" in this_result || !"im" in this_result) && 
+                    typeof this_result != "string")
+                {
                     throw "invalid"
                 }
             } catch (error) {
@@ -1430,6 +1471,16 @@ class EquationInputHandler extends InputHandler{
     }
 }
 
+class CmplxEquationInputHandler extends EquationInputHandler{
+    handle(input_code) {
+        if(input_code in this.mode_maps.cmplx){
+            super.handle(this.mode_maps.cmplx[input_code])
+        }else{
+            super.handle(input_code)
+        }
+    }
+}
+
 class EquationSelectInputHandler extends InputHandler{
     constructor(display_input_element, math_input_element, display_output_element, math_output_element, global_logic_vars, ui, userLang) {
         super(display_input_element, math_input_element, display_output_element, math_output_element, global_logic_vars, ui, userLang)
@@ -1449,7 +1500,11 @@ class EquationSelectInputHandler extends InputHandler{
     }
 
     add_empty_equation(){
-        this.equations.push(new EquationInputHandler(this.display_input_element, this.math_input_element, this.display_output_element, this.math_output_element, this, this.global_logic_vars, this.ui, this.userLang))
+        if(this.global_logic_vars.cmplx_mode){
+            this.equations.push(new CmplxEquationInputHandler(this.display_input_element, this.math_input_element, this.display_output_element, this.math_output_element, this, this.global_logic_vars, this.ui, this.userLang))
+        }else{
+            this.equations.push(new EquationInputHandler(this.display_input_element, this.math_input_element, this.display_output_element, this.math_output_element, this, this.global_logic_vars, this.ui, this.userLang))
+        }
         this.as_fraction = !this.global_logic_vars.prefer_decimals
     }
 

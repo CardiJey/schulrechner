@@ -19,7 +19,8 @@ let global_logic_vars = {
     "math_engine": math,
     "input_history": [],
     "mode_maps": {},
-    "prefer_decimals": false
+    "prefer_decimals": false,
+    "cmplx_mode": false
 }
 
 class UI{
