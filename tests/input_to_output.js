@@ -38,7 +38,7 @@ class Dummy_UI{
     align_element(displayElement, mathElement){}
 }
 
-function eval_input_history(input_history,userLang,prefer_decimals=false){
+function eval_input_history(input_history,userLang,prefer_decimals=false,calc_mode="COMP"){
     let dummy_display_input_element = new Dummy_Element()
     let dummy_math_input_element = new Dummy_Element()
     let dummy_display_output_element = new Dummy_Element()
@@ -52,7 +52,8 @@ function eval_input_history(input_history,userLang,prefer_decimals=false){
         "next_subres_id": 0,
         "math_engine": math,
         "mode_maps": mode_maps,
-        "prefer_decimals": prefer_decimals
+        "prefer_decimals": prefer_decimals,
+        "calc_mode": calc_mode
     }
 
     global_logic_vars.active_input_handler = new EquationSelectInputHandler(dummy_display_input_element, dummy_math_input_element, dummy_display_output_element, dummy_math_output_element, global_logic_vars, dummy_ui, userLang)
@@ -1526,6 +1527,53 @@ const tests = [
         "rendered_input": "5÷9 ",
         "rendered_output": "0.5555555556",
         "prefer_decimals": true
+    },
+    {
+        "userLang": "en-US",
+        "name": "cmplx test",
+        "input_history": [
+            "key_frac",
+            "key_7",
+            "key_+",
+            "key_3",
+            "key_eng",
+            "key_dir2",
+            "key_4",
+            "key_-",
+            "key_8",
+            "key_dir2",
+            "key_pow2",
+            "key_-",
+            "key_7",
+            "key_x",
+            "key_2",
+            "key_+",
+            "key_3",
+            "key_eng",
+            "key_="
+        ],
+        "rendered_input": "<span class=\"pow_bottom\">(<span class=\"alignLeft18\"></span><span class=\"frac_wrapper\" style=\"vertical-align: calc(-6.95947px + 0.06rem);\"><span class=\"frac_top\">7+3i</span><span class=\"frac_bottom alignRight18\">4-8</span></span>)</span><span class=\"pow_top\">2</span>-7×2+3i ",
+        "rendered_output": "<span class=\"frac_wrapper\"><span class=\"frac_top\">-23</span><span class=\"frac_bottom\">2</span></span>+<span class=\"frac_wrapper\"><span class=\"frac_top\">45</span><span class=\"frac_bottom\">8</span></span>i",
+        "calc_mode": "CMPLX"
+    },
+    {
+        "userLang": "en-US",
+        "name": "cmplx switch format test",
+        "input_history": [
+            "key_3",
+            "key_+",
+            "key_frac",
+            "key_1",
+            "key_dir2",
+            "key_4",
+            "key_dir2",
+            "key_eng",
+            "key_=",
+            "key_SD"
+        ],
+        "rendered_input": "3+<span class=\"alignLeft6\"></span><span class=\"frac_wrapper\" style=\"vertical-align: calc(-6.95947px + 0.06rem);\"><span class=\"frac_top\">1</span><span class=\"frac_bottom alignRight6\">4</span></span>i ",
+        "rendered_output": "3<br>+0.25i",
+        "calc_mode": "CMPLX"
     }
 ]
 
@@ -1578,12 +1626,18 @@ describe(`⚙️ Automated Tests`, () => {
         if("prefer_decimals" in this_test){
             this_prefer_decimals = this_test.prefer_decimals
         }
+
+        let this_calc_mode = "COMP"
+        if("calc_mode" in this_test){
+            this_calc_mode = this_test.calc_mode
+        }
+
         let rendered_input = this_test.rendered_input.replaceAll("\"","'").replace(/\s*style='[^']*'/g, '')
         let rendered_output = this_test.rendered_output.replaceAll("\"","'").replace(/\s*style='[^']*'/g, '')
 
         test(this_test.name, (t) => {
             assert.deepStrictEqual(
-                eval_input_history(this_test.input_history,this_userLang,this_prefer_decimals),
+                eval_input_history(this_test.input_history,this_userLang,this_prefer_decimals,this_calc_mode),
                 [rendered_input,rendered_output]
             );
         })
@@ -1595,12 +1649,18 @@ describe(`⚙️ Automated Tests`, () => {
         if("prefer_decimals" in this_test){
             this_prefer_decimals = this_test.prefer_decimals
         }
+
+        let this_calc_mode = "COMP"
+        if("calc_mode" in this_test){
+            this_calc_mode = this_test.calc_mode
+        }
+
         let rendered_input = this_test.rendered_input.replaceAll("\"","'").replace(/\s*style='[^']*'/g, '')
         let rendered_output = this_test.rendered_output.replaceAll("\"","'").replace(/\s*style='[^']*'/g, '')
 
         test.todo(this_test.name, (t) => {
             assert.deepStrictEqual(
-                eval_input_history(this_test.input_history,this_userLang,this_prefer_decimals),
+                eval_input_history(this_test.input_history,this_userLang,this_prefer_decimals,this_calc_mode),
                 [rendered_input,rendered_output]
             );
         })

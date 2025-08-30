@@ -634,13 +634,13 @@ class InputHandler{
         return [res,resulting_fraction]
     }
 
-    formatNumber(num,as_fraction=true) {
+    formatNumber(num,as_fraction=true,epsilon=1e-16) {
         if(typeof num == "string"){
             return num
         }
         if(typeof num == "object"){
-            let re_string = this.formatNumber(num.re,as_fraction)
-            let im_string = this.formatNumber(num.im,as_fraction)
+            let re_string = this.formatNumber(num.re,as_fraction,epsilon=1e-14)
+            let im_string = this.formatNumber(num.im,as_fraction,epsilon=1e-14)
             let res_string = ""
             if(re_string != "0"){
                 res_string += re_string
@@ -665,7 +665,7 @@ class InputHandler{
         }
         
         if(as_fraction){
-            let resulting_fraction = this.decimal_to_continued_fraction(num)[1]
+            let resulting_fraction = this.decimal_to_continued_fraction(num,epsilon)[1]
             let resulting_fraction_length = (resulting_fraction[0].toString() + resulting_fraction[1].toString()).length
 
             if(resulting_fraction[1] != 1 && resulting_fraction_length <= 9){
