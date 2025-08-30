@@ -36,6 +36,7 @@ describe('SVG Metadata Tests', () => {
                 `${json_file_name} font_color is not a valid hex color`
             );
             assert.deepStrictEqual(typeof json_object.mode_maps.shift,"object")
+            assert.deepStrictEqual(typeof json_object.mode_maps.cmplx,"object")
             assert.deepStrictEqual(typeof json_object.mode_maps.alpha,"object")
             assert.deepStrictEqual(typeof json_object.mode_maps.STO,"object")
         })

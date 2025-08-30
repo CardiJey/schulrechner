@@ -35,6 +35,8 @@
             "key_)":"key_STO_X",
             "key_SD":"key_STO_Y",
             "key_M+":"key_STO_M"
+        },"cmplx":{
+            "key_eng": "key_i"
         }
     }
 }
