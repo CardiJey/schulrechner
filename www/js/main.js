@@ -20,7 +20,7 @@ let global_logic_vars = {
     "input_history": [],
     "mode_maps": {},
     "prefer_decimals": false,
-    "cmplx_mode": false
+    "calc_mode": "COMP"
 }
 
 class UI{
@@ -164,6 +164,11 @@ class UI{
         mathElement.style.width = `${rect.width}px`;
         mathElement.style.height = `${rect.height}px`;
     }
+
+    set_calc_mode(calc_mode){
+        localStorage.setItem("calcMode", calc_mode);
+        location.reload();
+    }
 }
 
 let ui = new UI(global_logic_vars)
@@ -259,6 +264,16 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             global_logic_vars.prefer_decimals = (localStorage.getItem("preferDecimal") === "true")
             document.getElementById("prefer-decimal-input").checked = (localStorage.getItem("preferDecimal") === "true")
+
+            let calc_mode = localStorage.getItem("calcMode")
+            if (calc_mode) {
+                global_logic_vars.calc_mode = calc_mode
+            }
+            switch(calc_mode){
+                case "CMPLX":
+                    document.querySelector('[inkscape\\3a label="indicator_cmplx"]').style.visibility = "visible"
+                break
+            }
 
             if(design_list.length > 1){
                 document.getElementById("design_" + selected_design).classList.add("design-selected")

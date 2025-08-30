@@ -808,6 +808,43 @@ class HypSelectInput extends SelectInput{
     }
 }
 
+class ModeSelectInput extends InputHandler{
+    constructor(display_input_element, math_input_element, display_output_element, math_output_element, parent_handler, global_logic_vars, ui, userLang, max_input){
+        super(display_input_element, math_input_element, display_output_element, math_output_element, global_logic_vars, ui, userLang)
+        this.parent_handler = parent_handler
+        this.calc_mode_map = {
+            "key_1":"COMP",
+            "key_2":"CMPLX",
+        }
+    }
+
+    // Method to handle input
+    handle(input_code) {
+        if(input_code in this.calc_mode_map){
+            this.ui.set_calc_mode(this.calc_mode_map[input_code])
+        }else if(["key_ac","key_mode"].indexOf(input_code) != -1){
+            this.global_logic_vars.active_input_handler = this.parent_handler
+        }
+        this.global_logic_vars.active_input_handler.update_display(true);
+        this.global_logic_vars.active_input_handler.update_position()
+    }
+
+    update_display() {
+        let out_string = "1:COMP&nbsp;&nbsp;&nbsp;2:CMPLX<br>"
+        //out_string += "3:tanh&nbsp;&nbsp;&nbsp;4:sinh-1<br>"
+        //out_string += "5:cosh-1&nbsp;6:tanh-1"
+        this.math_output_element.innerHTML = ""
+        this.math_input_element.innerHTML = "<span class='frac_top'>" + out_string + "</span>"
+        this.math_input_element.scroll(0,0)
+        this.ui.vertical_align_elements()
+    }
+
+    update_position() {
+        this.ui.align_element(this.display_input_element, this.math_input_element);
+        this.ui.align_element(this.display_output_element, this.math_output_element);
+    }
+}
+
 class EquationInputHandler extends InputHandler{
     constructor(display_input_element, math_input_element, display_output_element, math_output_element, parent_handler, global_logic_vars, ui, userLang) {
         super(display_input_element, math_input_element, display_output_element, math_output_element, global_logic_vars, ui, userLang)
@@ -900,6 +937,20 @@ class EquationInputHandler extends InputHandler{
 
                 case "key_hyp":
                     this.global_logic_vars.active_input_handler = new HypSelectInput(
+                        this.display_input_element,
+                        this.math_input_element,
+                        this.display_output_element,
+                        this.math_output_element,
+                        this,
+                        this.global_logic_vars,
+                        this.ui,
+                        this.userLang
+                    )
+                    this.input_code_history.pop(2)
+                break;
+
+                case "key_mode":
+                    this.global_logic_vars.active_input_handler = new ModeSelectInput(
                         this.display_input_element,
                         this.math_input_element,
                         this.display_output_element,
@@ -1436,7 +1487,7 @@ class EquationInputHandler extends InputHandler{
                 this_result = this.global_logic_vars.math_engine.evaluate(this_output_string)
                 if(
                     (typeof this_result != "number" || !isFinite(this_result)) && 
-                    (typeof this_result != "object" || !"re" in this_result || !"im" in this_result) && 
+                    (this.global_logic_vars.calc_mode != "CMPLX" || typeof this_result != "object" || !"re" in this_result || !"im" in this_result) && 
                     typeof this_result != "string")
                 {
                     throw "invalid"
@@ -1500,7 +1551,7 @@ class EquationSelectInputHandler extends InputHandler{
     }
 
     add_empty_equation(){
-        if(this.global_logic_vars.cmplx_mode){
+        if(this.global_logic_vars.calc_mode == "CMPLX"){
             this.equations.push(new CmplxEquationInputHandler(this.display_input_element, this.math_input_element, this.display_output_element, this.math_output_element, this, this.global_logic_vars, this.ui, this.userLang))
         }else{
             this.equations.push(new EquationInputHandler(this.display_input_element, this.math_input_element, this.display_output_element, this.math_output_element, this, this.global_logic_vars, this.ui, this.userLang))
