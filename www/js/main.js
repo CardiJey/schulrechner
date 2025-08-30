@@ -18,7 +18,9 @@ let global_logic_vars = {
     "next_subres_id": 0,
     "math_engine": math,
     "input_history": [],
-    "mode_maps": {}
+    "mode_maps": {},
+    "prefer_decimals": false,
+    "calc_mode": "COMP"
 }
 
 class UI{
@@ -102,7 +104,7 @@ class UI{
     }
 
     handle_resize(){
-        this.setRootFontSize(document.querySelector('[inkscape\\3a label="display_output"]').getBoundingClientRect().height * 0.034506 * 16.91331)
+        this.setRootFontSize(document.querySelector('[inkscape\\3a label="display_output"]').getBoundingClientRect().height * 0.034506 * 16.91331 / 2)
         this.global_logic_vars.active_input_handler.update_position()
     }
 
@@ -161,6 +163,11 @@ class UI{
         mathElement.style.top = `${rect.top}px`;
         mathElement.style.width = `${rect.width}px`;
         mathElement.style.height = `${rect.height}px`;
+    }
+
+    set_calc_mode(calc_mode){
+        localStorage.setItem("calcMode", calc_mode);
+        location.reload();
     }
 }
 
@@ -255,6 +262,19 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
             document.getElementById("decimal-format-select").value = decimal_separator;
 
+            global_logic_vars.prefer_decimals = (localStorage.getItem("preferDecimal") === "true")
+            document.getElementById("prefer-decimal-input").checked = (localStorage.getItem("preferDecimal") === "true")
+
+            let calc_mode = localStorage.getItem("calcMode")
+            if (calc_mode) {
+                global_logic_vars.calc_mode = calc_mode
+            }
+            switch(calc_mode){
+                case "CMPLX":
+                    document.querySelector('[inkscape\\3a label="indicator_cmplx"]').style.visibility = "visible"
+                break
+            }
+
             if(design_list.length > 1){
                 document.getElementById("design_" + selected_design).classList.add("design-selected")
             }
@@ -326,6 +346,10 @@ document.addEventListener("DOMContentLoaded", async () => {
             const format = document.getElementById("decimal-format-select").value;
             localStorage.setItem("decimalFormat", format);
             location.reload();
+        });
+        document.getElementById("prefer-decimal-input").addEventListener("change", () => {
+            global_logic_vars.prefer_decimals = document.getElementById("prefer-decimal-input").checked
+            localStorage.setItem("preferDecimal", global_logic_vars.prefer_decimals);
         });
         if("cordova" in window){
             let a_elements = document.querySelectorAll("a")

@@ -1,3 +1,12 @@
+- 1.11.1
+- updated versioncode
+- Added cmplx tests and changed cmplx fraction formating epsilon
+- Complex real and imaginary can now be separated in two lines in output
+- Feature: Added mode button and switching to CMPLX mode
+- Added complex equation handler
+- Added config for complex key alts
+- added labels for i and the menu
+- Feature: Added config option to prefer decimal results
 - 1.11.0
 - Did manual tets
 - updated versioncpde

@@ -1,5 +1,0 @@
-Feature: Added (-) button
-Feature: Added keyboard support for desktop version
-Feature: Added hyperbolic functions
-Tweak: "Renovate" integrated to ensure up-to-date dependencies
-Tweak: Updated dependencies

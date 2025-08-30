@@ -338,6 +338,16 @@ class Logx_Element extends Math_Element{
     }
 }
 
+class Cmplx_i_Element extends Math_Element{
+    constructor(left){
+        super("var",left,"i","")
+    }
+
+    get_value(){
+        return "i"
+    }
+}
+
 class Container_Element extends Math_Element{
     constructor(left,value,mathjs_value,parent,last_container){
         super("container",left,value,mathjs_value)
@@ -624,13 +634,38 @@ class InputHandler{
         return [res,resulting_fraction]
     }
 
-    formatNumber(num,as_fraction=true) {
+    formatNumber(num,as_fraction=true,epsilon=1e-16) {
         if(typeof num == "string"){
             return num
         }
+        if(typeof num == "object"){
+            let re_string = this.formatNumber(num.re,as_fraction,epsilon=1e-14)
+            let im_string = this.formatNumber(num.im,as_fraction,epsilon=1e-14)
+            let res_string = ""
+            if(re_string != "0"){
+                res_string += re_string
+            }
+            if(im_string != "0"){
+                if(re_string != "0"){
+                    if(!as_fraction){
+                        res_string += "<br>"
+                    }
+                    res_string += "+"
+                }
+                if(im_string != "1"){
+                    res_string += im_string
+                }
+                res_string += "i"
+            }
+            if(res_string != ""){
+                return res_string
+            }else{
+                return "0"
+            }
+        }
         
         if(as_fraction){
-            let resulting_fraction = this.decimal_to_continued_fraction(num)[1]
+            let resulting_fraction = this.decimal_to_continued_fraction(num,epsilon)[1]
             let resulting_fraction_length = (resulting_fraction[0].toString() + resulting_fraction[1].toString()).length
 
             if(resulting_fraction[1] != 1 && resulting_fraction_length <= 9){
@@ -776,6 +811,43 @@ class HypSelectInput extends SelectInput{
     }
 }
 
+class ModeSelectInput extends InputHandler{
+    constructor(display_input_element, math_input_element, display_output_element, math_output_element, parent_handler, global_logic_vars, ui, userLang, max_input){
+        super(display_input_element, math_input_element, display_output_element, math_output_element, global_logic_vars, ui, userLang)
+        this.parent_handler = parent_handler
+        this.calc_mode_map = {
+            "key_1":"COMP",
+            "key_2":"CMPLX",
+        }
+    }
+
+    // Method to handle input
+    handle(input_code) {
+        if(input_code in this.calc_mode_map){
+            this.ui.set_calc_mode(this.calc_mode_map[input_code])
+        }else if(["key_ac","key_mode"].indexOf(input_code) != -1){
+            this.global_logic_vars.active_input_handler = this.parent_handler
+        }
+        this.global_logic_vars.active_input_handler.update_display(true);
+        this.global_logic_vars.active_input_handler.update_position()
+    }
+
+    update_display() {
+        let out_string = "1:COMP&nbsp;&nbsp;&nbsp;2:CMPLX<br>"
+        //out_string += "3:tanh&nbsp;&nbsp;&nbsp;4:sinh-1<br>"
+        //out_string += "5:cosh-1&nbsp;6:tanh-1"
+        this.math_output_element.innerHTML = ""
+        this.math_input_element.innerHTML = "<span class='frac_top'>" + out_string + "</span>"
+        this.math_input_element.scroll(0,0)
+        this.ui.vertical_align_elements()
+    }
+
+    update_position() {
+        this.ui.align_element(this.display_input_element, this.math_input_element);
+        this.ui.align_element(this.display_output_element, this.math_output_element);
+    }
+}
+
 class EquationInputHandler extends InputHandler{
     constructor(display_input_element, math_input_element, display_output_element, math_output_element, parent_handler, global_logic_vars, ui, userLang) {
         super(display_input_element, math_input_element, display_output_element, math_output_element, global_logic_vars, ui, userLang)
@@ -868,6 +940,20 @@ class EquationInputHandler extends InputHandler{
 
                 case "key_hyp":
                     this.global_logic_vars.active_input_handler = new HypSelectInput(
+                        this.display_input_element,
+                        this.math_input_element,
+                        this.display_output_element,
+                        this.math_output_element,
+                        this,
+                        this.global_logic_vars,
+                        this.ui,
+                        this.userLang
+                    )
+                    this.input_code_history.pop(2)
+                break;
+
+                case "key_mode":
+                    this.global_logic_vars.active_input_handler = new ModeSelectInput(
                         this.display_input_element,
                         this.math_input_element,
                         this.display_output_element,
@@ -1319,6 +1405,11 @@ class EquationInputHandler extends InputHandler{
                     cursor_element = new_elements[0]
                     break;
 
+                case "key_i":
+                    new_elements.push(new Cmplx_i_Element(cursor_element))
+                    cursor_element = new_elements[0]
+                    break;
+
                 case "key_del":
                     switch(cursor_element.type){
                         case "start":
@@ -1397,7 +1488,11 @@ class EquationInputHandler extends InputHandler{
             let this_result
             try {
                 this_result = this.global_logic_vars.math_engine.evaluate(this_output_string)
-                if((typeof this_result != "number" || !isFinite(this_result)) && typeof this_result != "string"){
+                if(
+                    (typeof this_result != "number" || !isFinite(this_result)) && 
+                    (this.global_logic_vars.calc_mode != "CMPLX" || typeof this_result != "object" || !"re" in this_result || !"im" in this_result) && 
+                    typeof this_result != "string")
+                {
                     throw "invalid"
                 }
             } catch (error) {
@@ -1430,6 +1525,16 @@ class EquationInputHandler extends InputHandler{
     }
 }
 
+class CmplxEquationInputHandler extends EquationInputHandler{
+    handle(input_code) {
+        if(input_code in this.mode_maps.cmplx){
+            super.handle(this.mode_maps.cmplx[input_code])
+        }else{
+            super.handle(input_code)
+        }
+    }
+}
+
 class EquationSelectInputHandler extends InputHandler{
     constructor(display_input_element, math_input_element, display_output_element, math_output_element, global_logic_vars, ui, userLang) {
         super(display_input_element, math_input_element, display_output_element, math_output_element, global_logic_vars, ui, userLang)
@@ -1440,7 +1545,7 @@ class EquationSelectInputHandler extends InputHandler{
         this.ans_value = 0
         this.input_strings = []
         this.results = []
-        this.as_fraction = true
+        this.as_fraction = !this.global_logic_vars.prefer_decimals
         this.user_var = {
             "M":0
         }
@@ -1449,8 +1554,12 @@ class EquationSelectInputHandler extends InputHandler{
     }
 
     add_empty_equation(){
-        this.equations.push(new EquationInputHandler(this.display_input_element, this.math_input_element, this.display_output_element, this.math_output_element, this, this.global_logic_vars, this.ui, this.userLang))
-        this.as_fraction = true
+        if(this.global_logic_vars.calc_mode == "CMPLX"){
+            this.equations.push(new CmplxEquationInputHandler(this.display_input_element, this.math_input_element, this.display_output_element, this.math_output_element, this, this.global_logic_vars, this.ui, this.userLang))
+        }else{
+            this.equations.push(new EquationInputHandler(this.display_input_element, this.math_input_element, this.display_output_element, this.math_output_element, this, this.global_logic_vars, this.ui, this.userLang))
+        }
+        this.as_fraction = !this.global_logic_vars.prefer_decimals
     }
 
     select_equation(up){
@@ -1461,7 +1570,7 @@ class EquationSelectInputHandler extends InputHandler{
             this.display_equation_index = Math.max( 0, Math.min(this.display_equation_index + 1, this.equations.length - 1) )
         }
         if(index_before != this.display_equation_index){
-            this.as_fraction = true
+            this.as_fraction = !this.global_logic_vars.prefer_decimals
         }
     }
 
