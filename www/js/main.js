@@ -18,7 +18,8 @@ let global_logic_vars = {
     "next_subres_id": 0,
     "math_engine": math,
     "input_history": [],
-    "mode_maps": {}
+    "mode_maps": {},
+    "prefer_decimals": false
 }
 
 class UI{
@@ -255,6 +256,9 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
             document.getElementById("decimal-format-select").value = decimal_separator;
 
+            global_logic_vars.prefer_decimals = (localStorage.getItem("preferDecimal") === "true")
+            document.getElementById("prefer-decimal-input").checked = (localStorage.getItem("preferDecimal") === "true")
+
             if(design_list.length > 1){
                 document.getElementById("design_" + selected_design).classList.add("design-selected")
             }
@@ -326,6 +330,10 @@ document.addEventListener("DOMContentLoaded", async () => {
             const format = document.getElementById("decimal-format-select").value;
             localStorage.setItem("decimalFormat", format);
             location.reload();
+        });
+        document.getElementById("prefer-decimal-input").addEventListener("change", () => {
+            global_logic_vars.prefer_decimals = document.getElementById("prefer-decimal-input").checked
+            localStorage.setItem("preferDecimal", global_logic_vars.prefer_decimals);
         });
         if("cordova" in window){
             let a_elements = document.querySelectorAll("a")

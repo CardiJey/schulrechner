@@ -1440,7 +1440,7 @@ class EquationSelectInputHandler extends InputHandler{
         this.ans_value = 0
         this.input_strings = []
         this.results = []
-        this.as_fraction = true
+        this.as_fraction = !this.global_logic_vars.prefer_decimals
         this.user_var = {
             "M":0
         }
@@ -1450,7 +1450,7 @@ class EquationSelectInputHandler extends InputHandler{
 
     add_empty_equation(){
         this.equations.push(new EquationInputHandler(this.display_input_element, this.math_input_element, this.display_output_element, this.math_output_element, this, this.global_logic_vars, this.ui, this.userLang))
-        this.as_fraction = true
+        this.as_fraction = !this.global_logic_vars.prefer_decimals
     }
 
     select_equation(up){
@@ -1461,7 +1461,7 @@ class EquationSelectInputHandler extends InputHandler{
             this.display_equation_index = Math.max( 0, Math.min(this.display_equation_index + 1, this.equations.length - 1) )
         }
         if(index_before != this.display_equation_index){
-            this.as_fraction = true
+            this.as_fraction = !this.global_logic_vars.prefer_decimals
         }
     }
 

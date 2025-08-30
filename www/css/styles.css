@@ -234,6 +234,7 @@ svg {
     position: absolute;
     bottom: 3rem;
     right: 1rem;
+    left: 1rem;
 
     background-color: #1e1e2f;
     color: #ffffff;
@@ -241,7 +242,6 @@ svg {
     border-radius: 0.75rem;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
 
-    width: 220px;
     display: flex;
     flex-direction: column;
     gap: 0.75rem;
@@ -250,6 +250,13 @@ svg {
     font-family: auto;
     transition: opacity 0.3s ease, transform 0.3s ease;
     z-index: 100;
+}
+
+#settings-menu input[type="checkbox"] {
+  accent-color: #696982;
+  width: 1rem;
+  height: 1rem;
+  cursor: pointer;
 }
 
 #settings-menu.hidden {

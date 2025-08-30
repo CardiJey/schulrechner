@@ -38,7 +38,7 @@ class Dummy_UI{
     align_element(displayElement, mathElement){}
 }
 
-function eval_input_history(input_history,userLang){
+function eval_input_history(input_history,userLang,prefer_decimals=false){
     let dummy_display_input_element = new Dummy_Element()
     let dummy_math_input_element = new Dummy_Element()
     let dummy_display_output_element = new Dummy_Element()
@@ -51,7 +51,8 @@ function eval_input_history(input_history,userLang){
         "next_align_id": 0,
         "next_subres_id": 0,
         "math_engine": math,
-        "mode_maps": mode_maps
+        "mode_maps": mode_maps,
+        "prefer_decimals": prefer_decimals
     }
 
     global_logic_vars.active_input_handler = new EquationSelectInputHandler(dummy_display_input_element, dummy_math_input_element, dummy_display_output_element, dummy_math_output_element, global_logic_vars, dummy_ui, userLang)
@@ -1512,6 +1513,19 @@ const tests = [
         ],
         "rendered_input": "sinh(5)×cosh(5)×tanh(0.5)×sinh<span class=\"pow_top\">-1</span>(20)×cosh<span class=\"pow_top\">-1</span>(15)×tanh<span class=\"pow_top\">-1</span>(0.7) ",
         "rendered_output": "27686.25407"
+    },
+    {
+        "userLang": "en-US",
+        "name": "toggle prefer_decimals test",
+        "input_history": [
+            "key_5",
+            "key_÷",
+            "key_9",
+            "key_="
+        ],
+        "rendered_input": "5÷9 ",
+        "rendered_output": "0.5555555556",
+        "prefer_decimals": true
     }
 ]
 
@@ -1560,12 +1574,16 @@ describe(`⚙️ Automated Tests`, () => {
     for(let test_index = 0; test_index < tests.length; test_index++){
         let this_test = tests[test_index]
         let this_userLang = this_test.userLang
+        let this_prefer_decimals = false
+        if("prefer_decimals" in this_test){
+            this_prefer_decimals = this_test.prefer_decimals
+        }
         let rendered_input = this_test.rendered_input.replaceAll("\"","'").replace(/\s*style='[^']*'/g, '')
         let rendered_output = this_test.rendered_output.replaceAll("\"","'").replace(/\s*style='[^']*'/g, '')
 
         test(this_test.name, (t) => {
             assert.deepStrictEqual(
-                eval_input_history(this_test.input_history,this_userLang),
+                eval_input_history(this_test.input_history,this_userLang,this_prefer_decimals),
                 [rendered_input,rendered_output]
             );
         })
@@ -1573,12 +1591,16 @@ describe(`⚙️ Automated Tests`, () => {
     for(let test_index = 0; test_index < known_to_fail_tests.length; test_index++){
         let this_test = known_to_fail_tests[test_index]
         let this_userLang = this_test.userLang
+        let this_prefer_decimals = false
+        if("prefer_decimals" in this_test){
+            this_prefer_decimals = this_test.prefer_decimals
+        }
         let rendered_input = this_test.rendered_input.replaceAll("\"","'").replace(/\s*style='[^']*'/g, '')
         let rendered_output = this_test.rendered_output.replaceAll("\"","'").replace(/\s*style='[^']*'/g, '')
 
         test.todo(this_test.name, (t) => {
             assert.deepStrictEqual(
-                eval_input_history(this_test.input_history,this_userLang),
+                eval_input_history(this_test.input_history,this_userLang,this_prefer_decimals),
                 [rendered_input,rendered_output]
             );
         })
