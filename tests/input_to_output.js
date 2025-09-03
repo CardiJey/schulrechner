@@ -1574,6 +1574,99 @@ const tests = [
         "rendered_input": "3+<span class=\"alignLeft6\"></span><span class=\"frac_wrapper\" style=\"vertical-align: calc(-6.95947px + 0.06rem);\"><span class=\"frac_top\">1</span><span class=\"frac_bottom alignRight6\">4</span></span>i ",
         "rendered_output": "3<br>+0.25i",
         "calc_mode": "CMPLX"
+    },
+    {
+        "userLang": "en-US",
+        "name": "trigonometry1",
+        "input_history": [
+            "key_cos",
+            "key_9",
+            "key_0",
+            "key_)",
+            "key_="
+        ],
+        "rendered_input": "cos(90) ",
+        "rendered_output": "0"
+    },
+    {
+        "userLang": "en-US",
+        "name": "trigonometry2",
+        "input_history": [
+            "key_sin",
+            "key_0",
+            "key_)",
+            "key_="
+        ],
+        "rendered_input": "sin(0) ",
+        "rendered_output": "0"
+    },
+    {
+        "userLang": "en-US",
+        "name": "trigonometry3",
+        "input_history": [
+            "key_sin",
+            "key_9",
+            "key_0",
+            "key_)",
+            "key_="
+        ],
+        "rendered_input": "sin(90) ",
+        "rendered_output": "1"
+    },
+    {
+        "userLang": "en-US",
+        "name": "trigonometry4",
+        "input_history": [
+            "key_cos",
+            "key_0",
+            "key_)",
+            "key_="
+        ],
+        "rendered_input": "cos(0) ",
+        "rendered_output": "1"
+    },
+    {
+        "userLang": "en-US",
+        "name": "trigonometry5",
+        "input_history": [
+            "key_tan",
+            "key_0",
+            "key_)",
+            "key_="
+        ],
+        "rendered_input": "tan(0) ",
+        "rendered_output": "0"
+    },
+    {
+        "userLang": "en-US",
+        "name": "trigonometry6",
+        "input_history": [
+            "key_tan",
+            "key_4",
+            "key_5",
+            "key_)",
+            "key_="
+        ],
+        "rendered_input": "tan(45) ",
+        "rendered_output": "1"
+    },
+    {
+        "userLang": "en-US",
+        "name": "trigonometry7",
+        "input_history": [
+            "key_sin",
+            "key_7",
+            "key_)",
+            "key_pow2",
+            "key_+",
+            "key_cos",
+            "key_7",
+            "key_)",
+            "key_pow2",
+            "key_="
+        ],
+        "rendered_input": "<span class=\"pow_bottom\">(sin(7))</span><span class=\"pow_top\">2</span>+<span class=\"pow_bottom\">(cos(7))</span><span class=\"pow_top\">2</span> ",
+        "rendered_output": "1"
     }
 ]
 

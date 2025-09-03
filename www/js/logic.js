@@ -1,13 +1,13 @@
 function import_custom_math(math_engine){
     math_engine.import({
         sind: function(input){
-            return math_engine.sin(math_engine.pi/180*input)
+            return math_engine.round(math_engine.sin(math_engine.pi/180*input),15)
         },
         cosd: function(input){
-            return math_engine.cos(math_engine.pi/180*input)
+            return math_engine.round(math_engine.cos(math_engine.pi/180*input),15)
         },
         tand: function(input){
-            return math_engine.tan(math_engine.pi/180*input)
+            return math_engine.round(math_engine.tan(math_engine.pi/180*input),15)
         }
     })
 }
