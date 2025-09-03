@@ -1667,10 +1667,7 @@ const tests = [
         ],
         "rendered_input": "<span class=\"pow_bottom\">(sin(7))</span><span class=\"pow_top\">2</span>+<span class=\"pow_bottom\">(cos(7))</span><span class=\"pow_top\">2</span> ",
         "rendered_output": "1"
-    }
-]
-
-const known_to_fail_tests = [
+    },
     {
         "userLang":'de-DE',
         "name": "negative third root test",
@@ -1683,7 +1680,10 @@ const known_to_fail_tests = [
         ],
         "rendered_input": "<span class=\"pow_top\">3</span><span class=\"sqrt_wrapper\"><span class=\"scale_height\">√</span><span class=\"sqrt\">-27</span></span> ",
         "rendered_output": "-3"
-    },
+    }
+]
+
+const known_to_fail_tests = [
     {
         "userLang": "en-US",
         "name": "should NOT default to fraction test 2",

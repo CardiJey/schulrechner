@@ -1,3 +1,15 @@
+function sortComplexNumber (a, b) {
+    if(a.im == b.im){
+        return a.re - b.re
+    }else if(a.im == 0){
+        return 1
+    }else if(b.im == 0){
+        return -1
+    }else{
+        return a.re - b.re
+    }
+}
+
 function import_custom_math(math_engine){
     math_engine.import({
         sind: function(input){
@@ -8,6 +20,15 @@ function import_custom_math(math_engine){
         },
         tand: function(input){
             return math_engine.round(math_engine.tan(math_engine.pi/180*input),15)
+        },
+        nthRootComplex: function(n,input){
+            let roots = math_engine.nthRoots(input,n)
+            let best_root = math_engine.sort(roots, sortComplexNumber).slice(-1)[0]
+            if(best_root.im == 0){
+                return best_root.re
+            }else{
+                return best_root
+            }
         }
     })
 }
@@ -264,9 +285,9 @@ class Frac_Element extends Math_Element{
 
 class Sqrt_Element extends Math_Element{
     constructor(left){
-        super("container_operation",left,"<span class='sqrt_wrapper'><span class='scale_height'>√</span><span class='sqrt'>","([")
+        super("container_operation",left,"<span class='sqrt_wrapper'><span class='scale_height'>√</span><span class='sqrt'>","nthRootComplex(2,")
         this.children = [
-            new Container_Element(this,"</span></span>","][1]^0.5)",this,true)
+            new Container_Element(this,"</span></span>",")",this,true)
         ]
     }
 }
@@ -275,14 +296,14 @@ class Sqrtn_Element extends Math_Element{
     constructor(left,global_logic_vars){
         let subres_id = global_logic_vars.next_subres_id
         global_logic_vars.next_subres_id++
-        super("container_operation",left,"<span class='pow_top'>","subres" + subres_id + "idstart")
+        super("container_operation",left,"<span class='pow_top'>","nthRootComplex(")
         this.global_logic_vars = global_logic_vars
         this.children = [
-            new Container_Element(this,"</span><span class='sqrt_wrapper'><span class='scale_height'>√</span><span class='sqrt'>","subres" + subres_id + "idend([",this,false)
+            new Container_Element(this,"</span><span class='sqrt_wrapper'><span class='scale_height'>√</span><span class='sqrt'>",",",this,false)
         ]
         
         this.children.push(
-            new Container_Element(this.children[0],"</span></span>","][1]^(1/[subres" + subres_id + "idinsert][1]))",this,true)
+            new Container_Element(this.children[0],"</span></span>",")",this,true)
         )
     }
 }
@@ -1489,7 +1510,7 @@ class EquationInputHandler extends InputHandler{
             try {
                 this_result = this.global_logic_vars.math_engine.evaluate(this_output_string)
                 if(
-                    (typeof this_result != "number" || !isFinite(this_result)) && 
+                    ((typeof this_result != "number" && this_result.im != 0) || !isFinite(this_result)) && 
                     (this.global_logic_vars.calc_mode != "CMPLX" || typeof this_result != "object" || !"re" in this_result || !"im" in this_result) && 
                     typeof this_result != "string")
                 {
