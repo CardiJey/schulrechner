@@ -20,7 +20,8 @@ let global_logic_vars = {
     "input_history": [],
     "mode_maps": {},
     "prefer_decimals": false,
-    "calc_mode": "COMP"
+    "calc_mode": "COMP",
+    "subres_functions" : {}
 }
 
 class UI{

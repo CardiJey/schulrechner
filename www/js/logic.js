@@ -29,9 +29,33 @@ function import_custom_math(math_engine){
             }else{
                 return best_root
             }
+        },
+        derivate: function(equation,X,h = 7e-4){
+            let X_res = math_engine.evaluate(String(X))
+            let X_min = math_engine.evaluate("X-h",{X:X_res,h:h})
+            let X_max = math_engine.evaluate("X+h",{X:X_res,h:h})
+            let Y_min = math_engine.evaluate(String(equation),{X:X_min})
+            let Y_max = math_engine.evaluate(String(equation),{X:X_max})
+            return math_engine.evaluate("(Y_max - Y_min)/(2*h)",{Y_max:Y_max,Y_min:Y_min,h:h})
+        },
+        integrate: function(equation,X_min,X_max,n_steps = 5e4){
+            let X_min_res = math_engine.evaluate(String(X_min))
+            let X_max_res = math_engine.evaluate(String(X_max))
+            let h = (X_max_res - X_min_res) / n_steps
+
+            let Y_res = []
+            for(let i = 0; i <= n_steps; i++){
+                Y_res.push(math_engine.evaluate(String(equation),{X:X_min_res + i * h}))
+            }
+            
+            return math_engine.chain(math_engine.sum(Y_res))
+                .subtract(math_engine.chain(Y_res[0]).multiply(0.5).done())
+                .subtract(math_engine.chain(Y_res.slice(-1)[0]).multiply(0.5).done())
+                .multiply(h)
+                .done()
         }
     })
-}
+} 
 
 function getDecimalSeparator(userLang) {
     const numberWithDecimal = 1.1;
@@ -285,9 +309,9 @@ class Frac_Element extends Math_Element{
 
 class Sqrt_Element extends Math_Element{
     constructor(left){
-        super("container_operation",left,"<span class='sqrt_wrapper'><span class='scale_height'>√</span><span class='sqrt'>","nthRootComplex(2,")
+        super("container_operation",left,"<span class='sqrt_wrapper'><span class='scale_height'>√</span><span class='sqrt'>","nthRootComplex(2,[")
         this.children = [
-            new Container_Element(this,"</span></span>",")",this,true)
+            new Container_Element(this,"</span></span>","][1])",this,true)
         ]
     }
 }
@@ -296,14 +320,14 @@ class Sqrtn_Element extends Math_Element{
     constructor(left,global_logic_vars){
         let subres_id = global_logic_vars.next_subres_id
         global_logic_vars.next_subres_id++
-        super("container_operation",left,"<span class='pow_top'>","nthRootComplex(")
+        super("container_operation",left,"<span class='pow_top'>","nthRootComplex([")
         this.global_logic_vars = global_logic_vars
         this.children = [
-            new Container_Element(this,"</span><span class='sqrt_wrapper'><span class='scale_height'>√</span><span class='sqrt'>",",",this,false)
+            new Container_Element(this,"</span><span class='sqrt_wrapper'><span class='scale_height'>√</span><span class='sqrt'>","][1],[",this,false)
         ]
         
         this.children.push(
-            new Container_Element(this.children[0],"</span></span>",")",this,true)
+            new Container_Element(this.children[0],"</span></span>","][1])",this,true)
         )
     }
 }
@@ -346,6 +370,7 @@ class Pow_Element extends Math_Element{
         }
     }
 }
+
 class Logx_Element extends Math_Element{
     constructor(left){
         super("container_operation",left,"log<span class='logn_bottom'>","(1/log([")
@@ -355,6 +380,36 @@ class Logx_Element extends Math_Element{
         ]
         this.children.push(
             new Container_Element(this.children[0],")","][1]))",this,true)
+        )
+    }
+}
+
+class Derivate_Element extends Math_Element{
+    constructor(left){
+        super("container_operation",left,"derivate<span class='logn_bottom'>","derivate([")
+        
+        this.children = [
+            new Container_Element(this,"</span>","][1])",this,true)
+        ]
+    }
+}
+
+class Integrate_Element extends Math_Element{
+    constructor(left,global_logic_vars){
+        let subres_id = global_logic_vars.next_subres_id
+        global_logic_vars.next_subres_id++
+        global_logic_vars.subres_functions[subres_id] = global_logic_vars.math_engine.integrate
+        super("container_operation",left,"integrate<span class='logn_bottom'>","(subres" + subres_id + "idinsert)subres" + subres_id + "idstart")
+        this.global_logic_vars = global_logic_vars
+        
+        this.children = [
+            new Container_Element(this,"</span>(","subres" + subres_id + "idparam",this,false)
+        ]
+        this.children.push(
+            new Container_Element(this.children[0],")(","subres" + subres_id + "idparam",this,false)
+        )
+        this.children.push(
+            new Container_Element(this.children[1],")","subres" + subres_id + "idend",this,true)
         )
     }
 }
@@ -492,6 +547,9 @@ class User_Var_Element extends Math_Element{
     }
 
     get_value(){
+        if(this.var_name == "X"){
+            return "X"
+        }
         if(this.global_logic_vars.active_input_handler.parent_handler.user_var[this.var_name]){
             return this.global_logic_vars.active_input_handler.parent_handler.user_var[this.var_name]
         }else{
@@ -1026,11 +1084,13 @@ class EquationInputHandler extends InputHandler{
                 let subres_start_indicator = "subres" + this_subres_id + "idstart"
                 let subres_end_indicator = "subres" + this_subres_id + "idend"
                 let subres_insert_indicator = "subres" + this_subres_id + "idinsert"
+                let subres_param_indicator = "subres" + this_subres_id + "idparam"
 
                 let subres_start_index = mathjs_res.indexOf(subres_start_indicator)
                 let subres_end_index = mathjs_res.indexOf(subres_end_indicator)
                 let subres_insert_index = mathjs_res.indexOf(subres_insert_indicator)
-                let subres = mathjs_res.substring(subres_start_index + subres_start_indicator.length,subres_end_index)
+                let subres_params = mathjs_res.substring(subres_start_index + subres_start_indicator.length,subres_end_index).split(subres_param_indicator)
+                let subres = this.global_logic_vars.subres_functions[this_subres_id](...subres_params)
                 mathjs_res = mathjs_res.substring(0,subres_insert_index) + subres + mathjs_res.substring(subres_insert_index + subres_insert_indicator.length)
 
                 subres_start_index = mathjs_res.indexOf(subres_start_indicator)
@@ -1426,6 +1486,11 @@ class EquationInputHandler extends InputHandler{
                     cursor_element = new_elements[0]
                     break;
 
+                case "key_integ":
+                    new_elements.push(new Integrate_Element(cursor_element,this.global_logic_vars))
+                    cursor_element = new_elements[0]
+                    break;
+
                 case "key_i":
                     new_elements.push(new Cmplx_i_Element(cursor_element))
                     cursor_element = new_elements[0]
@@ -1505,10 +1570,18 @@ class EquationInputHandler extends InputHandler{
 
         if(calc_output){
             let [this_input_string,this_output_string,sto] = this.math_elements_to_string(res,cursor_element,false)
-            this_output_string = this.handle_subres(this_output_string)
             let this_result
             try {
-                this_result = this.global_logic_vars.math_engine.evaluate(this_output_string)
+                this_output_string = this.handle_subres(this_output_string)
+                let this_X_value = 0
+                if("X" in this.global_logic_vars.active_input_handler.parent_handler.user_var){
+                    this_X_value = this.global_logic_vars.active_input_handler.parent_handler.user_var.X
+                }
+
+                this_result = this.global_logic_vars.math_engine.evaluate(
+                    this_output_string,
+                    {X:this_X_value}
+                )
                 if(
                     ((typeof this_result != "number" && this_result.im != 0) || !isFinite(this_result)) && 
                     (this.global_logic_vars.calc_mode != "CMPLX" || typeof this_result != "object" || !"re" in this_result || !"im" in this_result) && 
