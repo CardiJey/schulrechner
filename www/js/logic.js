@@ -245,7 +245,7 @@ class Point_Element extends Math_Element{
 
 class Pow10_Element extends Math_Element{
     constructor(left){
-        super("point_operation",left,"<span class='pow10'>×⒑</span>","*10^")
+        super("point_operation",left,"<span class='pow10'>×⒑</span>","e")
     }
 }
 
@@ -336,6 +336,12 @@ class Sqrtn_Element extends Math_Element{
 class Faculty_Element extends Math_Element{
     constructor(left){
         super("point_operation",left,"!","!")
+    }
+}
+
+class Sexagesimal_Element extends Math_Element{
+    constructor(left){
+        super("point_operation",left,"°","°")
     }
 }
 
@@ -1172,6 +1178,55 @@ class EquationInputHandler extends InputHandler{
         }
 
         res += '\u00A0'
+
+        let regex_to_apply = [
+            [
+                /([\d\.e]*°){4}/g,
+                "error"
+            ],
+            [
+                /([\d\.e]*°){3}[\d\.e]+/g,
+                "error"
+            ],
+            [
+                /([\d\.e]+)°([\d\.e]+)°([\d\.e]+)°/g,
+                "[$1+$2/60+$3/3600][1]"
+            ],
+            [
+                /([\d\.e]*°){3}/g,
+                "error"
+            ],
+            [
+                /([\d\.e]*°){2}[\d\.e]+/g,
+                "error"
+            ],
+            [
+                /([\d\.e]+)°([\d\.e]+)°/g,
+                "[$1+$2/60][1]"
+            ],
+            [
+                /([\d\.e]*°){2}/g,
+                "error"
+            ],
+            [
+                /([\d\.e]*°){1}[\d\.e]+/g,
+                "error"
+            ],
+            [
+                /([\d\.e]+)°/g,
+                "[$1][1]"
+            ],
+            [
+                /°/g,
+                "error"
+            ]
+        ]
+
+        for(let regex_index = 0; regex_index < regex_to_apply.length; regex_index++){
+            let this_regex = regex_to_apply[regex_index]
+            mathjs_res = mathjs_res.replaceAll(...this_regex)
+        }
+
         return [res,mathjs_res,sto]
     }
 
@@ -1314,6 +1369,11 @@ class EquationInputHandler extends InputHandler{
                 
                 case "key_comma":
                     new_elements.push(new Point_Element(cursor_element,this.userLang))
+                    cursor_element = new_elements[0]
+                    break;
+                
+                case "key_°":
+                    new_elements.push(new Sexagesimal_Element(cursor_element))
                     cursor_element = new_elements[0]
                     break;
                 
