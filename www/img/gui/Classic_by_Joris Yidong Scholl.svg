@@ -81,9 +81,9 @@
      inkscape:pagecheckerboard="1"
      inkscape:deskcolor="#505050"
      showgrid="false"
-     inkscape:zoom="0.1358935"
-     inkscape:cx="875.68574"
-     inkscape:cy="2038.3609"
+     inkscape:zoom="1.5374594"
+     inkscape:cx="663.43213"
+     inkscape:cy="2169.1629"
      inkscape:window-width="1670"
      inkscape:window-height="969"
      inkscape:window-x="0"
@@ -2252,6 +2252,37 @@
          style="opacity:1;fill:none;fill-opacity:1;stroke:#2a2627;stroke-width:8.41701;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1"
          d="m 1730.5893,1787.0443 h -19.5127 l 0.4878,20.651 h 16.911 -16.911 l 0.6504,22.277 h 16.5858"
          id="path6463" />
+    </g>
+    <g
+       id="g1711"
+       inkscape:label="label_deriv">
+      <path
+         style="opacity:1;fill:none;stroke:#df9300;stroke-width:8.41701;stroke-linejoin:bevel;stroke-opacity:1"
+         d="m 598.80544,2237.8758 63.23886,-0.2299"
+         id="path1538" />
+      <path
+         style="opacity:1;fill:none;stroke:#df9300;stroke-width:8.41701;stroke-linejoin:bevel;stroke-opacity:1"
+         d="m 638.35847,2230.0572 v -31.9644 c 0,0 0,14.4875 0,20.6964 0,6.2089 -19.77652,14.9474 -19.77652,2.0696 0,-12.8777 19.08664,-17.2469 19.77652,9.1984 z"
+         id="path1540" />
+      <path
+         style="display:inline;opacity:1;fill:none;stroke:#df9300;stroke-width:8.41701;stroke-linejoin:bevel;stroke-opacity:1"
+         d="m 623.87102,2276.7014 v -31.9644 c 0,0 0,14.4875 0,20.6964 0,6.2089 -19.77652,14.9474 -19.77652,2.0696 0,-12.8777 19.08664,-17.2469 19.77652,9.1984 z"
+         id="path1540-3" />
+      <path
+         style="opacity:1;fill:none;stroke:#df9300;stroke-width:8.41701;stroke-linejoin:bevel;stroke-opacity:1"
+         d="m 637.43863,2251.9034 24.37571,25.5255"
+         id="path1623" />
+      <path
+         style="opacity:1;fill:none;stroke:#df9300;stroke-width:8.41701;stroke-linejoin:bevel;stroke-opacity:1"
+         d="m 637.43863,2276.9689 23.91579,-24.3757"
+         id="path1625" />
+      <rect
+         style="opacity:1;fill:#df9300;stroke:none;stroke-width:8.41701;stroke-linejoin:bevel;fill-opacity:1"
+         id="rect1679"
+         width="37.483398"
+         height="30.584612"
+         x="677.4516"
+         y="2221.5488" />
     </g>
   </g>
   <metadata
