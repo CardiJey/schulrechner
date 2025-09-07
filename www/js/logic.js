@@ -403,7 +403,7 @@ class Integrate_Element extends Math_Element{
         this.global_logic_vars = global_logic_vars
         
         this.children = [
-            new Container_Element(this,"dx</span><span class='integ_wrapper_3'><span class='integ_top'>","subres" + subres_id + "idparam",this,false)
+            new Container_Element(this,"dX</span><span class='integ_wrapper_3'><span class='integ_top'>","subres" + subres_id + "idparam",this,false)
         ]
         this.children.push(
             new Container_Element(this.children[0],"</span><span class='integ_bottom'>","subres" + subres_id + "idparam",this,false)
