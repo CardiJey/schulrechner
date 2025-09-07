@@ -385,12 +385,19 @@ class Logx_Element extends Math_Element{
 }
 
 class Derivate_Element extends Math_Element{
-    constructor(left){
-        super("container_operation",left,"derivate<span class='logn_bottom'>","derivate([")
+    constructor(left,global_logic_vars){
+        let subres_id = global_logic_vars.next_subres_id
+        global_logic_vars.next_subres_id++
+        global_logic_vars.subres_functions[subres_id] = global_logic_vars.math_engine.derivate
+        super("container_operation",left,"<span class='frac_wrapper'><span class='frac_top'>d</span><span class='frac_bottom'>dx</span></span>(","(subres" + subres_id + "idinsert)subres" + subres_id + "idstart")
+        this.global_logic_vars = global_logic_vars
         
         this.children = [
-            new Container_Element(this,"</span>","][1])",this,true)
+            new Container_Element(this,")|<span class='logn_bottom'><i>x</i>=","subres" + subres_id + "idparam",this,false)
         ]
+        this.children.push(
+            new Container_Element(this.children[0],"</span>","subres" + subres_id + "idend",this,true)
+        )
     }
 }
 
@@ -1488,6 +1495,11 @@ class EquationInputHandler extends InputHandler{
 
                 case "key_integ":
                     new_elements.push(new Integrate_Element(cursor_element,this.global_logic_vars))
+                    cursor_element = new_elements[0]
+                    break;
+
+                case "key_deriv":
+                    new_elements.push(new Derivate_Element(cursor_element,this.global_logic_vars))
                     cursor_element = new_elements[0]
                     break;
 
