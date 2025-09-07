@@ -140,6 +140,26 @@ svg {
     margin-top: 0.111rem;
 }
 
+.integ_wrapper {
+    display: inline-flex;
+    align-items: center;
+}
+
+.integ_wrapper_2 {
+    display: inline-flex;
+    flex-direction: row-reverse;
+    align-items: center;
+}
+
+.integ_wrapper_3{
+    display: inline-flex;
+    flex-direction: column-reverse;
+}
+
+.integ_top, .integ_bottom{
+    font-size: 0.667rem;
+}
+
 .cursor {
     width: 0;
     padding: 0;

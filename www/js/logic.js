@@ -399,17 +399,17 @@ class Integrate_Element extends Math_Element{
         let subres_id = global_logic_vars.next_subres_id
         global_logic_vars.next_subres_id++
         global_logic_vars.subres_functions[subres_id] = global_logic_vars.math_engine.integrate
-        super("container_operation",left,"integrate<span class='logn_bottom'>","(subres" + subres_id + "idinsert)subres" + subres_id + "idstart")
+        super("container_operation",left,"<span class='integ_wrapper'><span class='scale_height'><i>∫</i></span><span class='integ_wrapper_2'><span class='integ_equation'>","(subres" + subres_id + "idinsert)subres" + subres_id + "idstart")
         this.global_logic_vars = global_logic_vars
         
         this.children = [
-            new Container_Element(this,"</span>(","subres" + subres_id + "idparam",this,false)
+            new Container_Element(this,"dx</span><span class='integ_wrapper_3'><span class='integ_top'>","subres" + subres_id + "idparam",this,false)
         ]
         this.children.push(
-            new Container_Element(this.children[0],")(","subres" + subres_id + "idparam",this,false)
+            new Container_Element(this.children[0],"</span><span class='integ_bottom'>","subres" + subres_id + "idparam",this,false)
         )
         this.children.push(
-            new Container_Element(this.children[1],")","subres" + subres_id + "idend",this,true)
+            new Container_Element(this.children[1],"</span></span></span></span>","subres" + subres_id + "idend",this,true)
         )
     }
 }
