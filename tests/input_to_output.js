@@ -1695,7 +1695,7 @@ const tests = [
             "key_1",
             "key_="
         ],
-        "rendered_input": "<span class=\"integ_wrapper\"><span class=\"scale_height\" style=\"transform: scaleY(1.28);\">∫</span><span class=\"integ_wrapper_2\"><span class=\"integ_equation\">Xdx</span><span class=\"integ_wrapper_3\"><span class=\"integ_top\">0</span><span class=\"integ_bottom\">1</span></span></span></span> ",
+        "rendered_input": "<span class=\"integ_wrapper\"><span class=\"scale_height\" style=\"transform: scaleY(1.28);\">∫</span><span class=\"integ_wrapper_2\"><span class=\"integ_equation\">XdX</span><span class=\"integ_wrapper_3\"><span class=\"integ_top\">0</span><span class=\"integ_bottom\">1</span></span></span></span> ",
         "rendered_output": "<span class=\"frac_wrapper\"><span class=\"frac_top\">1</span><span class=\"frac_bottom\">2</span></span>"
     }
 ]

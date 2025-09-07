@@ -38,7 +38,24 @@ function import_custom_math(math_engine){
             let Y_max = math_engine.evaluate(String(equation),{X:X_max})
             return math_engine.evaluate("(Y_max - Y_min)/(2*h)",{Y_max:Y_max,Y_min:Y_min,h:h})
         },
-        integrate: function(equation,X_min,X_max,n_steps = 5e4){
+        round_significant: function(value,places){
+            let factor =  math_engine.chain(10)
+                .pow(
+                    math_engine.chain(value)
+                        .abs()
+                        .log(10)
+                        .ceil()
+                        .done()
+                )
+                .done()
+
+            return math_engine.chain(value)
+                .divide(factor)
+                .round(places)
+                .multiply(factor)
+                .done()
+        },
+        integrate: function(equation,X_min,X_max,n_steps = 5e4, significant_places = 7){
             let X_min_res = math_engine.evaluate(String(X_min))
             let X_max_res = math_engine.evaluate(String(X_max))
             let h = (X_max_res - X_min_res) / n_steps
@@ -52,6 +69,7 @@ function import_custom_math(math_engine){
                 .subtract(math_engine.chain(Y_res[0]).multiply(0.5).done())
                 .subtract(math_engine.chain(Y_res.slice(-1)[0]).multiply(0.5).done())
                 .multiply(h)
+                .round_significant(significant_places)
                 .done()
         }
     })
