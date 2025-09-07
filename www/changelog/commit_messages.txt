@@ -1,3 +1,12 @@
+- 1.11.2
+- updated versioncode
+- Fine tuned fraction  epsiolon so all testst work again
+- Added integral test
+- added sqrt and integral height sclaing
+- added basic integral formatting
+- Added basic logic for integration and differentiation
+- added proper complex roots which fies thrid root -1
+- added rounding to degree trigonometry functions and tests for logic
 - 1.11.1
 - updated versioncode
 - Added cmplx tests and changed cmplx fraction formating epsilon

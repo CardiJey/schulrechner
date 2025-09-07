@@ -20,7 +20,8 @@ let global_logic_vars = {
     "input_history": [],
     "mode_maps": {},
     "prefer_decimals": false,
-    "calc_mode": "COMP"
+    "calc_mode": "COMP",
+    "subres_functions" : {}
 }
 
 class UI{
@@ -131,6 +132,22 @@ class UI{
             let y_shift = right_y - left_y;
 
             el.parentElement.style.verticalAlign = `calc(${y_shift}px + 0.06rem)`;
+        });
+
+        this.scale_height_elements()
+    }
+
+    scale_height_elements() {
+        let scale_height_elements = [...document.querySelectorAll('[class*="scale_height"]')];
+
+        scale_height_elements.forEach(el => {
+            let parent_element = el.parentElement
+            let parent_rect = parent_element.getBoundingClientRect()
+            let this_rect = el.getBoundingClientRect()
+
+            let factor = parent_rect.height / this_rect.height
+
+            el.style.transform = "scaleY(" + factor + ")";
         });
     }
 
