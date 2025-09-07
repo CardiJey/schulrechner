@@ -53,7 +53,8 @@ function eval_input_history(input_history,userLang,prefer_decimals=false,calc_mo
         "math_engine": math,
         "mode_maps": mode_maps,
         "prefer_decimals": prefer_decimals,
-        "calc_mode": calc_mode
+        "calc_mode": calc_mode,
+        "subres_functions": {}
     }
 
     global_logic_vars.active_input_handler = new EquationSelectInputHandler(dummy_display_input_element, dummy_math_input_element, dummy_display_output_element, dummy_math_output_element, global_logic_vars, dummy_ui, userLang)
@@ -1680,6 +1681,22 @@ const tests = [
         ],
         "rendered_input": "<span class=\"pow_top\">3</span><span class=\"sqrt_wrapper\"><span class=\"scale_height\">√</span><span class=\"sqrt\">-27</span></span> ",
         "rendered_output": "-3"
+    },
+    {
+        "userLang": "en-US",
+        "name": "basic integral test",
+        "input_history": [
+            "key_integ",
+            "key_alpha",
+            "key_)",
+            "key_dir2",
+            "key_0",
+            "key_dir2",
+            "key_1",
+            "key_="
+        ],
+        "rendered_input": "<span class=\"integ_wrapper\"><span class=\"scale_height\" style=\"transform: scaleY(1.28);\">∫</span><span class=\"integ_wrapper_2\"><span class=\"integ_equation\">Xdx</span><span class=\"integ_wrapper_3\"><span class=\"integ_top\">0</span><span class=\"integ_bottom\">1</span></span></span></span> ",
+        "rendered_output": "<span class=\"frac_wrapper\"><span class=\"frac_top\">1</span><span class=\"frac_bottom\">2</span></span>"
     }
 ]
 
