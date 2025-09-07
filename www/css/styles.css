@@ -101,12 +101,12 @@ svg {
 }
 
 .scale_height {
-    display: inline-block;
-    transform-origin: bottom;
+    transform-origin: center;
 }
 
 .sqrt_wrapper {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
 }
 
 .frac_wrapper {

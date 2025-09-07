@@ -133,6 +133,22 @@ class UI{
 
             el.parentElement.style.verticalAlign = `calc(${y_shift}px + 0.06rem)`;
         });
+
+        this.scale_height_elements()
+    }
+
+    scale_height_elements() {
+        let scale_height_elements = [...document.querySelectorAll('[class*="scale_height"]')];
+
+        scale_height_elements.forEach(el => {
+            let parent_element = el.parentElement
+            let parent_rect = parent_element.getBoundingClientRect()
+            let this_rect = el.getBoundingClientRect()
+
+            let factor = parent_rect.height / this_rect.height
+
+            el.style.transform = "scaleY(" + factor + ")";
+        });
     }
 
     toggle_indicators(modes){
