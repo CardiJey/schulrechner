@@ -1952,6 +1952,63 @@ const tests = [
         "rendered_output": "140.79644",
         "calc_mode": "COMP",
         "rounding_mode": "Fix_5"
+    },
+    {
+        "userLang": "en-US",
+        "name": "basic sexagesimal test",
+        "input_history": [
+            "key_1",
+            "key_2",
+            "key_°",
+            "key_3",
+            "key_0",
+            "key_°",
+            "key_4",
+            "key_5",
+            "key_°",
+            "key_+",
+            "key_1",
+            "key_°",
+            "key_2",
+            "key_0",
+            "key_°",
+            "key_+",
+            "key_2",
+            "key_°",
+            "key_2",
+            "key_5",
+            "key_°",
+            "key_3",
+            "key_0",
+            "key_°",
+            "key_="
+        ],
+        "rendered_input": "12°30°45°+1°20°+2°25°30° ",
+        "rendered_output": "<span class=\"frac_wrapper\"><span class=\"frac_top\">781</span><span class=\"frac_bottom\">48</span></span>",
+        "calc_mode": "COMP",
+        "rounding_mode": "Norm_1"
+    },
+    {
+        "userLang": "en-US",
+        "name": "mixed sexagesimal test",
+        "input_history": [
+            "key_(",
+            "key_1",
+            "key_5",
+            "key_°",
+            "key_3",
+            "key_0",
+            "key_°",
+            "key_)",
+            "key_pow2",
+            "key_-",
+            "key_4",
+            "key_="
+        ],
+        "rendered_input": "<span class=\"pow_bottom\">((15°30°))</span><span class=\"pow_top\">2</span>-4 ",
+        "rendered_output": "<span class=\"frac_wrapper\"><span class=\"frac_top\">945</span><span class=\"frac_bottom\">4</span></span>",
+        "calc_mode": "COMP",
+        "rounding_mode": "Norm_1"
     }
 ]
 
