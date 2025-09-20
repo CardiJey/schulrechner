@@ -57,7 +57,7 @@ function import_custom_math(math_engine){
                 .multiply(factor)
                 .done()
         },
-        integrate: function(equation,X_min,X_max,n_steps = 5e4, significant_places = 7){
+        integrate: function(equation,X_min,X_max,n_steps = 5e4, significant_places = 10){
             let X_min_res = math_engine.evaluate(String(X_min))
             let X_max_res = math_engine.evaluate(String(X_max))
             let h = (X_max_res - X_min_res) / n_steps

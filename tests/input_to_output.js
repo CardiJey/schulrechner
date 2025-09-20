@@ -1729,7 +1729,7 @@ const tests = [
         "rendered_output": "i",
         "calc_mode": "CMPLX"
     },
-    /*{
+    {
         "userLang": "en-US",
         "name": "complex derivate test",
         "input_history": [
@@ -1762,8 +1762,9 @@ const tests = [
             "key_="
         ],
         "rendered_input": "<span class=\"frac_wrapper\"><span class=\"frac_top\">d</span><span class=\"frac_bottom\">dx</span></span>(<span class=\"sqrt_wrapper\"><span class=\"scale_height\" style=\"transform: scaleY(1.20391);\">√</span><span class=\"sqrt\">X-sin(X)</span></span>+log(X))|<span class=\"logn_bottom\"><i>x</i>=<span class=\"alignLeft9\"></span><span class=\"frac_wrapper\" style=\"vertical-align: calc(-19.57px + 0.06rem);\"><span class=\"frac_top\">14</span><span class=\"frac_bottom alignRight9\">3</span></span></span>+5 ",
-        "rendered_output": "5.322500671"
-    },*/
+        "rendered_output": "5.3225007",
+        "rounding_mode": "Fix_7"
+    },
     {
         "userLang": "en-US",
         "name": "Norm_1_rounding_test",
@@ -1800,7 +1801,7 @@ const tests = [
     },
     {
         "userLang": "en-US",
-        "name": "INSERT_TEST_NAME",
+        "name": "Fix_9 test",
         "input_history": [
             "key_1",
             "key_comma",
@@ -1823,7 +1824,7 @@ const tests = [
     },
     {
         "userLang": "en-US",
-        "name": "INSERT_TEST_NAME",
+        "name": "Fix_7 test",
         "input_history": [
             "key_1",
             "key_comma",
@@ -1846,7 +1847,7 @@ const tests = [
     },
     {
         "userLang": "en-US",
-        "name": "INSERT_TEST_NAME",
+        "name": "Fix_5 test",
         "input_history": [
             "key_1",
             "key_comma",
@@ -1869,7 +1870,7 @@ const tests = [
     },
     {
         "userLang": "en-US",
-        "name": "INSERT_TEST_NAME",
+        "name": "Fix_3 test",
         "input_history": [
             "key_1",
             "key_comma",
@@ -1892,7 +1893,7 @@ const tests = [
     },
     {
         "userLang": "en-US",
-        "name": "INSERT_TEST_NAME",
+        "name": "Fix_0 test",
         "input_history": [
             "key_1",
             "key_comma",
@@ -1912,6 +1913,45 @@ const tests = [
         "calc_mode": "COMP",
         "rounding_mode": "Fix_0",
         "prefer_decimals": true
+    },
+    {
+        "userLang": "en-US",
+        "name": "complex integral test",
+        "input_history": [
+            "key_integ",
+            "key_sqrt",
+            "key_7",
+            "key_logn",
+            "key_alpha",
+            "key_)",
+            "key_+",
+            "key_5",
+            "key_dir2",
+            "key_alpha",
+            "key_)",
+            "key_pow2",
+            "key_dir2",
+            "key_÷",
+            "key_alpha",
+            "key_)",
+            "key_dir2",
+            "key_dir2",
+            "key_7",
+            "key_x",
+            "key_4",
+            "key_dir2",
+            "key_5",
+            "key_9",
+            "key_8",
+            "key_-",
+            "key_1",
+            "key_3",
+            "key_="
+        ],
+        "rendered_input": "<span class=\"integ_wrapper\"><span class=\"scale_height\" style=\"transform: scaleY(1.43563);\">∫</span><span class=\"integ_wrapper_2\"><span class=\"integ_equation\"><span class=\"sqrt_wrapper\"><span class=\"scale_height\" style=\"transform: scaleY(1.43563);\">√</span><span class=\"sqrt\">7log<span class=\"logn_bottom\">X+5</span>(<span class=\"pow_bottom\">(X)</span><span class=\"pow_top\">2</span>)÷X</span></span>dX</span><span class=\"integ_wrapper_3\"><span class=\"integ_top\">7×4</span><span class=\"integ_bottom\">598-13</span></span></span></span> ",
+        "rendered_output": "140.79644",
+        "calc_mode": "COMP",
+        "rounding_mode": "Fix_5"
     }
 ]
 
