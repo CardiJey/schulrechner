@@ -1727,6 +1727,42 @@ const tests = [
         "rendered_input": "<span class=\"sqrt_wrapper\"><span class=\"scale_height\" style=\"transform: scaleY(1.18188);\">√</span><span class=\"sqrt\">-1</span></span> ",
         "rendered_output": "i",
         "calc_mode": "CMPLX"
+    },
+    {
+        "userLang": "en-US",
+        "name": "complex derivate test",
+        "input_history": [
+            "key_shift",
+            "key_integ",
+            "key_sqrt",
+            "key_alpha",
+            "key_)",
+            "key_-",
+            "key_sin",
+            "key_alpha",
+            "key_)",
+            "key_)",
+            "key_dir2",
+            "key_+",
+            "key_log",
+            "key_alpha",
+            "key_)",
+            "key_)",
+            "key_dir2",
+            "key_frac",
+            "key_1",
+            "key_4",
+            "key_dir2",
+            "key_3",
+            "key_dir2",
+            "key_dir2",
+            "key_+",
+            "key_5",
+            "key_="
+        ],
+        "rendered_input": "<span class=\"frac_wrapper\"><span class=\"frac_top\">d</span><span class=\"frac_bottom\">dx</span></span>(<span class=\"sqrt_wrapper\"><span class=\"scale_height\" style=\"transform: scaleY(1.20391);\">√</span><span class=\"sqrt\">X-sin(X)</span></span>+log(X))|<span class=\"logn_bottom\"><i>x</i>=<span class=\"alignLeft9\"></span><span class=\"frac_wrapper\" style=\"vertical-align: calc(-19.57px + 0.06rem);\"><span class=\"frac_top\">14</span><span class=\"frac_bottom alignRight9\">3</span></span></span>+5 ",
+        "rendered_output": "5.322500671",
+        "round_output_places": 
     }
 ]
 
