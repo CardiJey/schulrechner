@@ -1797,6 +1797,121 @@ const tests = [
         "rendered_output": "0.005",
         "calc_mode": "COMP",
         "rounding_mode": "Norm_2"
+    },
+    {
+        "userLang": "en-US",
+        "name": "INSERT_TEST_NAME",
+        "input_history": [
+            "key_1",
+            "key_comma",
+            "key_1",
+            "key_2",
+            "key_3",
+            "key_4",
+            "key_5",
+            "key_6",
+            "key_7",
+            "key_8",
+            "key_9",
+            "key_="
+        ],
+        "rendered_input": "1.123456789 ",
+        "rendered_output": "1.123456789",
+        "calc_mode": "COMP",
+        "rounding_mode": "Fix_9",
+        "prefer_decimals": true
+    },
+    {
+        "userLang": "en-US",
+        "name": "INSERT_TEST_NAME",
+        "input_history": [
+            "key_1",
+            "key_comma",
+            "key_1",
+            "key_2",
+            "key_3",
+            "key_4",
+            "key_5",
+            "key_6",
+            "key_7",
+            "key_8",
+            "key_9",
+            "key_="
+        ],
+        "rendered_input": "1.123456789 ",
+        "rendered_output": "1.1234568",
+        "calc_mode": "COMP",
+        "rounding_mode": "Fix_7",
+        "prefer_decimals": true
+    },
+    {
+        "userLang": "en-US",
+        "name": "INSERT_TEST_NAME",
+        "input_history": [
+            "key_1",
+            "key_comma",
+            "key_1",
+            "key_2",
+            "key_3",
+            "key_4",
+            "key_5",
+            "key_6",
+            "key_7",
+            "key_8",
+            "key_9",
+            "key_="
+        ],
+        "rendered_input": "1.123456789 ",
+        "rendered_output": "1.12346",
+        "calc_mode": "COMP",
+        "rounding_mode": "Fix_5",
+        "prefer_decimals": true
+    },
+    {
+        "userLang": "en-US",
+        "name": "INSERT_TEST_NAME",
+        "input_history": [
+            "key_1",
+            "key_comma",
+            "key_1",
+            "key_2",
+            "key_3",
+            "key_4",
+            "key_5",
+            "key_6",
+            "key_7",
+            "key_8",
+            "key_9",
+            "key_="
+        ],
+        "rendered_input": "1.123456789 ",
+        "rendered_output": "1.123",
+        "calc_mode": "COMP",
+        "rounding_mode": "Fix_3",
+        "prefer_decimals": true
+    },
+    {
+        "userLang": "en-US",
+        "name": "INSERT_TEST_NAME",
+        "input_history": [
+            "key_1",
+            "key_comma",
+            "key_1",
+            "key_2",
+            "key_3",
+            "key_4",
+            "key_5",
+            "key_6",
+            "key_7",
+            "key_8",
+            "key_9",
+            "key_="
+        ],
+        "rendered_input": "1.123456789 ",
+        "rendered_output": "1",
+        "calc_mode": "COMP",
+        "rounding_mode": "Fix_0",
+        "prefer_decimals": true
     }
 ]
 
