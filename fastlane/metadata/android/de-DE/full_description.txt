@@ -26,7 +26,7 @@ Einige zusätzliche Features:
 
 - Komplett in HTML, JS und CSS geschrieben, was bedeutet:
 
-	+ plattformübergreifend (ein Flatpak release ist angesetzt)
+	+ plattformübergreifend im Web und als Flatpak
 
 	+ einfacher Einstieg als Webentwickler*innen, falls ihr mitarbeiten wollt.
 

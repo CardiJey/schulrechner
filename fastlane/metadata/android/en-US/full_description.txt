@@ -27,7 +27,7 @@ Some additional features include:
 
 - Written entirely in HTML, JS, and CSS, which means:
 
-	+ inherently cross-platform (a Flatpak release is planned)
+	+ inherently cross-platform and also as a website and a flatpak
 
 	+ easy for other web developers to contribute
 
