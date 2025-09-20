@@ -960,6 +960,86 @@ class ModeSelectInput extends InputHandler{
     }
 }
 
+class SetupSelectInput extends InputHandler{
+    constructor(display_input_element, math_input_element, display_output_element, math_output_element, parent_handler, global_logic_vars, ui, userLang, max_input){
+        super(display_input_element, math_input_element, display_output_element, math_output_element, global_logic_vars, ui, userLang)
+        this.parent_handler = parent_handler
+        this.setup_map = {
+            "key_6":"Fix",
+            "key_8":"Norm",
+        }
+        this.sub_menus = {
+            "Fix": "Fix 0~9?",
+            "Norm": "Norm 1~2?"
+        }
+        this.sub_setup_map = {
+            "Fix": {
+                "key_0":"Fix_0",
+                "key_1":"Fix_1",
+                "key_2":"Fix_2",
+                "key_3":"Fix_3",
+                "key_4":"Fix_4",
+                "key_5":"Fix_5",
+                "key_6":"Fix_6",
+                "key_7":"Fix_7",
+                "key_8":"Fix_8",
+                "key_9":"Fix_9"
+            },
+            "Norm": {
+                "key_1":"Norm_1",
+                "key_2":"Norm_2"
+            }
+        }
+        this.input_history = []
+    }
+
+    // Method to handle input
+    handle(input_code) {
+        if(["key_ac","key_mode"].indexOf(input_code) != -1){
+            this.global_logic_vars.active_input_handler = this.parent_handler
+        }else if(this.input_history.length == 0){
+            if(input_code in this.setup_map){
+                this.input_history.push(input_code)
+                let this_setting = this.setup_map[input_code]
+                if(!this_setting in this.sub_menus){
+                    this.ui.set_setup_setting(this_setting)
+                }
+            }
+        }else{
+            let this_sub_menu = this.setup_map[this.input_history[0]]
+            if(input_code in this.sub_setup_map[this_sub_menu]){
+                this.input_history.push(input_code)
+                let this_setting = this.sub_setup_map[this_sub_menu][input_code]
+                this.ui.set_setup_setting(this_setting)
+            }
+        }
+        
+        this.global_logic_vars.active_input_handler.update_display(true);
+        this.global_logic_vars.active_input_handler.update_position()
+    }
+
+    update_display() {
+        let out_string = ""
+        if(this.input_history.length > 0){
+            out_string += this.sub_menus[this.setup_map[this.input_history[0]]]
+        }else{
+            out_string +=       "1:______2:______<br>"
+            out_string +=       "3:______4:______<br>"
+            out_string +=       "5:______6:Fix<br>"
+            out_string +=       "7:______8:Norm"
+        }
+        this.math_output_element.innerHTML = ""
+        this.math_input_element.innerHTML = "<span class='frac_top'>" + out_string + "</span>"
+        this.math_input_element.scroll(0,0)
+        this.ui.vertical_align_elements()
+    }
+
+    update_position() {
+        this.ui.align_element(this.display_input_element, this.math_input_element);
+        this.ui.align_element(this.display_output_element, this.math_output_element);
+    }
+}
+
 class EquationInputHandler extends InputHandler{
     constructor(display_input_element, math_input_element, display_output_element, math_output_element, parent_handler, global_logic_vars, ui, userLang) {
         super(display_input_element, math_input_element, display_output_element, math_output_element, global_logic_vars, ui, userLang)
@@ -1066,6 +1146,20 @@ class EquationInputHandler extends InputHandler{
 
                 case "key_mode":
                     this.global_logic_vars.active_input_handler = new ModeSelectInput(
+                        this.display_input_element,
+                        this.math_input_element,
+                        this.display_output_element,
+                        this.math_output_element,
+                        this,
+                        this.global_logic_vars,
+                        this.ui,
+                        this.userLang
+                    )
+                    this.input_code_history.pop(2)
+                break;
+
+                case "key_setup":
+                    this.global_logic_vars.active_input_handler = new SetupSelectInput(
                         this.display_input_element,
                         this.math_input_element,
                         this.display_output_element,

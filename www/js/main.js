@@ -21,6 +21,7 @@ let global_logic_vars = {
     "mode_maps": {},
     "prefer_decimals": false,
     "calc_mode": "COMP",
+    "rounding_mode": "Norm_1",
     "subres_functions" : {}
 }
 
@@ -186,6 +187,28 @@ class UI{
         localStorage.setItem("calcMode", calc_mode);
         location.reload();
     }
+
+    set_setup_setting(setting){
+        switch(setting){
+            case "Fix_0":
+            case "Fix_1":
+            case "Fix_2":
+            case "Fix_3":
+            case "Fix_4":
+            case "Fix_5":
+            case "Fix_6":
+            case "Fix_7":
+            case "Fix_8":
+            case "Fix_9":
+            case "Norm_1":
+            case "Norm_2":
+                localStorage.setItem("roundingMode", setting);
+                location.reload();
+            break;
+
+        }
+        
+    }
 }
 
 let ui = new UI(global_logic_vars)
@@ -289,6 +312,25 @@ document.addEventListener("DOMContentLoaded", async () => {
             switch(calc_mode){
                 case "CMPLX":
                     document.querySelector('[inkscape\\3a label="indicator_cmplx"]').style.visibility = "visible"
+                break
+            }
+
+            let rounding_mode = localStorage.getItem("roundingMode")
+            if (rounding_mode) {
+                global_logic_vars.rounding_mode = rounding_mode
+            }
+            switch(rounding_mode){
+                case "Fix_0":
+                case "Fix_1":
+                case "Fix_2":
+                case "Fix_3":
+                case "Fix_4":
+                case "Fix_5":
+                case "Fix_6":
+                case "Fix_7":
+                case "Fix_8":
+                case "Fix_9":
+                    document.querySelector('[inkscape\\3a label="indicator_fix"]').style.visibility = "visible"
                 break
             }
 
