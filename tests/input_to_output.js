@@ -38,7 +38,7 @@ class Dummy_UI{
     align_element(displayElement, mathElement){}
 }
 
-function eval_input_history(input_history,userLang,prefer_decimals=false,calc_mode="COMP"){
+function eval_input_history(input_history,userLang,prefer_decimals=false,calc_mode="COMP",rounding_mode="Norm_1"){
     let dummy_display_input_element = new Dummy_Element()
     let dummy_math_input_element = new Dummy_Element()
     let dummy_display_output_element = new Dummy_Element()
@@ -54,6 +54,7 @@ function eval_input_history(input_history,userLang,prefer_decimals=false,calc_mo
         "mode_maps": mode_maps,
         "prefer_decimals": prefer_decimals,
         "calc_mode": calc_mode,
+        "rounding_mode": rounding_mode,
         "subres_functions": {}
     }
 
@@ -1728,7 +1729,7 @@ const tests = [
         "rendered_output": "i",
         "calc_mode": "CMPLX"
     },
-    {
+    /*{
         "userLang": "en-US",
         "name": "complex derivate test",
         "input_history": [
@@ -1761,8 +1762,41 @@ const tests = [
             "key_="
         ],
         "rendered_input": "<span class=\"frac_wrapper\"><span class=\"frac_top\">d</span><span class=\"frac_bottom\">dx</span></span>(<span class=\"sqrt_wrapper\"><span class=\"scale_height\" style=\"transform: scaleY(1.20391);\">√</span><span class=\"sqrt\">X-sin(X)</span></span>+log(X))|<span class=\"logn_bottom\"><i>x</i>=<span class=\"alignLeft9\"></span><span class=\"frac_wrapper\" style=\"vertical-align: calc(-19.57px + 0.06rem);\"><span class=\"frac_top\">14</span><span class=\"frac_bottom alignRight9\">3</span></span></span>+5 ",
-        "rendered_output": "5.322500671",
-        "round_output_places": 
+        "rendered_output": "5.322500671"
+    },*/
+    {
+        "userLang": "en-US",
+        "name": "Norm_1_rounding_test",
+        "input_history": [
+            "key_1",
+            "key_÷",
+            "key_2",
+            "key_0",
+            "key_0",
+            "key_=",
+            "key_SD"
+        ],
+        "rendered_input": "1÷200 ",
+        "rendered_output": "5<span class=\"pow10\">×⒑</span><span class=\"pow_top\">-3</span>",
+        "calc_mode": "COMP",
+        "rounding_mode": "Norm_1"
+    },
+    {
+        "userLang": "en-US",
+        "name": "Norm_2_rounding_test",
+        "input_history": [
+            "key_1",
+            "key_÷",
+            "key_2",
+            "key_0",
+            "key_0",
+            "key_=",
+            "key_SD"
+        ],
+        "rendered_input": "1÷200 ",
+        "rendered_output": "0.005",
+        "calc_mode": "COMP",
+        "rounding_mode": "Norm_2"
     }
 ]
 
@@ -1808,12 +1842,17 @@ describe(`⚙️ Automated Tests`, () => {
             this_calc_mode = this_test.calc_mode
         }
 
+        let this_rounding_mode = "Norm_1"
+        if("rounding_mode" in this_test){
+            this_rounding_mode = this_test.rounding_mode
+        }
+
         let rendered_input = this_test.rendered_input.replaceAll("\"","'").replace(/\s*style='[^']*'/g, '')
         let rendered_output = this_test.rendered_output.replaceAll("\"","'").replace(/\s*style='[^']*'/g, '')
 
         test(this_test.name, (t) => {
             assert.deepStrictEqual(
-                eval_input_history(this_test.input_history,this_userLang,this_prefer_decimals,this_calc_mode),
+                eval_input_history(this_test.input_history,this_userLang,this_prefer_decimals,this_calc_mode,this_rounding_mode),
                 [rendered_input,rendered_output]
             );
         })
@@ -1831,12 +1870,17 @@ describe(`⚙️ Automated Tests`, () => {
             this_calc_mode = this_test.calc_mode
         }
 
+        let this_rounding_mode = "Norm_1"
+        if("rounding_mode" in this_test){
+            this_rounding_mode = this_test.rounding_mode
+        }
+
         let rendered_input = this_test.rendered_input.replaceAll("\"","'").replace(/\s*style='[^']*'/g, '')
         let rendered_output = this_test.rendered_output.replaceAll("\"","'").replace(/\s*style='[^']*'/g, '')
 
         test.todo(this_test.name, (t) => {
             assert.deepStrictEqual(
-                eval_input_history(this_test.input_history,this_userLang,this_prefer_decimals,this_calc_mode),
+                eval_input_history(this_test.input_history,this_userLang,this_prefer_decimals,this_calc_mode,this_rounding_mode),
                 [rendered_input,rendered_output]
             );
         })

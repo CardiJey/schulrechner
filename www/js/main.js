@@ -550,7 +550,9 @@ function log_calculation(){
         "name":"INSERT_TEST_NAME",
         "input_history":global_logic_vars.input_history,
         "rendered_input":decodeHTMLEntities(global_logic_vars.active_input_handler.math_input_element.innerHTML),
-        "rendered_output":decodeHTMLEntities(global_logic_vars.active_input_handler.math_output_element.innerHTML)
+        "rendered_output":decodeHTMLEntities(global_logic_vars.active_input_handler.math_output_element.innerHTML),
+        "calc_mode": global_logic_vars.calc_mode,
+        "rounding_mode": global_logic_vars.rounding_mode
     })
 }
 

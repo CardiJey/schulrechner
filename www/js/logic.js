@@ -785,7 +785,17 @@ class InputHandler{
             }
         }
 
-        if (Math.abs(num) >= 1e10 || (num !== 0 && Math.abs(num) < 1e-2)) {
+        if (this.global_logic_vars.rounding_mode.startsWith("Fix")){
+            let decimal_places = parseInt(this.global_logic_vars.rounding_mode[4])
+            num = this.global_logic_vars.math_engine.round(num, decimal_places)
+        }
+
+        let lower_sci_border = 1e-2
+        if (this.global_logic_vars.rounding_mode == "Norm_2"){
+            lower_sci_border = 1e-9
+        }
+
+        if (Math.abs(num) >= 1e10 || (num !== 0 && Math.abs(num) < lower_sci_border)) {
             let [coeff, exp] = num.toExponential(9).split('e');
             if(exp.startsWith('+')){
                 exp = exp.substring(1)
