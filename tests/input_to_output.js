@@ -1697,6 +1697,36 @@ const tests = [
         ],
         "rendered_input": "<span class=\"integ_wrapper\"><span class=\"scale_height\" style=\"transform: scaleY(1.28);\">∫</span><span class=\"integ_wrapper_2\"><span class=\"integ_equation\">XdX</span><span class=\"integ_wrapper_3\"><span class=\"integ_top\">0</span><span class=\"integ_bottom\">1</span></span></span></span> ",
         "rendered_output": "<span class=\"frac_wrapper\"><span class=\"frac_top\">1</span><span class=\"frac_bottom\">2</span></span>"
+    },
+    {
+        "userLang": "en-US",
+        "name": "integral should result to fraction",
+        "input_history": [
+            "key_integ",
+            "key_alpha",
+            "key_)",
+            "key_dir2",
+            "key_0",
+            "key_dir2",
+            "key_1",
+            "key_9",
+            "key_="
+        ],
+        "rendered_input": "<span class=\"integ_wrapper\"><span class=\"scale_height\" style=\"transform: scaleY(1.28);\">∫</span><span class=\"integ_wrapper_2\"><span class=\"integ_equation\">XdX</span><span class=\"integ_wrapper_3\"><span class=\"integ_top\">0</span><span class=\"integ_bottom\">19</span></span></span></span> ",
+        "rendered_output": "<span class=\"frac_wrapper\"><span class=\"frac_top\">361</span><span class=\"frac_bottom\">2</span></span>"
+    },
+    {
+        "userLang": "en-US",
+        "name": "definition of i test",
+        "input_history": [
+            "key_sqrt",
+            "key_-",
+            "key_1",
+            "key_="
+        ],
+        "rendered_input": "<span class=\"sqrt_wrapper\"><span class=\"scale_height\" style=\"transform: scaleY(1.18188);\">√</span><span class=\"sqrt\">-1</span></span> ",
+        "rendered_output": "i",
+        "calc_mode": "CMPLX"
     }
 ]
 

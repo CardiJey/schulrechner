@@ -5,6 +5,8 @@ function sortComplexNumber (a, b) {
         return 1
     }else if(b.im == 0){
         return -1
+    }else if(a.re == b.re){
+        return a.im - b.im
     }else{
         return a.re - b.re
     }
