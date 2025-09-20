@@ -1,5 +1,11 @@
-Feature: Added (-) button
-Feature: Added keyboard support for desktop version
-Feature: Added hyperbolic functions
-Tweak: "Renovate" integrated to ensure up-to-date dependencies
+Feature: Added config option to prefer decimal results
+Feature: Added mode menu
+Feature: Added CMPLX mode and i
+Feature: Added integration
+Feature: Added differentiation
+Feature: Added setup menu
+Feature: Added Norm and Fix rounding setup modes
+Feature: Added sexagesimal (hours, minutes, seconds) button
+Bugfix: Eliminated rounding errors in trigonometric functions
+Bugfix: Cube root of –1 now computes to –1
 Tweak: Updated dependencies
