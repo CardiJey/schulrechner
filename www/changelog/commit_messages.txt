@@ -1,3 +1,8 @@
+- 1.12.0
+- updated versioncode
+- typo fix
+- Updated flatpak changelog
+- ran manual tests
 - 1.11.4
 - updated versioncode
 - Merge pull request #33 from CardiJey/renovate/mathjs-digest
