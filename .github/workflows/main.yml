@@ -25,6 +25,17 @@ jobs:
         with:
           node-version: 20
 
+      - name: Generate Sources
+        run: |
+          pipx install --force git+https://github.com/flatpak/flatpak-builder-tools.git#subdirectory=node
+          flatpak-node-generator npm package-lock.json
+
+      - name: Upload generated-sources.json
+        uses: actions/upload-artifact@v4
+        with:
+          name: generated-sources
+          path: generated-sources.json
+
       - name: Install dependencies
         run: |
           npm install
@@ -104,6 +115,7 @@ jobs:
           files: |
             dist/*.flatpak
             platforms/android/app/build/outputs/apk/release/app-release.apk
+            generated-sources.json
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
