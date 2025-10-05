@@ -57,6 +57,23 @@
   </developer>
   <content_rating type="oars-1.0"></content_rating>
   <releases>
+    <release version="1.12.0" date="2025-10-05">
+      <description>
+        <ul>
+          <li>Feature: Added config option to prefer decimal results</li>
+          <li>Feature: Added mode menu</li>
+          <li>Feature: Added CMPLX mode and i</li>
+          <li>Feature: Added integration</li>
+          <li>Feature: Added differentiation</li>
+          <li>Feature: Added setup menu</li>
+          <li>Feature: Added Norm and Fix rounding setup modes</li>
+          <li>Feature: Added sexagesimal (hours, minutes, seconds) button</li>
+          <li>Bugfix: Eliminated rounding errors in trigonometric functions</li>
+          <li>Bugfix: Cube root of -1 now computes to -1</li>
+          <li>Tweak: Updated dependencies</li>
+        </ul>
+      </description>
+    </release>
     <release version="1.11.0" date="2025-08-09">
       <description>
         <ul>
