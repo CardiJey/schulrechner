@@ -1,9 +1,43 @@
+- 1.11.3
+- update versioncode
+- moved generating sources to main action because i dont want to bother with transfering the files between jobs
+- add pipeline to generate sources
+- Try building flatpak again with old dependencies
+- Downgraded electron to 37 and node to 20 again for electron
+- updated description
+- Updated changelog
+- Updated changelog
+- Merge pull request #26 from CardiJey/renovate/mathjs-digest
+- Update mathjs digest to 25da3c9
+- Merge pull request #21 from CardiJey/renovate/node-22.x
+- Merge pull request #25 from CardiJey/renovate/actions-setup-java-5.x
+- Merge pull request #22 from CardiJey/renovate/actions-checkout-5.x
+- Merge pull request #29 from CardiJey/renovate/mathjs-14.x-lockfile
+- Merge pull request #30 from CardiJey/renovate/actions-setup-node-5.x
+- Merge pull request #31 from CardiJey/renovate/electron-38.x
+- added test for sexagesimal input
+- Applied newly added rounding mode setup to two test for deviation and integration
+- added tests for Fix rounding mode
+- added logic and test for Norm 1 and 2 rounding modes
+- Added option to set rounding mode setting
+- Added SETUP Label
+- Bugfix: Fixed complex number sorting, so prefered root is shown
+- Update dependency electron to v38
+- Added math_enginge significant rounding function
+- Added sexagesimal logic
+- Added sexadecimal button
+- Feature: added derivation function
+- Added deriv label
+- Bugfix: dx in interal now properly display ed
 - 1.11.2
 - updated versioncode
 - Fine tuned fraction  epsiolon so all testst work again
 - Added integral test
 - added sqrt and integral height sclaing
 - added basic integral formatting
+- Update dependency node to v22
+- Update actions/setup-node action to v5
+- Update dependency mathjs to v14.7.0
 - Added basic logic for integration and differentiation
 - added proper complex roots which fies thrid root -1
 - added rounding to degree trigonometry functions and tests for logic
@@ -16,6 +50,8 @@
 - Added config for complex key alts
 - added labels for i and the menu
 - Feature: Added config option to prefer decimal results
+- Update actions/setup-java action to v5
+- Update actions/checkout action to v5
 - 1.11.0
 - Did manual tets
 - updated versioncpde

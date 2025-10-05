@@ -5,6 +5,8 @@ function sortComplexNumber (a, b) {
         return 1
     }else if(b.im == 0){
         return -1
+    }else if(a.re == b.re){
+        return a.im - b.im
     }else{
         return a.re - b.re
     }
@@ -38,7 +40,24 @@ function import_custom_math(math_engine){
             let Y_max = math_engine.evaluate(String(equation),{X:X_max})
             return math_engine.evaluate("(Y_max - Y_min)/(2*h)",{Y_max:Y_max,Y_min:Y_min,h:h})
         },
-        integrate: function(equation,X_min,X_max,n_steps = 5e4){
+        round_significant: function(value,places){
+            let factor =  math_engine.chain(10)
+                .pow(
+                    math_engine.chain(value)
+                        .abs()
+                        .log(10)
+                        .ceil()
+                        .done()
+                )
+                .done()
+
+            return math_engine.chain(value)
+                .divide(factor)
+                .round(places)
+                .multiply(factor)
+                .done()
+        },
+        integrate: function(equation,X_min,X_max,n_steps = 5e4, significant_places = 10){
             let X_min_res = math_engine.evaluate(String(X_min))
             let X_max_res = math_engine.evaluate(String(X_max))
             let h = (X_max_res - X_min_res) / n_steps
@@ -52,6 +71,7 @@ function import_custom_math(math_engine){
                 .subtract(math_engine.chain(Y_res[0]).multiply(0.5).done())
                 .subtract(math_engine.chain(Y_res.slice(-1)[0]).multiply(0.5).done())
                 .multiply(h)
+                .round_significant(significant_places)
                 .done()
         }
     })
@@ -245,7 +265,7 @@ class Point_Element extends Math_Element{
 
 class Pow10_Element extends Math_Element{
     constructor(left){
-        super("point_operation",left,"<span class='pow10'>×⒑</span>","*10^")
+        super("point_operation",left,"<span class='pow10'>×⒑</span>","e")
     }
 }
 
@@ -339,6 +359,12 @@ class Faculty_Element extends Math_Element{
     }
 }
 
+class Sexagesimal_Element extends Math_Element{
+    constructor(left){
+        super("point_operation",left,"°","°")
+    }
+}
+
 class Pow_Element extends Math_Element{
     constructor(left,is_exp_prefilled){
         let [next_left_neighbor,last_element,first_element] = get_left_block(left)
@@ -385,12 +411,19 @@ class Logx_Element extends Math_Element{
 }
 
 class Derivate_Element extends Math_Element{
-    constructor(left){
-        super("container_operation",left,"derivate<span class='logn_bottom'>","derivate([")
+    constructor(left,global_logic_vars){
+        let subres_id = global_logic_vars.next_subres_id
+        global_logic_vars.next_subres_id++
+        global_logic_vars.subres_functions[subres_id] = global_logic_vars.math_engine.derivate
+        super("container_operation",left,"<span class='frac_wrapper'><span class='frac_top'>d</span><span class='frac_bottom'>dx</span></span>(","(subres" + subres_id + "idinsert)subres" + subres_id + "idstart")
+        this.global_logic_vars = global_logic_vars
         
         this.children = [
-            new Container_Element(this,"</span>","][1])",this,true)
+            new Container_Element(this,")|<span class='logn_bottom'><i>x</i>=","subres" + subres_id + "idparam",this,false)
         ]
+        this.children.push(
+            new Container_Element(this.children[0],"</span>","subres" + subres_id + "idend",this,true)
+        )
     }
 }
 
@@ -403,7 +436,7 @@ class Integrate_Element extends Math_Element{
         this.global_logic_vars = global_logic_vars
         
         this.children = [
-            new Container_Element(this,"dx</span><span class='integ_wrapper_3'><span class='integ_top'>","subres" + subres_id + "idparam",this,false)
+            new Container_Element(this,"dX</span><span class='integ_wrapper_3'><span class='integ_top'>","subres" + subres_id + "idparam",this,false)
         ]
         this.children.push(
             new Container_Element(this.children[0],"</span><span class='integ_bottom'>","subres" + subres_id + "idparam",this,false)
@@ -752,7 +785,17 @@ class InputHandler{
             }
         }
 
-        if (Math.abs(num) >= 1e10 || (num !== 0 && Math.abs(num) < 1e-2)) {
+        if (this.global_logic_vars.rounding_mode.startsWith("Fix")){
+            let decimal_places = parseInt(this.global_logic_vars.rounding_mode[4])
+            num = this.global_logic_vars.math_engine.round(num, decimal_places)
+        }
+
+        let lower_sci_border = 1e-2
+        if (this.global_logic_vars.rounding_mode == "Norm_2"){
+            lower_sci_border = 1e-9
+        }
+
+        if (Math.abs(num) >= 1e10 || (num !== 0 && Math.abs(num) < lower_sci_border)) {
             let [coeff, exp] = num.toExponential(9).split('e');
             if(exp.startsWith('+')){
                 exp = exp.substring(1)
@@ -927,6 +970,86 @@ class ModeSelectInput extends InputHandler{
     }
 }
 
+class SetupSelectInput extends InputHandler{
+    constructor(display_input_element, math_input_element, display_output_element, math_output_element, parent_handler, global_logic_vars, ui, userLang, max_input){
+        super(display_input_element, math_input_element, display_output_element, math_output_element, global_logic_vars, ui, userLang)
+        this.parent_handler = parent_handler
+        this.setup_map = {
+            "key_6":"Fix",
+            "key_8":"Norm",
+        }
+        this.sub_menus = {
+            "Fix": "Fix 0~9?",
+            "Norm": "Norm 1~2?"
+        }
+        this.sub_setup_map = {
+            "Fix": {
+                "key_0":"Fix_0",
+                "key_1":"Fix_1",
+                "key_2":"Fix_2",
+                "key_3":"Fix_3",
+                "key_4":"Fix_4",
+                "key_5":"Fix_5",
+                "key_6":"Fix_6",
+                "key_7":"Fix_7",
+                "key_8":"Fix_8",
+                "key_9":"Fix_9"
+            },
+            "Norm": {
+                "key_1":"Norm_1",
+                "key_2":"Norm_2"
+            }
+        }
+        this.input_history = []
+    }
+
+    // Method to handle input
+    handle(input_code) {
+        if(["key_ac","key_mode"].indexOf(input_code) != -1){
+            this.global_logic_vars.active_input_handler = this.parent_handler
+        }else if(this.input_history.length == 0){
+            if(input_code in this.setup_map){
+                this.input_history.push(input_code)
+                let this_setting = this.setup_map[input_code]
+                if(!this_setting in this.sub_menus){
+                    this.ui.set_setup_setting(this_setting)
+                }
+            }
+        }else{
+            let this_sub_menu = this.setup_map[this.input_history[0]]
+            if(input_code in this.sub_setup_map[this_sub_menu]){
+                this.input_history.push(input_code)
+                let this_setting = this.sub_setup_map[this_sub_menu][input_code]
+                this.ui.set_setup_setting(this_setting)
+            }
+        }
+        
+        this.global_logic_vars.active_input_handler.update_display(true);
+        this.global_logic_vars.active_input_handler.update_position()
+    }
+
+    update_display() {
+        let out_string = ""
+        if(this.input_history.length > 0){
+            out_string += this.sub_menus[this.setup_map[this.input_history[0]]]
+        }else{
+            out_string +=       "1:______2:______<br>"
+            out_string +=       "3:______4:______<br>"
+            out_string +=       "5:______6:Fix<br>"
+            out_string +=       "7:______8:Norm"
+        }
+        this.math_output_element.innerHTML = ""
+        this.math_input_element.innerHTML = "<span class='frac_top'>" + out_string + "</span>"
+        this.math_input_element.scroll(0,0)
+        this.ui.vertical_align_elements()
+    }
+
+    update_position() {
+        this.ui.align_element(this.display_input_element, this.math_input_element);
+        this.ui.align_element(this.display_output_element, this.math_output_element);
+    }
+}
+
 class EquationInputHandler extends InputHandler{
     constructor(display_input_element, math_input_element, display_output_element, math_output_element, parent_handler, global_logic_vars, ui, userLang) {
         super(display_input_element, math_input_element, display_output_element, math_output_element, global_logic_vars, ui, userLang)
@@ -1033,6 +1156,20 @@ class EquationInputHandler extends InputHandler{
 
                 case "key_mode":
                     this.global_logic_vars.active_input_handler = new ModeSelectInput(
+                        this.display_input_element,
+                        this.math_input_element,
+                        this.display_output_element,
+                        this.math_output_element,
+                        this,
+                        this.global_logic_vars,
+                        this.ui,
+                        this.userLang
+                    )
+                    this.input_code_history.pop(2)
+                break;
+
+                case "key_setup":
+                    this.global_logic_vars.active_input_handler = new SetupSelectInput(
                         this.display_input_element,
                         this.math_input_element,
                         this.display_output_element,
@@ -1165,6 +1302,55 @@ class EquationInputHandler extends InputHandler{
         }
 
         res += '\u00A0'
+
+        let regex_to_apply = [
+            [
+                /([\d\.e]*°){4}/g,
+                "error"
+            ],
+            [
+                /([\d\.e]*°){3}[\d\.e]+/g,
+                "error"
+            ],
+            [
+                /([\d\.e]+)°([\d\.e]+)°([\d\.e]+)°/g,
+                "[$1+$2/60+$3/3600][1]"
+            ],
+            [
+                /([\d\.e]*°){3}/g,
+                "error"
+            ],
+            [
+                /([\d\.e]*°){2}[\d\.e]+/g,
+                "error"
+            ],
+            [
+                /([\d\.e]+)°([\d\.e]+)°/g,
+                "[$1+$2/60][1]"
+            ],
+            [
+                /([\d\.e]*°){2}/g,
+                "error"
+            ],
+            [
+                /([\d\.e]*°){1}[\d\.e]+/g,
+                "error"
+            ],
+            [
+                /([\d\.e]+)°/g,
+                "[$1][1]"
+            ],
+            [
+                /°/g,
+                "error"
+            ]
+        ]
+
+        for(let regex_index = 0; regex_index < regex_to_apply.length; regex_index++){
+            let this_regex = regex_to_apply[regex_index]
+            mathjs_res = mathjs_res.replaceAll(...this_regex)
+        }
+
         return [res,mathjs_res,sto]
     }
 
@@ -1307,6 +1493,11 @@ class EquationInputHandler extends InputHandler{
                 
                 case "key_comma":
                     new_elements.push(new Point_Element(cursor_element,this.userLang))
+                    cursor_element = new_elements[0]
+                    break;
+                
+                case "key_°":
+                    new_elements.push(new Sexagesimal_Element(cursor_element))
                     cursor_element = new_elements[0]
                     break;
                 
@@ -1488,6 +1679,11 @@ class EquationInputHandler extends InputHandler{
 
                 case "key_integ":
                     new_elements.push(new Integrate_Element(cursor_element,this.global_logic_vars))
+                    cursor_element = new_elements[0]
+                    break;
+
+                case "key_deriv":
+                    new_elements.push(new Derivate_Element(cursor_element,this.global_logic_vars))
                     cursor_element = new_elements[0]
                     break;
 
