@@ -1,8 +1,19 @@
+- 1.11.4
+- updated versioncode
+- Merge pull request #33 from CardiJey/renovate/mathjs-digest
+- Update mathjs digest to adc8b62
+- Merge pull request #34 from CardiJey/renovate/mathjs-14.x-lockfile
+- Merge pull request #35 from CardiJey/renovate/electron-38.x
+- Merge pull request #32 from CardiJey/renovate/node-22.x
+- Update dependency mathjs to v14.8.2
+- Set automerge to true for renovate
 - 1.11.3
 - update versioncode
 - moved generating sources to main action because i dont want to bother with transfering the files between jobs
 - add pipeline to generate sources
+- Update dependency electron to v38
 - Try building flatpak again with old dependencies
+- Update dependency node to v22
 - Downgraded electron to 37 and node to 20 again for electron
 - updated description
 - Updated changelog
