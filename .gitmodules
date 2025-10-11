@@ -1,7 +1,7 @@
 [submodule "mathjs"]
 	path = mathjs
 	url = https://github.com/josdejong/mathjs.git
-	branch = v14.9.1
+	branch = v15.0.0
 [submodule "cordova-plugin-inappbrowser"]
 	path = cordova-plugin-inappbrowser
 	url = https://github.com/apache/cordova-plugin-inappbrowser.git
