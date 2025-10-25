@@ -31,7 +31,7 @@ jobs:
           flatpak-node-generator npm package-lock.json
 
       - name: Upload generated-sources.json
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: generated-sources
           path: generated-sources.json
@@ -103,7 +103,7 @@ jobs:
             platforms/android/app/build/outputs/apk/release/app-release-aligned.apk
 
       - name: Upload APK artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: schulrechner-apk
           path: platforms/android/app/build/outputs/apk/release/app-release.apk
