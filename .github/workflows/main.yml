@@ -112,7 +112,7 @@ jobs:
           path: platforms/android/app/build/outputs/apk/release/app-release.apk
 
       - name: Upload Release Assets
-        if: ${{ github.event_name != 'workflow_dispatch' }}
+        if: startsWith(github.ref_name, 'v')
         uses: softprops/action-gh-release@v2
         with:
           files: |
@@ -123,17 +123,17 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Prepare Browser Gradle project
-        if: ${{ github.event_name != 'workflow_dispatch' }}
+        if: startsWith(github.ref_name, 'v')
         run: |
           cordova platform add browser
 
       - name: Build Cordova Browser project
-        if: ${{ github.event_name != 'workflow_dispatch' }}
+        if: startsWith(github.ref_name, 'v')
         run: |
           cordova build browser --release
 
       - name: Push Browser Files to browser-release branch
-        if: ${{ github.event_name != 'workflow_dispatch' }}
+        if: startsWith(github.ref_name, 'v')
         run: |
           BROWSER_BRANCH="browser-release"
           TAG_NAME="${GITHUB_REF##*/}"
