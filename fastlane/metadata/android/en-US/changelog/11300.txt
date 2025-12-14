@@ -1,0 +1,3 @@
+Feature: °′‴-button now switches to DMS format
+Feature: Added option to toggle between Deg, Rad and Gra angle modes
+Tweak: Updated dependencies
