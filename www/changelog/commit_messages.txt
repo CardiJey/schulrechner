@@ -1,3 +1,42 @@
+- 1.12.1
+- added sexagesimal test
+- Feature: added sexagesimal output toggle
+- changed as_fraction to format_as to allow more display options
+- Added test for angle modes
+- Merge branch 'main' of github.com:CardiJey/schulrechner
+- Feature: Added Angle modes to switch between Deg, Rad and Gre
+- Update actions/upload-artifact action to v6 (#69)
+- Update dependency electron to v39.2.7 (#68)
+- Update dependency electron to v39.2.6 (#67)
+- Update dependency electron to v39.2.5 (#66)
+- Merge pull request #64 from CardiJey/renovate/electron-39.x-lockfile
+- Update dependency electron to v39.2.4
+- bugfix in main action
+- CI runs on Pull Reqests
+- Update actions/checkout action to v6 (#62)
+- Update dependency electron to v39.2.3 (#61)
+- Update dependency electron to v39.2.2 (#60)
+- Update dependency electron to v39.2.1 (#59)
+- Update dependency electron to v39.2.0 (#58)
+- Update dependency electron to v39.1.2 (#57)
+- Update dependency electron to v39.1.1 (#56)
+- Update dependency mathjs to v15.1.0 (#55)
+- Update dependency mathjs to v15.1.0 (#54)
+- Update dependency electron to v39.1.0 (#53)
+- Update dependency node to v24 (#51)
+- Update dependency electron to v39 (#50)
+- Update actions/upload-artifact action to v5 (#48)
+- Update dependency electron to v38.4.0 (#47)
+- Update dependency electron to v38.3.0 (#46)
+- Update actions/setup-node action to v6 (#45)
+- Merge pull request #44 from CardiJey/renovate/mathjs-15.x
+- Update dependency mathjs to v15
+- added branch specification for math.js
+- Update dependency mathjs to v15 (#42)
+- Update dependency mathjs to v14.9.1 (#41)
+- Update mathjs digest to 1941b5c (#40)
+- Update mathjs digest to 34ecfdb (#39)
+- Update dependency electron to v38.2.2 (#38)
 - 1.12.0
 - updated versioncode
 - typo fix

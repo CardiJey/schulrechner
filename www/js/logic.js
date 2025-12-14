@@ -23,6 +23,15 @@ function import_custom_math(math_engine){
         tand: function(input){
             return math_engine.round(math_engine.tan(math_engine.pi/180*input),15)
         },
+        sing: function(input){
+            return math_engine.round(math_engine.sin(math_engine.pi/200*input),15)
+        },
+        cosg: function(input){
+            return math_engine.round(math_engine.cos(math_engine.pi/200*input),15)
+        },
+        tang: function(input){
+            return math_engine.round(math_engine.tan(math_engine.pi/200*input),15)
+        },
         nthRootComplex: function(n,input){
             let roots = math_engine.nthRoots(input,n)
             let best_root = math_engine.sort(roots, sortComplexNumber).slice(-1)[0]
@@ -478,38 +487,104 @@ class Container_Element extends Math_Element{
 }
 
 class Sin_Element extends Math_Element{
-    constructor(left){
-        super("brackets_operation",left,"sin(","sind(")
+    constructor(left,global_logic_vars){
+        let function_string = "sin"
+        switch(global_logic_vars.angle_mode){
+            case "Deg":
+                function_string += "d"
+            break;
+
+            case "Gra":
+                function_string += "g"
+            break; 
+        }
+        function_string += "("
+        super("brackets_operation",left,"sin(",function_string)
     }
 }
 
 class Cos_Element extends Math_Element{
-    constructor(left){
-        super("brackets_operation",left,"cos(","cosd(")
+    constructor(left,global_logic_vars){
+        let function_string = "cos"
+        switch(global_logic_vars.angle_mode){
+            case "Deg":
+                function_string += "d"
+            break;
+
+            case "Gra":
+                function_string += "g"
+            break; 
+        }
+        function_string += "("
+        super("brackets_operation",left,"cos(",function_string)
     }
 }
 
 class Tan_Element extends Math_Element{
-    constructor(left){
-        super("brackets_operation",left,"tan(","tand(")
+    constructor(left,global_logic_vars){
+        let function_string = "tan"
+        switch(global_logic_vars.angle_mode){
+            case "Deg":
+                function_string += "d"
+            break;
+
+            case "Gra":
+                function_string += "g"
+            break; 
+        }
+        function_string += "("
+        super("brackets_operation",left,"tan(",function_string)
     }
 }
 
 class ASin_Element extends Math_Element{
-    constructor(left){
-        super("brackets_operation",left,"sin<span class='pow_top'>-1</span>(","180/PI*asin(")
+    constructor(left,global_logic_vars){
+        let function_string = ""
+        switch(global_logic_vars.angle_mode){
+            case "Deg":
+                function_string += "180/PI*"
+            break;
+
+            case "Gra":
+                function_string += "200/PI*"
+            break; 
+        }
+        function_string += "asin("
+        super("brackets_operation",left,"sin<span class='pow_top'>-1</span>(",function_string)
     }
 }
 
 class ACos_Element extends Math_Element{
-    constructor(left){
-        super("brackets_operation",left,"cos<span class='pow_top'>-1</span>(","180/PI*acos(")
+    constructor(left,global_logic_vars){
+        let function_string = ""
+        switch(global_logic_vars.angle_mode){
+            case "Deg":
+                function_string += "180/PI*"
+            break;
+
+            case "Gra":
+                function_string += "200/PI*"
+            break; 
+        }
+        function_string += "acos("
+        super("brackets_operation",left,"cos<span class='pow_top'>-1</span>(",function_string)
     }
 }
 
 class ATan_Element extends Math_Element{
-    constructor(left){
-        super("brackets_operation",left,"tan<span class='pow_top'>-1</span>(","180/PI*atan(")
+    constructor(left,global_logic_vars){
+        let function_string = ""
+        switch(global_logic_vars.angle_mode){
+            case "Deg":
+                function_string += "180/PI*"
+            break;
+
+            case "Gra":
+                function_string += "200/PI*"
+            break; 
+        }
+        function_string += "atan("
+        super("brackets_operation",left,"tan<span class='pow_top'>-1</span>(",function_string)
     }
 }
 
@@ -746,20 +821,20 @@ class InputHandler{
         return [res,resulting_fraction]
     }
 
-    formatNumber(num,as_fraction=true,epsilon=1.12e-16) {
+    formatNumber(num,format_as="fraction",epsilon=1.12e-16) {
         if(typeof num == "string"){
             return num
         }
         if(typeof num == "object"){
-            let re_string = this.formatNumber(num.re,as_fraction,epsilon=1e-14)
-            let im_string = this.formatNumber(num.im,as_fraction,epsilon=1e-14)
+            let re_string = this.formatNumber(num.re,format_as,epsilon=1e-14)
+            let im_string = this.formatNumber(num.im,format_as,epsilon=1e-14)
             let res_string = ""
             if(re_string != "0"){
                 res_string += re_string
             }
             if(im_string != "0"){
                 if(re_string != "0"){
-                    if(!as_fraction){
+                    if(format_as != "fraction"){
                         res_string += "<br>"
                     }
                     res_string += "+"
@@ -776,13 +851,19 @@ class InputHandler{
             }
         }
         
-        if(as_fraction){
+        if(format_as == "fraction"){
             let resulting_fraction = this.decimal_to_continued_fraction(num,epsilon)[1]
             let resulting_fraction_length = (resulting_fraction[0].toString() + resulting_fraction[1].toString()).length
 
             if(resulting_fraction[1] != 1 && resulting_fraction_length <= 9){
                 return "<span class='frac_wrapper'><span class='frac_top'>" + resulting_fraction[0] + "</span><span class='frac_bottom'>" + resulting_fraction[1] + "</span></span>"
             }
+        }else if(format_as == "sexagesimal"){
+             let sexa_d = Math.floor(num)
+             let sexa_m = Math.floor((num-sexa_d)*60)
+             let sexa_s = Math.round((num-sexa_d-sexa_m/60)*60*60*100)/100
+
+             return sexa_d + "°" + sexa_m + "′" + sexa_s + "‴"
         }
 
         if (this.global_logic_vars.rounding_mode.startsWith("Fix")){
@@ -975,6 +1056,9 @@ class SetupSelectInput extends InputHandler{
         super(display_input_element, math_input_element, display_output_element, math_output_element, global_logic_vars, ui, userLang)
         this.parent_handler = parent_handler
         this.setup_map = {
+            "key_3":"Deg",
+            "key_4":"Rad",
+            "key_5":"Gra",
             "key_6":"Fix",
             "key_8":"Norm",
         }
@@ -1011,7 +1095,7 @@ class SetupSelectInput extends InputHandler{
             if(input_code in this.setup_map){
                 this.input_history.push(input_code)
                 let this_setting = this.setup_map[input_code]
-                if(!this_setting in this.sub_menus){
+                if(!(this_setting in this.sub_menus)){
                     this.ui.set_setup_setting(this_setting)
                 }
             }
@@ -1034,8 +1118,8 @@ class SetupSelectInput extends InputHandler{
             out_string += this.sub_menus[this.setup_map[this.input_history[0]]]
         }else{
             out_string +=       "1:______2:______<br>"
-            out_string +=       "3:______4:______<br>"
-            out_string +=       "5:______6:Fix<br>"
+            out_string +=       "3:Deg&nbsp;&nbsp;&nbsp;4:Rad<br>"
+            out_string +=       "5:Gra&nbsp;&nbsp;&nbsp;6:Fix<br>"
             out_string +=       "7:______8:Norm"
         }
         this.math_output_element.innerHTML = ""
@@ -1538,32 +1622,32 @@ class EquationInputHandler extends InputHandler{
                     break;
 
                 case "key_sin":
-                    new_elements.push(new Sin_Element(cursor_element))
+                    new_elements.push(new Sin_Element(cursor_element,this.global_logic_vars))
                     cursor_element = new_elements[0]
                     break;
 
                 case "key_cos":
-                    new_elements.push(new Cos_Element(cursor_element))
+                    new_elements.push(new Cos_Element(cursor_element,this.global_logic_vars))
                     cursor_element = new_elements[0]
                     break;
 
                 case "key_tan":
-                    new_elements.push(new Tan_Element(cursor_element))
+                    new_elements.push(new Tan_Element(cursor_element,this.global_logic_vars))
                     cursor_element = new_elements[0]
                     break;
                 
                 case "key_sin-1":
-                    new_elements.push(new ASin_Element(cursor_element))
+                    new_elements.push(new ASin_Element(cursor_element,this.global_logic_vars))
                     cursor_element = new_elements[0]
                     break;
 
                 case "key_cos-1":
-                    new_elements.push(new ACos_Element(cursor_element))
+                    new_elements.push(new ACos_Element(cursor_element,this.global_logic_vars))
                     cursor_element = new_elements[0]
                     break;
 
                 case "key_tan-1":
-                    new_elements.push(new ATan_Element(cursor_element))
+                    new_elements.push(new ATan_Element(cursor_element,this.global_logic_vars))
                     cursor_element = new_elements[0]
                     break;
 
@@ -1835,7 +1919,7 @@ class EquationSelectInputHandler extends InputHandler{
         this.ans_value = 0
         this.input_strings = []
         this.results = []
-        this.as_fraction = !this.global_logic_vars.prefer_decimals
+        this.format_as = (this.global_logic_vars.prefer_decimals)?"decimal":"fraction"
         this.user_var = {
             "M":0
         }
@@ -1849,7 +1933,7 @@ class EquationSelectInputHandler extends InputHandler{
         }else{
             this.equations.push(new EquationInputHandler(this.display_input_element, this.math_input_element, this.display_output_element, this.math_output_element, this, this.global_logic_vars, this.ui, this.userLang))
         }
-        this.as_fraction = !this.global_logic_vars.prefer_decimals
+        this.format_as = (this.global_logic_vars.prefer_decimals)?"decimal":"fraction"
     }
 
     select_equation(up){
@@ -1860,7 +1944,7 @@ class EquationSelectInputHandler extends InputHandler{
             this.display_equation_index = Math.max( 0, Math.min(this.display_equation_index + 1, this.equations.length - 1) )
         }
         if(index_before != this.display_equation_index){
-            this.as_fraction = !this.global_logic_vars.prefer_decimals
+            this.format_as = (this.global_logic_vars.prefer_decimals)?"decimal":"fraction"
         }
     }
 
@@ -1895,7 +1979,20 @@ class EquationSelectInputHandler extends InputHandler{
             break;
 
             case "key_SD":
-                this.as_fraction = !this.as_fraction
+                if(this.format_as == "fraction"){
+                    this.format_as = "decimal"
+                }else{
+                    this.format_as = "fraction"
+                }
+                this.update_display();
+            break;
+
+            case "key_°":
+                if(this.format_as == "sexagesimal"){
+                    this.format_as = "decimal"
+                }else{
+                    this.format_as = "sexagesimal"
+                }
                 this.update_display();
             break;
 
@@ -1932,7 +2029,7 @@ class EquationSelectInputHandler extends InputHandler{
     update_display() {
         if(this.equations.length > 0){
             this.math_input_element.innerHTML = this.input_strings[this.display_equation_index]
-            this.math_output_element.innerHTML = this.formatNumber(this.results[this.display_equation_index],this.as_fraction)
+            this.math_output_element.innerHTML = this.formatNumber(this.results[this.display_equation_index],this.format_as)
             this.math_input_element.scroll(0,0)
             this.ui.vertical_align_elements()
         }
