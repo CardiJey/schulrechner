@@ -23,6 +23,15 @@ function import_custom_math(math_engine){
         tand: function(input){
             return math_engine.round(math_engine.tan(math_engine.pi/180*input),15)
         },
+        sing: function(input){
+            return math_engine.round(math_engine.sin(math_engine.pi/200*input),15)
+        },
+        cosg: function(input){
+            return math_engine.round(math_engine.cos(math_engine.pi/200*input),15)
+        },
+        tang: function(input){
+            return math_engine.round(math_engine.tan(math_engine.pi/200*input),15)
+        },
         nthRootComplex: function(n,input){
             let roots = math_engine.nthRoots(input,n)
             let best_root = math_engine.sort(roots, sortComplexNumber).slice(-1)[0]
@@ -478,38 +487,104 @@ class Container_Element extends Math_Element{
 }
 
 class Sin_Element extends Math_Element{
-    constructor(left){
-        super("brackets_operation",left,"sin(","sind(")
+    constructor(left,global_logic_vars){
+        let function_string = "sin"
+        switch(global_logic_vars.angle_mode){
+            case "Deg":
+                function_string += "d"
+            break;
+
+            case "Gra":
+                function_string += "g"
+            break; 
+        }
+        function_string += "("
+        super("brackets_operation",left,"sin(",function_string)
     }
 }
 
 class Cos_Element extends Math_Element{
-    constructor(left){
-        super("brackets_operation",left,"cos(","cosd(")
+    constructor(left,global_logic_vars){
+        let function_string = "cos"
+        switch(global_logic_vars.angle_mode){
+            case "Deg":
+                function_string += "d"
+            break;
+
+            case "Gra":
+                function_string += "g"
+            break; 
+        }
+        function_string += "("
+        super("brackets_operation",left,"cos(",function_string)
     }
 }
 
 class Tan_Element extends Math_Element{
-    constructor(left){
-        super("brackets_operation",left,"tan(","tand(")
+    constructor(left,global_logic_vars){
+        let function_string = "tan"
+        switch(global_logic_vars.angle_mode){
+            case "Deg":
+                function_string += "d"
+            break;
+
+            case "Gra":
+                function_string += "g"
+            break; 
+        }
+        function_string += "("
+        super("brackets_operation",left,"tan(",function_string)
     }
 }
 
 class ASin_Element extends Math_Element{
-    constructor(left){
-        super("brackets_operation",left,"sin<span class='pow_top'>-1</span>(","180/PI*asin(")
+    constructor(left,global_logic_vars){
+        let function_string = ""
+        switch(global_logic_vars.angle_mode){
+            case "Deg":
+                function_string += "180/PI*"
+            break;
+
+            case "Gra":
+                function_string += "200/PI*"
+            break; 
+        }
+        function_string += "asin("
+        super("brackets_operation",left,"sin<span class='pow_top'>-1</span>(",function_string)
     }
 }
 
 class ACos_Element extends Math_Element{
-    constructor(left){
-        super("brackets_operation",left,"cos<span class='pow_top'>-1</span>(","180/PI*acos(")
+    constructor(left,global_logic_vars){
+        let function_string = ""
+        switch(global_logic_vars.angle_mode){
+            case "Deg":
+                function_string += "180/PI*"
+            break;
+
+            case "Gra":
+                function_string += "200/PI*"
+            break; 
+        }
+        function_string += "acos("
+        super("brackets_operation",left,"cos<span class='pow_top'>-1</span>(",function_string)
     }
 }
 
 class ATan_Element extends Math_Element{
-    constructor(left){
-        super("brackets_operation",left,"tan<span class='pow_top'>-1</span>(","180/PI*atan(")
+    constructor(left,global_logic_vars){
+        let function_string = ""
+        switch(global_logic_vars.angle_mode){
+            case "Deg":
+                function_string += "180/PI*"
+            break;
+
+            case "Gra":
+                function_string += "200/PI*"
+            break; 
+        }
+        function_string += "atan("
+        super("brackets_operation",left,"tan<span class='pow_top'>-1</span>(",function_string)
     }
 }
 
@@ -975,6 +1050,9 @@ class SetupSelectInput extends InputHandler{
         super(display_input_element, math_input_element, display_output_element, math_output_element, global_logic_vars, ui, userLang)
         this.parent_handler = parent_handler
         this.setup_map = {
+            "key_3":"Deg",
+            "key_4":"Rad",
+            "key_5":"Gra",
             "key_6":"Fix",
             "key_8":"Norm",
         }
@@ -1011,7 +1089,7 @@ class SetupSelectInput extends InputHandler{
             if(input_code in this.setup_map){
                 this.input_history.push(input_code)
                 let this_setting = this.setup_map[input_code]
-                if(!this_setting in this.sub_menus){
+                if(!(this_setting in this.sub_menus)){
                     this.ui.set_setup_setting(this_setting)
                 }
             }
@@ -1034,8 +1112,8 @@ class SetupSelectInput extends InputHandler{
             out_string += this.sub_menus[this.setup_map[this.input_history[0]]]
         }else{
             out_string +=       "1:______2:______<br>"
-            out_string +=       "3:______4:______<br>"
-            out_string +=       "5:______6:Fix<br>"
+            out_string +=       "3:Deg&nbsp;&nbsp;&nbsp;4:Rad<br>"
+            out_string +=       "5:Gra&nbsp;&nbsp;&nbsp;6:Fix<br>"
             out_string +=       "7:______8:Norm"
         }
         this.math_output_element.innerHTML = ""
@@ -1538,32 +1616,32 @@ class EquationInputHandler extends InputHandler{
                     break;
 
                 case "key_sin":
-                    new_elements.push(new Sin_Element(cursor_element))
+                    new_elements.push(new Sin_Element(cursor_element,this.global_logic_vars))
                     cursor_element = new_elements[0]
                     break;
 
                 case "key_cos":
-                    new_elements.push(new Cos_Element(cursor_element))
+                    new_elements.push(new Cos_Element(cursor_element,this.global_logic_vars))
                     cursor_element = new_elements[0]
                     break;
 
                 case "key_tan":
-                    new_elements.push(new Tan_Element(cursor_element))
+                    new_elements.push(new Tan_Element(cursor_element,this.global_logic_vars))
                     cursor_element = new_elements[0]
                     break;
                 
                 case "key_sin-1":
-                    new_elements.push(new ASin_Element(cursor_element))
+                    new_elements.push(new ASin_Element(cursor_element,this.global_logic_vars))
                     cursor_element = new_elements[0]
                     break;
 
                 case "key_cos-1":
-                    new_elements.push(new ACos_Element(cursor_element))
+                    new_elements.push(new ACos_Element(cursor_element,this.global_logic_vars))
                     cursor_element = new_elements[0]
                     break;
 
                 case "key_tan-1":
-                    new_elements.push(new ATan_Element(cursor_element))
+                    new_elements.push(new ATan_Element(cursor_element,this.global_logic_vars))
                     cursor_element = new_elements[0]
                     break;
 

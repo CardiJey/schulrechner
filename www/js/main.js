@@ -22,6 +22,7 @@ let global_logic_vars = {
     "prefer_decimals": false,
     "calc_mode": "COMP",
     "rounding_mode": "Norm_1",
+    "angle_mode": "Deg",
     "subres_functions" : {}
 }
 
@@ -206,6 +207,12 @@ class UI{
                 location.reload();
             break;
 
+            case "Deg":
+            case "Rad":
+            case "Gra":
+                localStorage.setItem("angleMode", setting);
+                location.reload();
+            break;
         }
         
     }
@@ -331,6 +338,24 @@ document.addEventListener("DOMContentLoaded", async () => {
                 case "Fix_8":
                 case "Fix_9":
                     document.querySelector('[inkscape\\3a label="indicator_fix"]').style.visibility = "visible"
+                break
+            }
+
+            let angle_mode = localStorage.getItem("angleMode")
+            if (angle_mode) {
+                global_logic_vars.angle_mode = angle_mode
+            }
+            switch(angle_mode){
+                case "Deg":
+                    document.querySelector('[inkscape\\3a label="indicator_deg"]').style.visibility = "visible"
+                break
+
+                case "Rad":
+                    document.querySelector('[inkscape\\3a label="indicator_rad"]').style.visibility = "visible"
+                break
+
+                case "Gra":
+                    document.querySelector('[inkscape\\3a label="indicator_gra"]').style.visibility = "visible"
                 break
             }
 
