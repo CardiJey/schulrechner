@@ -858,6 +858,12 @@ class InputHandler{
             if(resulting_fraction[1] != 1 && resulting_fraction_length <= 9){
                 return "<span class='frac_wrapper'><span class='frac_top'>" + resulting_fraction[0] + "</span><span class='frac_bottom'>" + resulting_fraction[1] + "</span></span>"
             }
+        }else if(format_as == "sexagesimal"){
+             let sexa_d = Math.floor(num)
+             let sexa_m = Math.floor((num-sexa_d)*60)
+             let sexa_s = Math.round((num-sexa_d-sexa_m/60)*60*60*100)/100
+
+             return sexa_d + "°" + sexa_m + "′" + sexa_s + "‴"
         }
 
         if (this.global_logic_vars.rounding_mode.startsWith("Fix")){
