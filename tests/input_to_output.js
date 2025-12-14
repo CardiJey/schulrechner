@@ -2160,6 +2160,26 @@ const tests = [
         "calc_mode": "CMPLX",
         "rounding_mode": "Norm_1",
         "angle_mode": "Gra"
+    },
+    {
+        "userLang": "en-US",
+        "name": "sexagesimal output toggle test",
+        "input_history": [
+            "key_1",
+            "key_comma",
+            "key_1",
+            "key_2",
+            "key_3",
+            "key_4",
+            "key_5",
+            "key_6",
+            "key_=",
+            "key_°"
+        ],
+        "rendered_input": "1.123456 ",
+        "rendered_output": "1°7′24.44‴",
+        "calc_mode": "CMPLX",
+        "rounding_mode": "Norm_1"
     }
 ]
 
