@@ -57,6 +57,15 @@
   </developer>
   <content_rating type="oars-1.0"></content_rating>
   <releases>
+    <release version="1.13.0" date="2025-12-14">
+      <description>
+        <ul>
+          <li>Feature: °′‴-button now switches to DMS format</li>
+          <li>Feature: Added option to toggle between Deg, Rad and Gra angle modes</li>
+          <li>Tweak: Updated dependencies</li>
+        </ul>
+      </description>
+    </release>
     <release version="1.12.0" date="2025-10-05">
       <description>
         <ul>
