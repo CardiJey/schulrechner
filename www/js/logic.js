@@ -821,20 +821,20 @@ class InputHandler{
         return [res,resulting_fraction]
     }
 
-    formatNumber(num,as_fraction=true,epsilon=1.12e-16) {
+    formatNumber(num,format_as="fraction",epsilon=1.12e-16) {
         if(typeof num == "string"){
             return num
         }
         if(typeof num == "object"){
-            let re_string = this.formatNumber(num.re,as_fraction,epsilon=1e-14)
-            let im_string = this.formatNumber(num.im,as_fraction,epsilon=1e-14)
+            let re_string = this.formatNumber(num.re,format_as,epsilon=1e-14)
+            let im_string = this.formatNumber(num.im,format_as,epsilon=1e-14)
             let res_string = ""
             if(re_string != "0"){
                 res_string += re_string
             }
             if(im_string != "0"){
                 if(re_string != "0"){
-                    if(!as_fraction){
+                    if(format_as != "fraction"){
                         res_string += "<br>"
                     }
                     res_string += "+"
@@ -851,7 +851,7 @@ class InputHandler{
             }
         }
         
-        if(as_fraction){
+        if(format_as == "fraction"){
             let resulting_fraction = this.decimal_to_continued_fraction(num,epsilon)[1]
             let resulting_fraction_length = (resulting_fraction[0].toString() + resulting_fraction[1].toString()).length
 
@@ -1913,7 +1913,7 @@ class EquationSelectInputHandler extends InputHandler{
         this.ans_value = 0
         this.input_strings = []
         this.results = []
-        this.as_fraction = !this.global_logic_vars.prefer_decimals
+        this.format_as = (this.global_logic_vars.prefer_decimals)?"decimal":"fraction"
         this.user_var = {
             "M":0
         }
@@ -1927,7 +1927,7 @@ class EquationSelectInputHandler extends InputHandler{
         }else{
             this.equations.push(new EquationInputHandler(this.display_input_element, this.math_input_element, this.display_output_element, this.math_output_element, this, this.global_logic_vars, this.ui, this.userLang))
         }
-        this.as_fraction = !this.global_logic_vars.prefer_decimals
+        this.format_as = (this.global_logic_vars.prefer_decimals)?"decimal":"fraction"
     }
 
     select_equation(up){
@@ -1938,7 +1938,7 @@ class EquationSelectInputHandler extends InputHandler{
             this.display_equation_index = Math.max( 0, Math.min(this.display_equation_index + 1, this.equations.length - 1) )
         }
         if(index_before != this.display_equation_index){
-            this.as_fraction = !this.global_logic_vars.prefer_decimals
+            this.format_as = (this.global_logic_vars.prefer_decimals)?"decimal":"fraction"
         }
     }
 
@@ -1973,7 +1973,20 @@ class EquationSelectInputHandler extends InputHandler{
             break;
 
             case "key_SD":
-                this.as_fraction = !this.as_fraction
+                if(this.format_as == "fraction"){
+                    this.format_as = "decimal"
+                }else{
+                    this.format_as = "fraction"
+                }
+                this.update_display();
+            break;
+
+            case "key_°":
+                if(this.format_as == "sexagesimal"){
+                    this.format_as = "decimal"
+                }else{
+                    this.format_as = "sexagesimal"
+                }
                 this.update_display();
             break;
 
@@ -2010,7 +2023,7 @@ class EquationSelectInputHandler extends InputHandler{
     update_display() {
         if(this.equations.length > 0){
             this.math_input_element.innerHTML = this.input_strings[this.display_equation_index]
-            this.math_output_element.innerHTML = this.formatNumber(this.results[this.display_equation_index],this.as_fraction)
+            this.math_output_element.innerHTML = this.formatNumber(this.results[this.display_equation_index],this.format_as)
             this.math_input_element.scroll(0,0)
             this.ui.vertical_align_elements()
         }
