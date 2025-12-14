@@ -1,3 +1,7 @@
+- 1.13.0
+- performed tests for 1.13.0
+- Flatpak changelog added
+- changelog für 1.13.0 hinzugefügt
 - 1.12.1
 - added sexagesimal test
 - Feature: added sexagesimal output toggle
