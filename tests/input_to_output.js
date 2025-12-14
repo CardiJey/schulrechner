@@ -38,7 +38,7 @@ class Dummy_UI{
     align_element(displayElement, mathElement){}
 }
 
-function eval_input_history(input_history,userLang,prefer_decimals=false,calc_mode="COMP",rounding_mode="Norm_1"){
+function eval_input_history(input_history,userLang,prefer_decimals=false,calc_mode="COMP",rounding_mode="Norm_1",angle_mode="Deg"){
     let dummy_display_input_element = new Dummy_Element()
     let dummy_math_input_element = new Dummy_Element()
     let dummy_display_output_element = new Dummy_Element()
@@ -55,6 +55,7 @@ function eval_input_history(input_history,userLang,prefer_decimals=false,calc_mo
         "prefer_decimals": prefer_decimals,
         "calc_mode": calc_mode,
         "rounding_mode": rounding_mode,
+        "angle_mode": angle_mode,
         "subres_functions": {}
     }
 
@@ -2009,6 +2010,156 @@ const tests = [
         "rendered_output": "<span class=\"frac_wrapper\"><span class=\"frac_top\">945</span><span class=\"frac_bottom\">4</span></span>",
         "calc_mode": "COMP",
         "rounding_mode": "Norm_1"
+    },
+    {
+        "userLang": "en-US",
+        "name": "angle_mode Deg test",
+        "input_history": [
+            "key_sin",
+            "key_0",
+            "key_comma",
+            "key_5",
+            "key_)",
+            "key_+",
+            "key_shift",
+            "key_sin",
+            "key_0",
+            "key_comma",
+            "key_5",
+            "key_)",
+            "key_+",
+            "key_cos",
+            "key_0",
+            "key_comma",
+            "key_5",
+            "key_)",
+            "key_+",
+            "key_shift",
+            "key_cos",
+            "key_0",
+            "key_comma",
+            "key_5",
+            "key_)",
+            "key_+",
+            "key_tan",
+            "key_0",
+            "key_comma",
+            "key_5",
+            "key_)",
+            "key_+",
+            "key_shift",
+            "key_tan",
+            "key_0",
+            "key_comma",
+            "key_5",
+            "key_)",
+            "key_="
+        ],
+        "rendered_input": "sin(0.5)+sin<span class=\"pow_top\">-1</span>(0.5)+cos(0.5)+cos<span class=\"pow_top\">-1</span>(0.5)+tan(0.5)+tan<span class=\"pow_top\">-1</span>(0.5) ",
+        "rendered_output": "117.5824665",
+        "calc_mode": "CMPLX",
+        "rounding_mode": "Norm_1",
+        "angle_mode": "Deg"
+    },
+    {
+        "userLang": "en-US",
+        "name": "angle_mode Rad test",
+        "input_history": [
+            "key_sin",
+            "key_0",
+            "key_comma",
+            "key_5",
+            "key_)",
+            "key_+",
+            "key_shift",
+            "key_sin",
+            "key_0",
+            "key_comma",
+            "key_5",
+            "key_)",
+            "key_+",
+            "key_cos",
+            "key_0",
+            "key_comma",
+            "key_5",
+            "key_)",
+            "key_+",
+            "key_shift",
+            "key_cos",
+            "key_0",
+            "key_comma",
+            "key_5",
+            "key_)",
+            "key_+",
+            "key_tan",
+            "key_0",
+            "key_comma",
+            "key_5",
+            "key_)",
+            "key_+",
+            "key_shift",
+            "key_tan",
+            "key_0",
+            "key_comma",
+            "key_5",
+            "key_)",
+            "key_="
+        ],
+        "rendered_input": "sin(0.5)+sin<span class=\"pow_top\">-1</span>(0.5)+cos(0.5)+cos<span class=\"pow_top\">-1</span>(0.5)+tan(0.5)+tan<span class=\"pow_top\">-1</span>(0.5) ",
+        "rendered_output": "3.937754526",
+        "calc_mode": "CMPLX",
+        "rounding_mode": "Norm_1",
+        "angle_mode": "Rad"
+    },
+    {
+        "userLang": "en-US",
+        "name": "angle_mode Gra test",
+        "input_history": [
+            "key_sin",
+            "key_0",
+            "key_comma",
+            "key_5",
+            "key_)",
+            "key_+",
+            "key_shift",
+            "key_sin",
+            "key_0",
+            "key_comma",
+            "key_5",
+            "key_)",
+            "key_+",
+            "key_cos",
+            "key_0",
+            "key_comma",
+            "key_5",
+            "key_)",
+            "key_+",
+            "key_shift",
+            "key_cos",
+            "key_0",
+            "key_comma",
+            "key_5",
+            "key_)",
+            "key_+",
+            "key_tan",
+            "key_0",
+            "key_comma",
+            "key_5",
+            "key_)",
+            "key_+",
+            "key_shift",
+            "key_tan",
+            "key_0",
+            "key_comma",
+            "key_5",
+            "key_)",
+            "key_="
+        ],
+        "rendered_input": "sin(0.5)+sin<span class=\"pow_top\">-1</span>(0.5)+cos(0.5)+cos<span class=\"pow_top\">-1</span>(0.5)+tan(0.5)+tan<span class=\"pow_top\">-1</span>(0.5) ",
+        "rendered_output": "130.5324007",
+        "calc_mode": "CMPLX",
+        "rounding_mode": "Norm_1",
+        "angle_mode": "Gra"
     }
 ]
 
@@ -2059,12 +2210,17 @@ describe(`⚙️ Automated Tests`, () => {
             this_rounding_mode = this_test.rounding_mode
         }
 
+        let this_angle_mode = "Deg"
+        if("angle_mode" in this_test){
+            this_angle_mode = this_test.angle_mode
+        }
+
         let rendered_input = this_test.rendered_input.replaceAll("\"","'").replace(/\s*style='[^']*'/g, '')
         let rendered_output = this_test.rendered_output.replaceAll("\"","'").replace(/\s*style='[^']*'/g, '')
 
         test(this_test.name, (t) => {
             assert.deepStrictEqual(
-                eval_input_history(this_test.input_history,this_userLang,this_prefer_decimals,this_calc_mode,this_rounding_mode),
+                eval_input_history(this_test.input_history,this_userLang,this_prefer_decimals,this_calc_mode,this_rounding_mode,this_angle_mode),
                 [rendered_input,rendered_output]
             );
         })
