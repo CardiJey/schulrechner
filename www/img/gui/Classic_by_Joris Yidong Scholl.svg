@@ -81,9 +81,9 @@
      inkscape:pagecheckerboard="1"
      inkscape:deskcolor="#505050"
      showgrid="false"
-     inkscape:zoom="1.087148"
-     inkscape:cx="1498.416"
-     inkscape:cy="813.13676"
+     inkscape:zoom="0.16794594"
+     inkscape:cx="1482.62"
+     inkscape:cy="2018.5067"
      inkscape:window-width="1670"
      inkscape:window-height="969"
      inkscape:window-x="0"
@@ -2155,7 +2155,8 @@
     <g
        id="g2541"
        inkscape:label="label_eng"
-       style="display:none">
+       style="display:inline"
+       transform="rotate(3.7189442,903.24953,3105.3217)">
       <path
          style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:14.616;stroke-linecap:square;stroke-dasharray:none"
          d="m 662.34388,3236.0754 5.16787,68.5246 48.76393,-3.724 -1.19708,-13.2243 -29.12568,0.417 -0.61991,-13.2257 26.03906,-2.4317 -1.84732,-11.9951 -25.39708,1.4721 -1.46373,-13.2959 28.25425,-2.6496 -0.9785,-11.5765 z"
