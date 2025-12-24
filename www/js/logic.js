@@ -864,6 +864,22 @@ class InputHandler{
              let sexa_s = Math.round((num-sexa_d-sexa_m/60)*60*60*100)/100
 
              return sexa_d + "°" + sexa_m + "′" + sexa_s + "‴"
+        }else if(format_as.startsWith("eng")){
+            let eng_level = parseInt(format_as.substring(3))
+            let this_exponent = (Math.floor(Math.log10(num) / 3) + eng_level - 4) * 3
+            let this_factor = Math.pow(10,this_exponent)
+            let res_number = num / this_factor
+
+            let decimal_places = 9
+            if (this.global_logic_vars.rounding_mode.startsWith("Fix")){
+                decimal_places = parseInt(this.global_logic_vars.rounding_mode[4])
+            }
+            res_number = Math.round(res_number * Math.pow(10,decimal_places), decimal_places) / Math.pow(10,decimal_places)
+
+            return new Intl.NumberFormat(this.userLang, {
+                useGrouping: false,
+                maximumSignificantDigits: 10
+            }).format(res_number) + "<span class='pow10'>×⒑</span><span class='pow_top'>" + this_exponent + "</span>"
         }
 
         if (this.global_logic_vars.rounding_mode.startsWith("Fix")){
@@ -1992,6 +2008,17 @@ class EquationSelectInputHandler extends InputHandler{
                     this.format_as = "decimal"
                 }else{
                     this.format_as = "sexagesimal"
+                }
+                this.update_display();
+            break;
+
+            case "key_eng":
+                if(this.format_as.startsWith("eng")){
+                    let eng_level = parseInt(this.format_as.substring(3))
+                    eng_level = Math.min(eng_level + 1,9)
+                    this.format_as = "eng" + eng_level
+                }else{
+                    this.format_as = "eng4"
                 }
                 this.update_display();
             break;
