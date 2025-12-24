@@ -82,8 +82,8 @@
      inkscape:deskcolor="#505050"
      showgrid="false"
      inkscape:zoom="0.16794594"
-     inkscape:cx="1482.62"
-     inkscape:cy="2018.5067"
+     inkscape:cx="512.06954"
+     inkscape:cy="3102.1887"
      inkscape:window-width="1670"
      inkscape:window-height="969"
      inkscape:window-x="0"
@@ -2385,6 +2385,11 @@
          id="path2320"
          sodipodi:nodetypes="cssccc" />
     </g>
+    <path
+       style="display:inline;fill:#df9300;fill-opacity:1;stroke:none;stroke-width:8.41701;stroke-linecap:square"
+       d="m 690.13399,3111.9042 v -6.179 l -30.5699,11.8702 30.5699,11.7077 v -6.6669 h 43.741 l -0.3252,-10.2442 z"
+       id="path1029"
+       inkscape:label="label_back" />
   </g>
   <metadata
      id="metadata1012">
