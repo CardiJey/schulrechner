@@ -775,6 +775,19 @@ class InputHandler{
         this.global_logic_vars = global_logic_vars;
         this.ui = ui
         this.userLang = userLang
+        this.modes = {}
+    }
+
+    toggle_mode(mode_to_toggle){
+        for(let mode in this.modes){
+            if(mode == mode_to_toggle){
+                this.modes[mode] = !this.modes[mode]
+            }else{
+                this.modes[mode] = false
+            }
+        }
+
+        this.ui.toggle_indicators(this.modes)
     }
 
     round_to_significant_places(num,places){
@@ -1161,18 +1174,6 @@ class EquationInputHandler extends InputHandler{
             "STO": false
         }
         this.mode_maps = global_logic_vars.mode_maps
-    }
-
-    toggle_mode(mode_to_toggle){
-        for(let mode in this.modes){
-            if(mode == mode_to_toggle){
-                this.modes[mode] = !this.modes[mode]
-            }else{
-                this.modes[mode] = false
-            }
-        }
-
-        this.ui.toggle_indicators(this.modes)
     }
 
     // Method to handle input
@@ -1939,6 +1940,12 @@ class EquationSelectInputHandler extends InputHandler{
         this.user_var = {
             "M":0
         }
+        this.modes = {
+            "shift": false,
+            "alpha": false,
+            "STO": false
+        }
+
 
         this.global_logic_vars.active_input_handler = this.equations[this.display_equation_index]
     }
@@ -2015,7 +2022,8 @@ class EquationSelectInputHandler extends InputHandler{
             case "key_eng":
                 if(this.format_as.startsWith("eng")){
                     let eng_level = parseInt(this.format_as.substring(3))
-                    eng_level = Math.min(eng_level + 1,9)
+                    let level_dir = 1 - this.modes.shift * 2
+                    eng_level = Math.min(eng_level + level_dir,9)
                     this.format_as = "eng" + eng_level
                 }else{
                     this.format_as = "eng4"
@@ -2034,6 +2042,10 @@ class EquationSelectInputHandler extends InputHandler{
                 this.update_position();
                 this.update_display();
             break;
+
+            case "key_shift":
+                this.toggle_mode("shift")
+                break;
 
             default:
                 this.add_empty_equation()
