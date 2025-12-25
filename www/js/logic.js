@@ -775,6 +775,24 @@ class InputHandler{
         this.global_logic_vars = global_logic_vars;
         this.ui = ui
         this.userLang = userLang
+        this.modes = {
+            "shift": false,
+            "alpha": false,
+            "STO": false
+        }
+        this.mode_maps = global_logic_vars.mode_maps
+    }
+
+    toggle_mode(mode_to_toggle){
+        for(let mode in this.modes){
+            if(mode == mode_to_toggle){
+                this.modes[mode] = !this.modes[mode]
+            }else{
+                this.modes[mode] = false
+            }
+        }
+
+        this.ui.toggle_indicators(this.modes)
     }
 
     round_to_significant_places(num,places){
@@ -864,6 +882,22 @@ class InputHandler{
              let sexa_s = Math.round((num-sexa_d-sexa_m/60)*60*60*100)/100
 
              return sexa_d + "°" + sexa_m + "′" + sexa_s + "‴"
+        }else if(format_as.startsWith("eng")){
+            let eng_level = parseInt(format_as.substring(3))
+            let this_exponent = (Math.floor(Math.log10(num) / 3) + eng_level - 4) * 3
+            let this_factor = Math.pow(10,this_exponent)
+            let res_number = num / this_factor
+
+            let decimal_places = 9
+            if (this.global_logic_vars.rounding_mode.startsWith("Fix")){
+                decimal_places = parseInt(this.global_logic_vars.rounding_mode[4])
+            }
+            res_number = Math.round(res_number * Math.pow(10,decimal_places), decimal_places) / Math.pow(10,decimal_places)
+
+            return new Intl.NumberFormat(this.userLang, {
+                useGrouping: false,
+                maximumSignificantDigits: 10
+            }).format(res_number) + "<span class='pow10'>×⒑</span><span class='pow_top'>" + this_exponent + "</span>"
         }
 
         if (this.global_logic_vars.rounding_mode.startsWith("Fix")){
@@ -1139,24 +1173,6 @@ class EquationInputHandler extends InputHandler{
         super(display_input_element, math_input_element, display_output_element, math_output_element, global_logic_vars, ui, userLang)
         this.input_code_history = [];
         this.parent_handler = parent_handler
-        this.modes = {
-            "shift": false,
-            "alpha": false,
-            "STO": false
-        }
-        this.mode_maps = global_logic_vars.mode_maps
-    }
-
-    toggle_mode(mode_to_toggle){
-        for(let mode in this.modes){
-            if(mode == mode_to_toggle){
-                this.modes[mode] = !this.modes[mode]
-            }else{
-                this.modes[mode] = false
-            }
-        }
-
-        this.ui.toggle_indicators(this.modes)
     }
 
     // Method to handle input
@@ -1924,6 +1940,7 @@ class EquationSelectInputHandler extends InputHandler{
             "M":0
         }
 
+
         this.global_logic_vars.active_input_handler = this.equations[this.display_equation_index]
     }
 
@@ -1950,7 +1967,27 @@ class EquationSelectInputHandler extends InputHandler{
 
     // Method to handle input
     handle(input_code) {
-        switch(input_code){
+
+        let mapped_input_code = input_code
+
+        if(this.modes["shift"]){
+            this.toggle_mode("none")
+            if(this.mode_maps["shift"][input_code]){
+                mapped_input_code = this.mode_maps["shift"][input_code];
+            }
+        }else if(this.modes["alpha"]){
+            this.toggle_mode("none")
+            if(this.mode_maps["alpha"][input_code]){
+                mapped_input_code = this.mode_maps["alpha"][input_code];
+            }
+        }else if(this.modes["STO"]){
+            this.toggle_mode("none")
+            if(this.mode_maps["STO"][input_code]){
+                mapped_input_code = this.mode_maps["STO"][input_code];
+            }
+        }
+        
+        switch(mapped_input_code){
             case "key_=":
                 this.add_empty_equation()
                 this.equations[this.equations.length - 1].input_code_history = this.equations[this.display_equation_index].input_code_history
@@ -1996,6 +2033,19 @@ class EquationSelectInputHandler extends InputHandler{
                 this.update_display();
             break;
 
+            case "key_eng":
+            case "key_back":
+                if(this.format_as.startsWith("eng")){
+                    let eng_level = parseInt(this.format_as.substring(3))
+                    let level_dir = 1 - (mapped_input_code == "key_back") * 2
+                    eng_level = Math.max(Math.min(eng_level + level_dir,9),1)
+                    this.format_as = "eng" + eng_level
+                }else{
+                    this.format_as = "eng4"
+                }
+                this.update_display();
+            break;
+
             case "key_dir1":
                 this.select_equation(false)
                 this.update_position();
@@ -2008,19 +2058,32 @@ class EquationSelectInputHandler extends InputHandler{
                 this.update_display();
             break;
 
+            case "key_shift":
+                this.toggle_mode("shift")
+                break;
+
+            case "key_alpha":
+                this.toggle_mode("alpha")
+                break;
+
+            case "key_STO":
+                this.toggle_mode("STO")
+                break;
+
             default:
                 this.add_empty_equation()
                 this.display_equation_index = this.equations.length - 1
                 this.global_logic_vars.active_input_handler = this.equations[this.display_equation_index]
+
                 if([
                     "key_+",
                     "key_-",
                     "key_÷",
                     "key_x"
-                ].includes(input_code)){
+                ].includes(mapped_input_code)){
                     this.global_logic_vars.active_input_handler.handle("key_Ans")
                 }
-                this.global_logic_vars.active_input_handler.handle(input_code)
+                this.global_logic_vars.active_input_handler.handle(mapped_input_code)
                 this.global_logic_vars.active_input_handler.update_position();
             break;
         }

@@ -1,23 +1,21 @@
-cordova.define("cordova-plugin-inappbrowser.InAppBrowserProxy", function(require, exports, module) { /*
- *
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied.  See the License for the
- * specific language governing permissions and limitations
- * under the License.
- *
- */
+cordova.define("cordova-plugin-inappbrowser.InAppBrowserProxy", function(require, exports, module) { /**
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+    KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+*/
 
 const modulemapper = require('cordova/modulemapper');
 
@@ -26,28 +24,28 @@ let browserWrap, popup, navigationButtonsDiv, navigationButtonsDivInner, backBut
 function attachNavigationEvents (element, callback) {
     const onError = function () {
         try {
-            callback({ type: 'loaderror', url: this.contentWindow.location.href }, { keepCallback: true }); // eslint-disable-line n/no-callback-literal
+            callback({ type: 'loaderror', url: this.contentWindow.location.href }, { keepCallback: true });
         } catch (err) {
             // blocked by CORS :\
-            callback({ type: 'loaderror', url: null }, { keepCallback: true }); // eslint-disable-line n/no-callback-literal
+            callback({ type: 'loaderror', url: null }, { keepCallback: true });
         }
     };
 
     element.addEventListener('pageshow', function () {
         try {
-            callback({ type: 'loadstart', url: this.contentWindow.location.href }, { keepCallback: true }); // eslint-disable-line n/no-callback-literal
+            callback({ type: 'loadstart', url: this.contentWindow.location.href }, { keepCallback: true });
         } catch (err) {
             // blocked by CORS :\
-            callback({ type: 'loadstart', url: null }, { keepCallback: true }); // eslint-disable-line n/no-callback-literal
+            callback({ type: 'loadstart', url: null }, { keepCallback: true });
         }
     });
 
     element.addEventListener('load', function () {
         try {
-            callback({ type: 'loadstop', url: this.contentWindow.location.href }, { keepCallback: true }); // eslint-disable-line n/no-callback-literal
+            callback({ type: 'loadstop', url: this.contentWindow.location.href }, { keepCallback: true });
         } catch (err) {
             // blocked by CORS :\
-            callback({ type: 'loadstop', url: null }, { keepCallback: true }); // eslint-disable-line n/no-callback-literal
+            callback({ type: 'loadstop', url: null }, { keepCallback: true });
         }
     });
 

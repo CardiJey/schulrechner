@@ -1,3 +1,13 @@
+- 1.13.1
+- Feature: Added functionality and tests for ENG and reverse ENG button
+- Bugfix
+- added ENG button opposite
+- added label_back
+- implemented engineering notation button
+- Merge branch 'main' of github.com:CardiJey/schulrechner
+- Set ENG label to visible
+- Update cordova-plugin-inappbrowser digest to 4cf5c24 (#71)
+- Update cordova-plugin-inappbrowser digest to 1e4ab4b (#70)
 - 1.13.0
 - performed tests for 1.13.0
 - Flatpak changelog added
