@@ -2180,6 +2180,50 @@ const tests = [
         "rendered_output": "1°7′24.44‴",
         "calc_mode": "CMPLX",
         "rounding_mode": "Norm_1"
+    },
+    {
+        "userLang": "en-US",
+        "name": "ENG test",
+        "input_history": [
+            "key_1",
+            "key_comma",
+            "key_5",
+            "key_=",
+            "key_eng",
+            "key_eng"
+        ],
+        "rendered_input": "1.5 ",
+        "rendered_output": "0.0015<span class=\"pow10\">×⒑</span><span class=\"pow_top\">3</span>",
+        "calc_mode": "COMP",
+        "rounding_mode": "Norm_1"
+    },
+    {
+        "userLang": "en-US",
+        "name": "eng-back test",
+        "input_history": [
+            "key_4",
+            "key_÷",
+            "key_1",
+            "key_7",
+            "key_9",
+            "key_=",
+            "key_SD",
+            "key_eng",
+            "key_eng",
+            "key_eng",
+            "key_shift",
+            "key_eng",
+            "key_shift",
+            "key_eng",
+            "key_shift",
+            "key_eng",
+            "key_shift",
+            "key_eng"
+        ],
+        "rendered_input": "4÷179 ",
+        "rendered_output": "22346368.72<span class=\"pow10\">×⒑</span><span class=\"pow_top\">-9</span>",
+        "calc_mode": "COMP",
+        "rounding_mode": "Norm_1"
     }
 ]
 

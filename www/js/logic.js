@@ -1967,7 +1967,27 @@ class EquationSelectInputHandler extends InputHandler{
 
     // Method to handle input
     handle(input_code) {
-        switch(input_code){
+
+        let mapped_input_code = input_code
+
+        if(this.modes["shift"]){
+            this.toggle_mode("none")
+            if(this.mode_maps["shift"][input_code]){
+                mapped_input_code = this.mode_maps["shift"][input_code];
+            }
+        }else if(this.modes["alpha"]){
+            this.toggle_mode("none")
+            if(this.mode_maps["alpha"][input_code]){
+                mapped_input_code = this.mode_maps["alpha"][input_code];
+            }
+        }else if(this.modes["STO"]){
+            this.toggle_mode("none")
+            if(this.mode_maps["STO"][input_code]){
+                mapped_input_code = this.mode_maps["STO"][input_code];
+            }
+        }
+        
+        switch(mapped_input_code){
             case "key_=":
                 this.add_empty_equation()
                 this.equations[this.equations.length - 1].input_code_history = this.equations[this.display_equation_index].input_code_history
@@ -2014,10 +2034,11 @@ class EquationSelectInputHandler extends InputHandler{
             break;
 
             case "key_eng":
+            case "key_back":
                 if(this.format_as.startsWith("eng")){
                     let eng_level = parseInt(this.format_as.substring(3))
-                    let level_dir = 1 - this.modes.shift * 2
-                    eng_level = Math.min(eng_level + level_dir,9)
+                    let level_dir = 1 - (mapped_input_code == "key_back") * 2
+                    eng_level = Math.max(Math.min(eng_level + level_dir,9),1)
                     this.format_as = "eng" + eng_level
                 }else{
                     this.format_as = "eng4"
@@ -2053,25 +2074,6 @@ class EquationSelectInputHandler extends InputHandler{
                 this.add_empty_equation()
                 this.display_equation_index = this.equations.length - 1
                 this.global_logic_vars.active_input_handler = this.equations[this.display_equation_index]
-
-                let mapped_input_code = input_code
-
-                if(this.modes["shift"]){
-                    this.toggle_mode("none")
-                    if(this.mode_maps["shift"][input_code]){
-                        mapped_input_code = this.mode_maps["shift"][input_code];
-                    }
-                }else if(this.modes["alpha"]){
-                    this.toggle_mode("none")
-                    if(this.mode_maps["alpha"][input_code]){
-                        mapped_input_code = this.mode_maps["alpha"][input_code];
-                    }
-                }else if(this.modes["STO"]){
-                    this.toggle_mode("none")
-                    if(this.mode_maps["STO"][input_code]){
-                        mapped_input_code = this.mode_maps["STO"][input_code];
-                    }
-                }
 
                 if([
                     "key_+",
