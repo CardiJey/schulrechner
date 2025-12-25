@@ -775,7 +775,12 @@ class InputHandler{
         this.global_logic_vars = global_logic_vars;
         this.ui = ui
         this.userLang = userLang
-        this.modes = {}
+        this.modes = {
+            "shift": false,
+            "alpha": false,
+            "STO": false
+        }
+        this.mode_maps = global_logic_vars.mode_maps
     }
 
     toggle_mode(mode_to_toggle){
@@ -1168,12 +1173,6 @@ class EquationInputHandler extends InputHandler{
         super(display_input_element, math_input_element, display_output_element, math_output_element, global_logic_vars, ui, userLang)
         this.input_code_history = [];
         this.parent_handler = parent_handler
-        this.modes = {
-            "shift": false,
-            "alpha": false,
-            "STO": false
-        }
-        this.mode_maps = global_logic_vars.mode_maps
     }
 
     // Method to handle input
@@ -1940,11 +1939,6 @@ class EquationSelectInputHandler extends InputHandler{
         this.user_var = {
             "M":0
         }
-        this.modes = {
-            "shift": false,
-            "alpha": false,
-            "STO": false
-        }
 
 
         this.global_logic_vars.active_input_handler = this.equations[this.display_equation_index]
@@ -2047,19 +2041,47 @@ class EquationSelectInputHandler extends InputHandler{
                 this.toggle_mode("shift")
                 break;
 
+            case "key_alpha":
+                this.toggle_mode("alpha")
+                break;
+
+            case "key_STO":
+                this.toggle_mode("STO")
+                break;
+
             default:
                 this.add_empty_equation()
                 this.display_equation_index = this.equations.length - 1
                 this.global_logic_vars.active_input_handler = this.equations[this.display_equation_index]
+
+                let mapped_input_code = input_code
+
+                if(this.modes["shift"]){
+                    this.toggle_mode("none")
+                    if(this.mode_maps["shift"][input_code]){
+                        mapped_input_code = this.mode_maps["shift"][input_code];
+                    }
+                }else if(this.modes["alpha"]){
+                    this.toggle_mode("none")
+                    if(this.mode_maps["alpha"][input_code]){
+                        mapped_input_code = this.mode_maps["alpha"][input_code];
+                    }
+                }else if(this.modes["STO"]){
+                    this.toggle_mode("none")
+                    if(this.mode_maps["STO"][input_code]){
+                        mapped_input_code = this.mode_maps["STO"][input_code];
+                    }
+                }
+
                 if([
                     "key_+",
                     "key_-",
                     "key_÷",
                     "key_x"
-                ].includes(input_code)){
+                ].includes(mapped_input_code)){
                     this.global_logic_vars.active_input_handler.handle("key_Ans")
                 }
-                this.global_logic_vars.active_input_handler.handle(input_code)
+                this.global_logic_vars.active_input_handler.handle(mapped_input_code)
                 this.global_logic_vars.active_input_handler.update_position();
             break;
         }
