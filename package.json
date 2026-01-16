@@ -18,7 +18,7 @@
   "author": "Joris Yidong Scholl",
   "license": "GPL-3.0-only",
   "devDependencies": {
-    "electron": "^39.0.0",
+    "electron": "^40.0.0",
     "electron-builder": "^26.0.0"
   },
   "cordova": {
