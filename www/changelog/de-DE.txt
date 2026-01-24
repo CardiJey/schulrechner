@@ -1,0 +1,4 @@
+Feature: °′‴-Knopf zeigt Ergebnis nun im DMS format an
+Feature: Option hinzugefügt zwischen Deg, Rad and Gra Winkel Modus zu wählen
+Feature: Eng-Knopf hinzugefügt für Engineering-Notation
+Tweak: Dependencies aktualisiert

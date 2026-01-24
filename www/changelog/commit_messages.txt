@@ -1,3 +1,6 @@
+- 1.14.0
+- updated versioncode
+- Enter manual test results
 - 1.13.2
 - Updated versioncode
 - Added flatpak changelog
