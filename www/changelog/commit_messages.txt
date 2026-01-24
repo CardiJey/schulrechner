@@ -1,3 +1,10 @@
+- 1.13.2
+- Updated versioncode
+- Added flatpak changelog
+- added changelog for 1.14.0
+- Update dependency electron to v40 (#73)
+- Update dependency electron-builder to v26.4.0 (#72)
+- Drew more buttons (set to invisile until implemented)
 - 1.13.1
 - Feature: Added functionality and tests for ENG and reverse ENG button
 - Bugfix
