@@ -979,6 +979,10 @@ class SelectInput extends InputHandler{
                 case "key_ac":
                     this.global_logic_vars.active_input_handler = this.parent_handler
                 break;
+
+                case "key_on":
+                    this.parent_handler.ui.reload_app()
+                break;
         }
         if(this.numbers.length >= this.max_input.length){
             this.global_logic_vars.active_input_handler = this.parent_handler
@@ -1064,6 +1068,8 @@ class ModeSelectInput extends InputHandler{
             this.ui.set_calc_mode(this.calc_mode_map[input_code])
         }else if(["key_ac","key_mode"].indexOf(input_code) != -1){
             this.global_logic_vars.active_input_handler = this.parent_handler
+        }else if(input_code == "key_on"){
+            this.parent_handler.ui.reload_app()
         }
         this.global_logic_vars.active_input_handler.update_display(true);
         this.global_logic_vars.active_input_handler.update_position()
@@ -1123,7 +1129,9 @@ class SetupSelectInput extends InputHandler{
 
     // Method to handle input
     handle(input_code) {
-        if(["key_ac","key_mode"].indexOf(input_code) != -1){
+        if(input_code == "key_on"){
+            this.parent_handler.ui.reload_app()
+        }else if(["key_ac","key_mode"].indexOf(input_code) != -1){
             this.global_logic_vars.active_input_handler = this.parent_handler
         }else if(this.input_history.length == 0){
             if(input_code in this.setup_map){
@@ -1133,7 +1141,7 @@ class SetupSelectInput extends InputHandler{
                     this.ui.set_setup_setting(this_setting)
                 }
             }
-        }else{
+        }else {
             let this_sub_menu = this.setup_map[this.input_history[0]]
             if(input_code in this.sub_setup_map[this_sub_menu]){
                 this.input_history.push(input_code)
@@ -1475,6 +1483,10 @@ class EquationInputHandler extends InputHandler{
             }
 
             switch(input_code_for_switch){
+                case "key_on":
+                    this.ui.reload_app()
+                break;
+
                 case "key_0":
                 case "key_1":
                 case "key_2":

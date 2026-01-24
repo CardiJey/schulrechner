@@ -32,6 +32,7 @@ class Dummy_UI{
     toggle_changelog(){}
     setRootFontSize(size){}
     handle_resize(){}
+    reload_app(){}
     vertical_align_elements() {}
     toggle_indicators(modes){}
     scroll_element(this_element){}
