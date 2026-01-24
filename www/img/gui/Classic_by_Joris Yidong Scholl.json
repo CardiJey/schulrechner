@@ -16,7 +16,8 @@
             "key_7":"key_CONST",
             "key_integ":"key_deriv",
             "key_mode":"key_setup",
-            "key_eng": "key_back"
+            "key_eng": "key_back",
+            "key_ac": "key_off"
         },"alpha":{
             "key_pow10":"key_e",
             "key_(-)":"key_uservar_A",

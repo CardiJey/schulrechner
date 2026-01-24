@@ -1,3 +1,8 @@
+- 1.14.1
+- updated versioncode
+- Feature: Added Off-button
+- Feature: Added ON-button
+- toggled OFF label visible
 - 1.14.0
 - updated versioncode
 - Enter manual test results

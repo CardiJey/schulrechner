@@ -216,6 +216,10 @@ class UI{
         }
         
     }
+
+    reload_app(){
+        location.reload();
+    }
 }
 
 let ui = new UI(global_logic_vars)

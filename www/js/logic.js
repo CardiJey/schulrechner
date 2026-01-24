@@ -928,6 +928,26 @@ class InputHandler{
     }
 }
 
+class VoidInputHandler extends InputHandler{
+    handle(input_code) {    
+        if(input_code == 'key_on'){
+            this.ui.reload_app()
+        }
+        this.global_logic_vars.active_input_handler.update_display(true);
+        this.global_logic_vars.active_input_handler.update_position()
+    }
+
+    update_display(x) {
+        this.math_input_element.innerHTML = "OFF"
+        this.math_output_element.innerHTML = ""
+    }
+
+    update_position() {
+        this.ui.align_element(this.display_input_element, this.math_input_element);
+        this.ui.align_element(this.display_output_element, this.math_output_element);
+    }
+}
+
 class SelectInput extends InputHandler{
     constructor(display_input_element, math_input_element, display_output_element, math_output_element, parent_handler, global_logic_vars, ui, userLang, max_input){
         super(display_input_element, math_input_element, display_output_element, math_output_element, global_logic_vars, ui, userLang)
@@ -978,6 +998,10 @@ class SelectInput extends InputHandler{
 
                 case "key_ac":
                     this.global_logic_vars.active_input_handler = this.parent_handler
+                break;
+
+                case "key_on":
+                    this.parent_handler.ui.reload_app()
                 break;
         }
         if(this.numbers.length >= this.max_input.length){
@@ -1064,6 +1088,8 @@ class ModeSelectInput extends InputHandler{
             this.ui.set_calc_mode(this.calc_mode_map[input_code])
         }else if(["key_ac","key_mode"].indexOf(input_code) != -1){
             this.global_logic_vars.active_input_handler = this.parent_handler
+        }else if(input_code == "key_on"){
+            this.parent_handler.ui.reload_app()
         }
         this.global_logic_vars.active_input_handler.update_display(true);
         this.global_logic_vars.active_input_handler.update_position()
@@ -1123,7 +1149,9 @@ class SetupSelectInput extends InputHandler{
 
     // Method to handle input
     handle(input_code) {
-        if(["key_ac","key_mode"].indexOf(input_code) != -1){
+        if(input_code == "key_on"){
+            this.parent_handler.ui.reload_app()
+        }else if(["key_ac","key_mode"].indexOf(input_code) != -1){
             this.global_logic_vars.active_input_handler = this.parent_handler
         }else if(this.input_history.length == 0){
             if(input_code in this.setup_map){
@@ -1133,7 +1161,7 @@ class SetupSelectInput extends InputHandler{
                     this.ui.set_setup_setting(this_setting)
                 }
             }
-        }else{
+        }else {
             let this_sub_menu = this.setup_map[this.input_history[0]]
             if(input_code in this.sub_setup_map[this_sub_menu]){
                 this.input_history.push(input_code)
@@ -1177,10 +1205,7 @@ class EquationInputHandler extends InputHandler{
 
     // Method to handle input
     handle(input_code) {
-        if(input_code == "key_ac"){
-            this.input_code_history = []
-            this.toggle_mode("none")
-        }else if(input_code == "key_shift"){
+        if(input_code == "key_shift"){
             this.toggle_mode("shift")
         }else if(input_code == "key_alpha"){
             this.toggle_mode("alpha")
@@ -1226,6 +1251,11 @@ class EquationInputHandler extends InputHandler{
             }
             const last_input_code = this.input_code_history[this.input_code_history.length - 1]
             switch(last_input_code){
+                case "key_ac":
+                    this.input_code_history = []
+                    this.toggle_mode("none")
+                break;
+
                 case "key_CONST":
                     this.global_logic_vars.active_input_handler = new ConstSelectInput(
                         this.display_input_element,
@@ -1280,6 +1310,18 @@ class EquationInputHandler extends InputHandler{
                         this.userLang
                     )
                     this.input_code_history.pop(2)
+                break;
+
+                case "key_off":
+                    this.global_logic_vars.active_input_handler = new VoidInputHandler(
+                        this.display_input_element,
+                        this.math_input_element,
+                        this.display_output_element,
+                        this.math_output_element,
+                        this.global_logic_vars,
+                        this.ui,
+                        this.userLang
+                    )
                 break;
             }
         }
@@ -1475,6 +1517,10 @@ class EquationInputHandler extends InputHandler{
             }
 
             switch(input_code_for_switch){
+                case "key_on":
+                    this.ui.reload_app()
+                break;
+
                 case "key_0":
                 case "key_1":
                 case "key_2":

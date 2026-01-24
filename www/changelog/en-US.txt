@@ -1,4 +1,0 @@
-Feature: °′‴-button now switches to DMS format
-Feature: Added option to toggle between Deg, Rad and Gra angle modes
-Feature: Added Eng-button for engineering notation
-Tweak: Updated dependencies
