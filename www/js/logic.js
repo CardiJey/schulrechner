@@ -1313,15 +1313,19 @@ class EquationInputHandler extends InputHandler{
                 break;
 
                 case "key_off":
-                    this.global_logic_vars.active_input_handler = new VoidInputHandler(
-                        this.display_input_element,
-                        this.math_input_element,
-                        this.display_output_element,
-                        this.math_output_element,
-                        this.global_logic_vars,
-                        this.ui,
-                        this.userLang
-                    )
+                    if(this.global_logic_vars.turn_off_close){
+                        this.ui.close_app()
+                    }else{
+                        this.global_logic_vars.active_input_handler = new VoidInputHandler(
+                            this.display_input_element,
+                            this.math_input_element,
+                            this.display_output_element,
+                            this.math_output_element,
+                            this.global_logic_vars,
+                            this.ui,
+                            this.userLang
+                        )
+                    }
                 break;
             }
         }

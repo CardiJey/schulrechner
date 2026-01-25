@@ -23,7 +23,8 @@ let global_logic_vars = {
     "calc_mode": "COMP",
     "rounding_mode": "Norm_1",
     "angle_mode": "Deg",
-    "subres_functions" : {}
+    "subres_functions" : {},
+    "turn_off_close": false
 }
 
 class UI{
@@ -220,6 +221,10 @@ class UI{
     reload_app(){
         location.reload();
     }
+
+    close_app(){
+        window.close()
+    }
 }
 
 let ui = new UI(global_logic_vars)
@@ -315,6 +320,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             global_logic_vars.prefer_decimals = (localStorage.getItem("preferDecimal") === "true")
             document.getElementById("prefer-decimal-input").checked = (localStorage.getItem("preferDecimal") === "true")
+
+            global_logic_vars.turn_off_close = (localStorage.getItem("turnOffClose") === "true")
+            document.getElementById("turn-off-close").checked = (localStorage.getItem("turnOffClose") === "true")
 
             let calc_mode = localStorage.getItem("calcMode")
             if (calc_mode) {
@@ -438,6 +446,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         document.getElementById("prefer-decimal-input").addEventListener("change", () => {
             global_logic_vars.prefer_decimals = document.getElementById("prefer-decimal-input").checked
             localStorage.setItem("preferDecimal", global_logic_vars.prefer_decimals);
+        });
+        document.getElementById("turn-off-close").addEventListener("change", () => {
+            global_logic_vars.turn_off_close = document.getElementById("turn-off-close").checked
+            localStorage.setItem("turnOffClose", global_logic_vars.turn_off_close);
         });
         if("cordova" in window){
             let a_elements = document.querySelectorAll("a")
