@@ -929,6 +929,15 @@ class InputHandler{
 }
 
 class VoidInputHandler extends InputHandler{
+    handle(input_code) {}
+    update_display(x) {
+        this.math_input_element.innerHTML = "__app_closed__"
+        this.math_output_element.innerHTML = "__app_closed__"
+    }
+    update_position() {}
+}
+
+class TurnedOffInputHandler extends InputHandler{
     handle(input_code) {    
         if(input_code == 'key_on'){
             this.ui.reload_app()
@@ -1316,7 +1325,7 @@ class EquationInputHandler extends InputHandler{
                     if(this.global_logic_vars.turn_off_close){
                         this.ui.close_app()
                     }else{
-                        this.global_logic_vars.active_input_handler = new VoidInputHandler(
+                        this.global_logic_vars.active_input_handler = new TurnedOffInputHandler(
                             this.display_input_element,
                             this.math_input_element,
                             this.display_output_element,
@@ -2154,4 +2163,4 @@ class EquationSelectInputHandler extends InputHandler{
     }
 }
 
-module.exports = { InputHandler, EquationSelectInputHandler, import_custom_math }
+module.exports = { InputHandler, VoidInputHandler, EquationSelectInputHandler, import_custom_math }

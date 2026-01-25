@@ -15,7 +15,7 @@ const assert = require('node:assert');
 const math = require('../www/js/math.js');
 const mode_maps = require('../www/img/gui/Classic_by_Joris Yidong Scholl.json').mode_maps
 
-const { InputHandler, EquationSelectInputHandler, import_custom_math } = require('../www/js/logic')
+const { VoidInputHandler, EquationSelectInputHandler, import_custom_math } = require('../www/js/logic')
 
 import_custom_math(math)
 
@@ -27,26 +27,40 @@ class Dummy_Element{
 }
 
 class Dummy_UI{
-    constructor(){}
+    constructor(global_logic_vars,userLang){
+        this.global_logic_vars = global_logic_vars
+        this.userLang = userLang
+    }
     async fetchChangelog(fdroid){}
     toggle_changelog(){}
     setRootFontSize(size){}
     handle_resize(){}
-    reload_app(){}
+    reload_app(){
+        this.global_logic_vars.active_input_handler = init_test_input_handler(this.global_logic_vars, this, this.userLang)
+    }
+    close_app(){
+        this.global_logic_vars.active_input_handler = init_test_input_handler(this.global_logic_vars, this, this.userLang, true)
+    }
     vertical_align_elements() {}
     toggle_indicators(modes){}
     scroll_element(this_element){}
     align_element(displayElement, mathElement){}
 }
 
-function eval_input_history(input_history,userLang,prefer_decimals=false,calc_mode="COMP",rounding_mode="Norm_1",angle_mode="Deg"){
+function init_test_input_handler(global_logic_vars, dummy_ui, userLang, app_closed = false){
     let dummy_display_input_element = new Dummy_Element()
     let dummy_math_input_element = new Dummy_Element()
     let dummy_display_output_element = new Dummy_Element()
     let dummy_math_output_element = new Dummy_Element()
 
-    let dummy_ui = new Dummy_UI()
+    if(app_closed){
+        return new VoidInputHandler(dummy_display_input_element, dummy_math_input_element, dummy_display_output_element, dummy_math_output_element, global_logic_vars, dummy_ui, userLang)
+    }else{
+        return new EquationSelectInputHandler(dummy_display_input_element, dummy_math_input_element, dummy_display_output_element, dummy_math_output_element, global_logic_vars, dummy_ui, userLang)
+    }
+}
 
+function eval_input_history(input_history,userLang,prefer_decimals=false,calc_mode="COMP",rounding_mode="Norm_1",angle_mode="Deg",turn_off_close=false){
     let global_logic_vars = {
         "active_input_handler": undefined,
         "next_align_id": 0,
@@ -57,10 +71,13 @@ function eval_input_history(input_history,userLang,prefer_decimals=false,calc_mo
         "calc_mode": calc_mode,
         "rounding_mode": rounding_mode,
         "angle_mode": angle_mode,
-        "subres_functions": {}
+        "subres_functions": {},
+        "turn_off_close": turn_off_close
     }
 
-    global_logic_vars.active_input_handler = new EquationSelectInputHandler(dummy_display_input_element, dummy_math_input_element, dummy_display_output_element, dummy_math_output_element, global_logic_vars, dummy_ui, userLang)
+    let dummy_ui = new Dummy_UI(global_logic_vars,userLang)
+
+    global_logic_vars.active_input_handler = init_test_input_handler(global_logic_vars, dummy_ui, userLang)
 
     for(input_index = 0; input_index < input_history.length; input_index++){
         const input_code = input_history[input_index]
@@ -68,7 +85,10 @@ function eval_input_history(input_history,userLang,prefer_decimals=false,calc_mo
         global_logic_vars.active_input_handler.handle(input_code)
     }
 
-    return [dummy_math_input_element.innerHTML,dummy_math_output_element.innerHTML]
+    return [
+        global_logic_vars.active_input_handler.math_input_element.innerHTML,
+        global_logic_vars.active_input_handler.math_output_element.innerHTML
+    ]
 }
 
 // You can get the expected test results and inputs by running:
@@ -2225,6 +2245,50 @@ const tests = [
         "rendered_output": "22346368.72<span class=\"pow10\">×⒑</span><span class=\"pow_top\">-9</span>",
         "calc_mode": "COMP",
         "rounding_mode": "Norm_1"
+    },
+    {
+        "userLang": "en-US",
+        "name": "turn off and on test",
+        "input_history": [
+            "key_1",
+            "key_2",
+            "key_3",
+            "key_shift",
+            "key_ac",
+            "key_7",
+            "key_on",
+            "key_4",
+            "key_5",
+            "key_6",
+            "key_="
+        ],
+        "rendered_input": "456 ",
+        "rendered_output": "456",
+        "calc_mode": "COMP",
+        "rounding_mode": "Norm_1",
+        "turn_off_close": false
+    },
+    {
+        "userLang": "en-US",
+        "name": "turn off test",
+        "input_history": [
+            "key_1",
+            "key_2",
+            "key_3",
+            "key_shift",
+            "key_ac",
+            "key_7",
+            "key_on",
+            "key_4",
+            "key_5",
+            "key_6",
+            "key_="
+        ],
+        "rendered_input": "__app_closed__",
+        "rendered_output": "__app_closed__",
+        "calc_mode": "COMP",
+        "rounding_mode": "Norm_1",
+        "turn_off_close": true
     }
 ]
 
@@ -2264,6 +2328,10 @@ describe(`⚙️ Automated Tests`, () => {
         if("prefer_decimals" in this_test){
             this_prefer_decimals = this_test.prefer_decimals
         }
+        let this_turn_off_close = false
+        if("turn_off_close" in this_test){
+            this_turn_off_close = this_test.turn_off_close
+        }
 
         let this_calc_mode = "COMP"
         if("calc_mode" in this_test){
@@ -2285,7 +2353,7 @@ describe(`⚙️ Automated Tests`, () => {
 
         test(this_test.name, (t) => {
             assert.deepStrictEqual(
-                eval_input_history(this_test.input_history,this_userLang,this_prefer_decimals,this_calc_mode,this_rounding_mode,this_angle_mode),
+                eval_input_history(this_test.input_history,this_userLang,this_prefer_decimals,this_calc_mode,this_rounding_mode,this_angle_mode,this_turn_off_close),
                 [rendered_input,rendered_output]
             );
         })
@@ -2296,6 +2364,10 @@ describe(`⚙️ Automated Tests`, () => {
         let this_prefer_decimals = false
         if("prefer_decimals" in this_test){
             this_prefer_decimals = this_test.prefer_decimals
+        }
+        let this_turn_off_close = false
+        if("turn_off_close" in this_test){
+            this_turn_off_close = this_test.turn_off_close
         }
 
         let this_calc_mode = "COMP"
@@ -2313,7 +2385,7 @@ describe(`⚙️ Automated Tests`, () => {
 
         test.todo(this_test.name, (t) => {
             assert.deepStrictEqual(
-                eval_input_history(this_test.input_history,this_userLang,this_prefer_decimals,this_calc_mode,this_rounding_mode),
+                eval_input_history(this_test.input_history,this_userLang,this_prefer_decimals,this_calc_mode,this_rounding_mode,this_turn_off_close),
                 [rendered_input,rendered_output]
             );
         })
