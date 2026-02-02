@@ -78,15 +78,15 @@ For more information, please refer to <https://unlicense.org/>
    inkscape:pageopacity="0"
    inkscape:pagecheckerboard="0"
    inkscape:deskcolor="#505050"
-   inkscape:zoom="4"
-   inkscape:cx="118.75"
-   inkscape:cy="386"
+   inkscape:zoom="32"
+   inkscape:cx="328.85938"
+   inkscape:cy="401.65625"
    inkscape:window-width="1920"
    inkscape:window-height="1115"
    inkscape:window-x="0"
    inkscape:window-y="0"
    inkscape:window-maximized="1"
-   inkscape:current-layer="svg103"
+   inkscape:current-layer="Ans21"
    showgrid="true"
    showguides="false"><inkscape:grid
      id="grid60"
@@ -983,7 +983,7 @@ For more information, please refer to <https://unlicense.org/>
    style="font-size:12.0397px;font-family:'Bitstream Vera Sans';-inkscape-font-specification:'Bitstream Vera Sans';letter-spacing:-0.39px;word-spacing:0px;writing-mode:lr-tb;direction:ltr;white-space:pre;shape-inside:url(#rect5);display:inline;fill:#ffffff;stroke-width:1.275;stroke-linecap:square"><tspan
      x="105"
      y="520.65231"
-     id="tspan1">ENG</tspan></text></g>
+     id="tspan2">ENG</tspan></text></g>
             <g
    id="Ans19"
    transform="matrix(0.797911,0,0,0.714749,202.741,410.063)"
@@ -1070,6 +1070,11 @@ For more information, please refer to <https://unlicense.org/>
    style="fill:#3a3d4a"
    id="path32"
    inkscape:label="label_background_ln" /><path
+   style="baseline-shift:baseline;clip-rule:evenodd;display:inline;overflow:visible;vector-effect:none;fill:#84653a;fill-opacity:1;fill-rule:evenodd;stroke-width:1;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:1.5;enable-background:accumulate;stop-color:#000000"
+   d="m 20.396885,-17.971897 v 11.1927412 l 10.02618,2.3e-5 V -17.97192 Z"
+   id="Shape 1-4-9-0-3-6"
+   sodipodi:nodetypes="ccccc"
+   inkscape:label="box" /><path
    style="font-style:italic;font-size:21.1868px;font-family:'Nimbus Roman';-inkscape-font-specification:'Nimbus Roman,  Italic';letter-spacing:-0.516429px;word-spacing:0px;fill:#84653a;stroke-width:1.70157;stroke-linecap:square;stroke-linejoin:miter;paint-order:fill markers stroke"
    d="m 17.75839,-2.3376849 c -1.52545,1.2500212 -2.182241,1.58901005 -3.11446,1.58901005 -1.186461,0 -1.970372,-0.76272485 -1.970372,-1.92799885 0,-0.317802 0.04237,-0.6144172 0.211868,-1.2923948 l 0.59323,-0.084747 c 3.17802,-0.4449228 5.423821,-2.0551196 5.423821,-3.8771844 0,-0.8898456 -0.635604,-1.4407024 -1.694944,-1.4407024 -3.050899,0 -6.377227,3.4746352 -6.377227,6.673842 0,1.71613085 1.144087,2.90259165 2.796658,2.90259165 1.504263,0 3.135646,-0.8686588 4.385667,-2.28817445 z m -4.364481,-3.0297124 c 0.720351,-1.8856252 2.288174,-3.5170088 3.368701,-3.5170088 0.444923,0 0.741538,0.317802 0.741538,0.8262852 0,0.6567908 -0.402549,1.4195156 -1.05934,2.0551196 -0.783911,0.741538 -1.58901,1.1229004 -3.411075,1.5678232 z"
    id="text123"
@@ -1077,15 +1082,6 @@ For more information, please refer to <https://unlicense.org/>
    inkscape:transform-center-y="0.53864258"
    transform="scale(0.94645409,1.0565753)"
    aria-label="e" /><path
-   id="Shape 1-8-4"
-   fill-rule="evenodd"
-   class="s0"
-   d="m 27.289885,-16.572804 v 6.9954629 h -6.266363 v -6.9954629 z"
-   style="clip-rule:evenodd;display:inline;fill:#84653a;fill-rule:evenodd;stroke-width:0.338471;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1.5;fill-opacity:1"
-   inkscape:label="Box"
-   sodipodi:nodetypes="ccccc"
-   inkscape:transform-center-x="2.1709398"
-   inkscape:transform-center-y="-9.1628656" /><path
    style="font-size:21.1868px;font-family:'Bitstream Vera Sans';-inkscape-font-specification:'Bitstream Vera Sans';letter-spacing:-0.516429px;word-spacing:0px;fill:#ffffff;stroke-width:2.62055;stroke-linecap:square;stroke-linejoin:miter;paint-order:fill markers stroke"
    d="m 28.171729,10.591259 h 1.903501 v 16.097002 h -1.903501 z m 15.001247,9.103703 v 6.993299 h -1.903502 v -6.931228 q 0,-1.644874 -0.641397,-2.462138 -0.641397,-0.817265 -1.924192,-0.817265 -1.541422,0 -2.431102,0.982786 -0.889681,0.982787 -0.889681,2.679386 v 6.548459 H 33.469256 V 15.10173 h 1.913846 v 1.80005 q 0.682778,-1.044857 1.603494,-1.562113 0.93106,-0.517255 2.141439,-0.517255 1.996607,0 3.020774,1.241414 1.024167,1.231069 1.024167,3.631136 z"
    id="text117-6"
@@ -1536,7 +1532,7 @@ For more information, please refer to <https://unlicense.org/>
    d="M 207,21 H 360.58099 V 75 H 207 Z" /></g><g
    id="g3"
    inkscape:label="keys"
-   style="clip-rule:evenodd;display:inline;opacity:0;fill-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1.5"><path
+   style="clip-rule:evenodd;display:none;opacity:0;fill-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1.5"><path
      id="rect2-7-3-2-9-6-61-9-1-1-4-3-1-7-4-3-7-8"
      style="display:inline;fill:#ff00ff;stroke-width:1.15043;stroke-linecap:square"
      inkscape:label="key_comma"
