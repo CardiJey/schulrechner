@@ -78,15 +78,15 @@ For more information, please refer to <https://unlicense.org/>
    inkscape:pageopacity="0"
    inkscape:pagecheckerboard="0"
    inkscape:deskcolor="#505050"
-   inkscape:zoom="32"
-   inkscape:cx="328.85938"
-   inkscape:cy="401.65625"
+   inkscape:zoom="3.0761719"
+   inkscape:cx="344.90921"
+   inkscape:cy="128.08127"
    inkscape:window-width="1920"
    inkscape:window-height="1115"
    inkscape:window-x="0"
    inkscape:window-y="0"
    inkscape:window-maximized="1"
-   inkscape:current-layer="Ans21"
+   inkscape:current-layer="main_calc"
    showgrid="true"
    showguides="false"><inkscape:grid
      id="grid60"
@@ -983,7 +983,7 @@ For more information, please refer to <https://unlicense.org/>
    style="font-size:12.0397px;font-family:'Bitstream Vera Sans';-inkscape-font-specification:'Bitstream Vera Sans';letter-spacing:-0.39px;word-spacing:0px;writing-mode:lr-tb;direction:ltr;white-space:pre;shape-inside:url(#rect5);display:inline;fill:#ffffff;stroke-width:1.275;stroke-linecap:square"><tspan
      x="105"
      y="520.65231"
-     id="tspan2">ENG</tspan></text></g>
+     id="tspan1">ENG</tspan></text></g>
             <g
    id="Ans19"
    transform="matrix(0.797911,0,0,0.714749,202.741,410.063)"
@@ -1524,12 +1524,28 @@ For more information, please refer to <https://unlicense.org/>
    aria-label="REPLAY" />
             </g>
         </g>
-    <path
-   id="rect4"
-   style="fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1.5;display:inline;fill:url(#_Linear2);stroke-width:1.0001"
+    <g
+   id="g1"
    inkscape:label="solar"
-   transform="matrix(0.781346,0,0,0.833333,61.2615,12.5)"
-   d="M 207,21 H 360.58099 V 75 H 207 Z" /></g><g
+   style="clip-rule:evenodd;display:inline;fill-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1.5"
+   transform="translate(-2,7.500016)"><path
+     id="rect3"
+     style="display:inline;fill:#503232;fill-opacity:1;stroke-width:0.909635"
+     d="m 235,30 h 100 a 5,5 45 0 1 5,5 v 35 a 5,5 135 0 1 -5,5 H 235 a 5,5 45 0 1 -5,-5 l 0,-35 a 5,5 135 0 1 5,-5 z"
+     sodipodi:nodetypes="ccccc"
+     inkscape:path-effect="#path-effect5" /><path
+     id="rect1"
+     style="display:inline;fill:#000000;stroke-width:0.278881"
+     d="m 255,30 h 2 v 44.999968 h -2 z"
+     sodipodi:nodetypes="ccccc" /><path
+     id="rect1-1"
+     style="clip-rule:evenodd;display:inline;fill:#000000;fill-rule:evenodd;stroke-width:0.278881;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1.5"
+     d="m 285,30 h 2 v 44.999968 h -2 z"
+     sodipodi:nodetypes="ccccc" /><path
+     id="rect1-1-7"
+     style="clip-rule:evenodd;display:inline;fill:#000000;fill-rule:evenodd;stroke-width:0.278881;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1.5"
+     d="m 315,30 h 2 v 44.999968 h -2 z"
+     sodipodi:nodetypes="ccccc" /></g></g><g
    id="g3"
    inkscape:label="keys"
    style="clip-rule:evenodd;display:none;opacity:0;fill-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1.5"><path
@@ -2007,5 +2023,21 @@ For more information, please refer to <https://unlicense.org/>
      offset="1"
      style="stop-color:rgb(48,50,58);stop-opacity:1"
      id="stop103" /></linearGradient>
-    </defs>
+    <inkscape:path-effect
+   effect="fillet_chamfer"
+   id="path-effect5"
+   is_visible="true"
+   lpeversion="1"
+   nodesatellites_param="F,0,0,1,0,5,0,1 @ F,0,1,1,0,5,0,1 @ F,0,1,1,0,5,0,1 @ F,0,1,1,0,5,0,1"
+   radius="0"
+   unit="px"
+   method="auto"
+   mode="F"
+   chamfer_steps="1"
+   flexible="false"
+   use_knot_distance="true"
+   apply_no_radius="true"
+   apply_with_radius="true"
+   only_selected="false"
+   hide_knots="false" /></defs>
 </svg>
