@@ -8,10 +8,12 @@ const path = require('path');
 const { test, describe } = require('node:test');
 const assert = require('node:assert');
 const xml2js = require('xml2js');
+const createDOMPurify = require('dompurify');
+const { JSDOM } = require('jsdom');
 
 const directory = path.join(__dirname, '..', 'www', 'img', 'gui');
 
-describe('SVG Metadata Tests', () => {
+describe('SVG Tests', () => {
     const files = fs.readdirSync(directory).filter(file => file.endsWith('.svg'));
 
     files.forEach(file => {
@@ -138,6 +140,60 @@ describe('SVG Metadata Tests', () => {
                     assert.fail(`${file}: ${e.message}`)
                 }
             });
+        });
+        test.todo(`SVG ${file} should be safe and sanitized`, (t) => {
+            const window = new JSDOM('').window;
+            const filePath = path.join(directory, file);
+            const content = fs.readFileSync(filePath, 'utf8');
+
+            const svg_element = window.document.createElement('div');
+
+            svg_element.innerHTML = content;
+            
+            const DOMPurify = createDOMPurify(window);
+            const clean_svg_element_innerHTML = DOMPurify.sanitize(svg_element.innerHTML,{
+                PARSER_MEDIA_TYPE: "application/xhtml+xml",
+                ADD_ATTR: [
+                    'rdf:about',
+                    'rdf:resource',
+                    'gradientUnits',
+                    'gradientTransform',
+                    'viewBox'
+                ],
+                ADD_TAGS: [
+                    '#comment',
+                    'cc:agent',
+                    'cc:license',
+                    'cc:permits',
+                    'cc:requires',
+                    'cc:work',
+                    'dc:creator',
+                    'dc:date',
+                    'dc:title',
+                    'rdf:rdf',
+                    'linearGradient'
+                ],
+                ALLOWED_NAMESPACES: [
+                    "http://www.w3.org/1999/xhtml",
+                    "http://www.w3.org/2000/svg",
+                    "http://www.w3.org/1998/Math/MathML",
+                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+                    "http://creativecommons.org/ns#",
+                    "http://purl.org/dc/elements/1.1/"
+                ]
+            });
+            const clean_svg_element = window.document.createElement('div');
+            clean_svg_element.innerHTML = clean_svg_element_innerHTML
+
+            const regex = / xmlns:\S*"/gm;
+
+            final_raw_innerHTML = svg_element.innerHTML.replace(regex,'')
+            final_cleaned_innerHTML = clean_svg_element.innerHTML.replace(regex,'')
+
+            fs.writeFileSync("temp/raw.svg", final_raw_innerHTML, 'utf8');
+            fs.writeFileSync("temp/cleaned.svg", final_cleaned_innerHTML, 'utf8');
+
+            assert.equal(final_raw_innerHTML,final_cleaned_innerHTML, `${file} was altered by DOMPurify!`)
         });
     });
 });
