@@ -18,8 +18,10 @@
   "author": "Joris Yidong Scholl",
   "license": "GPL-3.0-only",
   "devDependencies": {
+    "dompurify": "^3.3.1",
     "electron": "^40.0.0",
-    "electron-builder": "^26.0.0"
+    "electron-builder": "^26.0.0",
+    "jsdom": "^21.1.2"
   },
   "cordova": {
     "plugins": {
