@@ -141,7 +141,7 @@ describe('SVG Tests', () => {
                 }
             });
         });
-        test.todo(`SVG ${file} should be safe and sanitized`, (t) => {
+        test(`SVG ${file} should be safe and sanitized`, (t) => {
             const window = new JSDOM('').window;
             const filePath = path.join(directory, file);
             const content = fs.readFileSync(filePath, 'utf8');
