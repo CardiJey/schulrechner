@@ -76,11 +76,15 @@ svg {
     padding-top: 0.222rem;
 }
 
-[inkscape\3a label^="label_"] {
+#svg-container {
     pointer-events: none;
 }
 
-[inkscape\3a label="display_input"] {
+#svg-container [id^="key_"] {
+    pointer-events: auto;
+}
+
+#display_input {
     position: absolute;
     overflow: hidden;
     padding: 0;
@@ -89,7 +93,7 @@ svg {
 }
 
 
-[inkscape\3a label^="indicator_"] {
+[id^="indicator_"] {
     visibility: hidden;
 }
 

@@ -226,6 +226,12 @@ class Sto_Element extends Math_Element{
 
 class Memory_Element extends Math_Element{
     constructor(left,sign,global_logic_vars){
+        if(sign == 'minus'){
+            sign = '-'
+        }
+        if(sign == 'plus'){
+            sign = '+'
+        }
         super("sto",left,"M" + sign,"")
         this.var_name = "M"
         if(sign == "-"){
@@ -1252,11 +1258,11 @@ class EquationInputHandler extends InputHandler{
                 "key_STO_X",
                 "key_STO_Y",
                 "key_STO_M",
-                "key_M+",
-                "key_M-"
+                "key_M_plus",
+                "key_M_minus"
             ].includes(this.input_code_history[this.input_code_history.length - 1])){
                 this.input_code_history.splice(this.input_code_history.length - 1,0,"end");
-                this.input_code_history.push("key_=");
+                this.input_code_history.push("key_equals");
             }
             const last_input_code = this.input_code_history[this.input_code_history.length - 1]
             switch(last_input_code){
@@ -1620,7 +1626,7 @@ class EquationInputHandler extends InputHandler{
                     cursor_element = new_elements[0]
                 break;
 
-                case "key_=":
+                case "key_equals":
                     if(cursor_element.type != "start" || cursor_element.neighbors[2]){
                         calc_output = true
                     }
@@ -1635,8 +1641,8 @@ class EquationInputHandler extends InputHandler{
                 case "key_STO_X":
                 case "key_STO_Y":
                 case "key_STO_M":
-                case "key_M+":
-                case "key_M-":
+                case "key_M_plus":
+                case "key_M_minus":
                     if(cursor_element.type != "start" || cursor_element.neighbors[2]){
                         while(cursor_element.neighbors[2]){
                             cursor_element = cursor_element.neighbors[2]
@@ -1644,7 +1650,7 @@ class EquationInputHandler extends InputHandler{
                         if(input_code.startsWith("key_STO")){
                             new_elements.push(new Sto_Element(cursor_element,input_code.substring(8),this.global_logic_vars))
                         }else if(input_code.startsWith("key_M")){
-                            new_elements.push(new Memory_Element(cursor_element,input_code.substring(5),this.global_logic_vars))
+                            new_elements.push(new Memory_Element(cursor_element,input_code.substring(6),this.global_logic_vars))
                         }
                         cursor_element = new_elements[0]
                     }
@@ -1655,7 +1661,7 @@ class EquationInputHandler extends InputHandler{
                     cursor_element = new_elements[0]
                     break;
                 
-                case "key_°":
+                case "key_deg":
                     new_elements.push(new Sexagesimal_Element(cursor_element))
                     cursor_element = new_elements[0]
                     break;
@@ -1670,28 +1676,28 @@ class EquationInputHandler extends InputHandler{
                     cursor_element = new_elements[0]
                     break;
 
-                case "key_÷":
+                case "key_div":
                     new_elements.push(new Div_Element(cursor_element))
                     cursor_element = new_elements[0]
                     break;
 
-                case "key_+":
+                case "key_plus":
                     new_elements.push(new Plus_Element(cursor_element))
                     cursor_element = new_elements[0]
                     break;
 
-                case "key_-":
-                case "key_(-)":
+                case "key_minus":
+                case "key_neg":
                     new_elements.push(new Minus_Element(cursor_element))
                     cursor_element = new_elements[0]
                     break;
 
-                case "key_(":
+                case "key_lparen":
                     new_elements.push(new Brackets_Element(cursor_element))
                     cursor_element = new_elements[0]
                     break;
                 
-                case "key_)":
+                case "key_rparen":
                     new_elements.push(new Brackets_Close_Element(cursor_element))
                     cursor_element = new_elements[0]
                     break;
@@ -1711,17 +1717,17 @@ class EquationInputHandler extends InputHandler{
                     cursor_element = new_elements[0]
                     break;
                 
-                case "key_sin-1":
+                case "key_sin_minus1":
                     new_elements.push(new ASin_Element(cursor_element,this.global_logic_vars))
                     cursor_element = new_elements[0]
                     break;
 
-                case "key_cos-1":
+                case "key_cos_minus1":
                     new_elements.push(new ACos_Element(cursor_element,this.global_logic_vars))
                     cursor_element = new_elements[0]
                     break;
 
-                case "key_tan-1":
+                case "key_tan_minus1":
                     new_elements.push(new ATan_Element(cursor_element,this.global_logic_vars))
                     cursor_element = new_elements[0]
                     break;
@@ -1821,7 +1827,7 @@ class EquationInputHandler extends InputHandler{
                     cursor_element.children[1].neighbors[0] = prefilled_element
                     break;
 
-                case "key_pow-1":
+                case "key_pow_minus1":
                     new_elements.push(new Pow_Element(cursor_element,true))
                     cursor_element = new_elements[0]
                     var prefilled_element1 = new Minus_Element(cursor_element.children[0])
@@ -2047,7 +2053,7 @@ class EquationSelectInputHandler extends InputHandler{
         }
         
         switch(mapped_input_code){
-            case "key_=":
+            case "key_equals":
                 this.add_empty_equation()
                 this.equations[this.equations.length - 1].input_code_history = this.equations[this.display_equation_index].input_code_history
                 this.display_equation_index = this.equations.length - 1
@@ -2083,7 +2089,7 @@ class EquationSelectInputHandler extends InputHandler{
                 this.update_display();
             break;
 
-            case "key_°":
+            case "key_deg":
                 if(this.format_as == "sexagesimal"){
                     this.format_as = "decimal"
                 }else{
@@ -2135,9 +2141,9 @@ class EquationSelectInputHandler extends InputHandler{
                 this.global_logic_vars.active_input_handler = this.equations[this.display_equation_index]
 
                 if([
-                    "key_+",
-                    "key_-",
-                    "key_÷",
+                    "key_plus",
+                    "key_minus",
+                    "key_div",
                     "key_x"
                 ].includes(mapped_input_code)){
                     this.global_logic_vars.active_input_handler.handle("key_Ans")

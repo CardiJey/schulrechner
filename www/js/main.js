@@ -108,7 +108,7 @@ class UI{
     }
 
     handle_resize(){
-        this.setRootFontSize(document.querySelector('[inkscape\\3a label="display_output"]').getBoundingClientRect().height * 0.034506 * 16.91331 / 2)
+        this.setRootFontSize(document.getElementById("display_output").getBoundingClientRect().height * 0.034506 * 16.91331 / 2)
         this.global_logic_vars.active_input_handler.update_position()
     }
 
@@ -157,20 +157,20 @@ class UI{
     toggle_indicators(modes){
         for(let mode in modes){
             if(modes[mode]){
-                document.querySelector('[inkscape\\3a label="indicator_' + mode + '"]').style.visibility = "visible"
+                document.getElementById('indicator_' + mode).style.visibility = "visible"
             }else{
-                document.querySelector('[inkscape\\3a label="indicator_' + mode + '"]').style.visibility = "hidden"
+                document.getElementById('indicator_' + mode).style.visibility = "hidden"
             }
         }
     }
 
     scroll_element(this_element){
         let cursor_x = document.getElementsByClassName("cursor")[0].getBoundingClientRect().right
-        let scroll_border_x = document.querySelector('[inkscape\\3a label="scroll_x_border"]').getBoundingClientRect().left
+        let scroll_border_x = document.getElementById("scroll_x_border").getBoundingClientRect().left
         let x_dist_to_scroll_border = cursor_x - scroll_border_x
 
         let cursor_y_bot = document.getElementsByClassName("cursor")[0].getBoundingClientRect().bottom
-        let scroll_border_y = document.querySelector('[inkscape\\3a label="scroll_y_border"]').getBoundingClientRect().top
+        let scroll_border_y = document.getElementById("scroll_y_border").getBoundingClientRect().top
         let y_dist_to_scroll_border = cursor_y_bot - scroll_border_y
 
         this_element.scrollBy(x_dist_to_scroll_border,y_dist_to_scroll_border)
@@ -330,7 +330,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
             switch(calc_mode){
                 case "CMPLX":
-                    document.querySelector('[inkscape\\3a label="indicator_cmplx"]').style.visibility = "visible"
+                    document.getElementById("indicator_cmplx").style.visibility = "visible"
                 break
             }
 
@@ -349,7 +349,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 case "Fix_7":
                 case "Fix_8":
                 case "Fix_9":
-                    document.querySelector('[inkscape\\3a label="indicator_fix"]').style.visibility = "visible"
+                    document.getElementById("indicator_fix").style.visibility = "visible"
                 break
             }
 
@@ -359,15 +359,15 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
             switch(angle_mode){
                 case "Deg":
-                    document.querySelector('[inkscape\\3a label="indicator_deg"]').style.visibility = "visible"
+                    document.getElementById("indicator_deg").style.visibility = "visible"
                 break
 
                 case "Rad":
-                    document.querySelector('[inkscape\\3a label="indicator_rad"]').style.visibility = "visible"
+                    document.getElementById("indicator_rad").style.visibility = "visible"
                 break
 
                 case "Gra":
-                    document.querySelector('[inkscape\\3a label="indicator_gra"]').style.visibility = "visible"
+                    document.getElementById("indicator_gra").style.visibility = "visible"
                 break
             }
 
@@ -381,16 +381,18 @@ document.addEventListener("DOMContentLoaded", async () => {
                 userLang = "de-DE"
             }
 
-            const lang_specific_elements = document.querySelectorAll('[inkscape\\3a label$="' + userLang + '"]');
+            userLang_for_id = userLang.replace("-","_")
+
+            const lang_specific_elements = document.querySelectorAll('[id$="' + userLang_for_id + '"]');
 
             lang_specific_elements.forEach(element => {
                 element.style.display = "inline"
             });
 
             new EquationSelectInputHandler(
-                document.querySelector('[inkscape\\3a label="display_input"]'),
+                document.getElementById("display_input"),
                 document.getElementById("math-input"),
-                document.querySelector('[inkscape\\3a label="display_output"]'),
+                document.getElementById("display_output"),
                 document.getElementById("math-output"),
                 global_logic_vars,
                 ui,
@@ -413,17 +415,17 @@ document.addEventListener("DOMContentLoaded", async () => {
             });
         });
         
-        const keyElements = document.querySelectorAll('[inkscape\\3a label^="key_"]');
+        const keyElements = document.querySelectorAll('[id^="key_"]');
 
         keyElements.forEach(element => {
             element.addEventListener("pointerdown", function () {
-                let input_code = this.getAttribute('inkscape:label')
+                let input_code = this.getAttribute('id')
                 let key_code = input_code.substring("key_".length)
                 let label_background_name = "label_background_" + key_code
-                let label_background = document.querySelectorAll('[inkscape\\3a label="' + label_background_name + '"]');
-                if(label_background.length != 0){
-                    label_background[0].classList.add("pressed");
-                    setTimeout(() => label_background[0].classList.remove("pressed"), 150);
+                let label_background = document.getElementById(label_background_name);
+                if(label_background){
+                    label_background.classList.add("pressed");
+                    setTimeout(() => label_background.classList.remove("pressed"), 150);
                 }
                 global_logic_vars.input_history.push(input_code)
                 global_logic_vars.active_input_handler.handle(input_code);
@@ -495,11 +497,23 @@ document.addEventListener("DOMContentLoaded", async () => {
                 case "7":
                 case "8":
                 case "9":
-                case "+":
-                case "-":
-                case "(":
-                case ")":
                     global_logic_vars.active_input_handler.handle("key_" + key)
+                    break;
+
+                case "+":
+                    global_logic_vars.active_input_handler.handle("key_plus")
+                    break;
+
+                case "-":
+                    global_logic_vars.active_input_handler.handle("key_minus")
+                    break;
+
+                case "(":
+                    global_logic_vars.active_input_handler.handle("key_lparen")
+                    break;
+
+                case ")":
+                    global_logic_vars.active_input_handler.handle("key_rparen")
                     break;
 
                 case "*":
@@ -507,11 +521,11 @@ document.addEventListener("DOMContentLoaded", async () => {
                     break;
 
                 case "/":
-                    global_logic_vars.active_input_handler.handle("key_÷")
+                    global_logic_vars.active_input_handler.handle("key_div")
                     break;
 
                 case "Enter":
-                    global_logic_vars.active_input_handler.handle("key_=")
+                    global_logic_vars.active_input_handler.handle("key_equals")
                     break;
 
                 case "Delete":
