@@ -81,15 +81,18 @@ jobs:
           cordova build android --release "--" --packageType=apk
 
       - name: Decode Keystore from secret
+        if: github.event.pull_request.head.repo.full_name == github.repository
         run: echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > schulrechner.jks
 
       - name: Find latest Build Tools version
         id: buildtools
+        if: github.event.pull_request.head.repo.full_name == github.repository
         run: |
           LATEST=$(ls -v "$ANDROID_HOME/build-tools" | tail -n 1)
           echo "version=$LATEST" >> $GITHUB_OUTPUT
 
       - name: Sign the APK with apksigner
+        if: github.event.pull_request.head.repo.full_name == github.repository
         run: |
           BUILD_TOOLS_VERSION=${{ steps.buildtools.outputs.version }}
       
@@ -106,13 +109,14 @@ jobs:
             platforms/android/app/build/outputs/apk/release/app-release-aligned.apk
 
       - name: Upload APK artifact
+        if: github.event.pull_request.head.repo.full_name == github.repository
         uses: actions/upload-artifact@v7
         with:
           name: schulrechner-apk
           path: platforms/android/app/build/outputs/apk/release/app-release.apk
 
       - name: Upload Release Assets
-        if: startsWith(github.ref_name, 'v')
+        if: startsWith(github.ref_name, 'v') && github.event.pull_request.head.repo.full_name == github.repository
         uses: softprops/action-gh-release@v2
         with:
           files: |
@@ -123,17 +127,17 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Prepare Browser Gradle project
-        if: startsWith(github.ref_name, 'v')
+        if: startsWith(github.ref_name, 'v') && github.event.pull_request.head.repo.full_name == github.repository
         run: |
           cordova platform add browser
 
       - name: Build Cordova Browser project
-        if: startsWith(github.ref_name, 'v')
+        if: startsWith(github.ref_name, 'v') && github.event.pull_request.head.repo.full_name == github.repository
         run: |
           cordova build browser --release
 
       - name: Push Browser Files to browser-release branch
-        if: startsWith(github.ref_name, 'v')
+        if: startsWith(github.ref_name, 'v') && github.event.pull_request.head.repo.full_name == github.repository
         run: |
           BROWSER_BRANCH="browser-release"
           TAG_NAME="${GITHUB_REF##*/}"
