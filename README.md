@@ -42,13 +42,16 @@ This project supports multiple GUI designs, which can be switched dynamically.
 To add a new GUI design:
 
 1. **Create your SVG file**  
-   - Design your GUI as an SVG file, ensuring it meets the following requirements:  
-     - Use proper element labels (via the `inkscape:label` property) matching the keys found in `www/img/gui/Classic_by_Joris Yidong Scholl.svg`.  
+   - Design your GUI as a `plain` SVG file, ensuring it meets the following requirements:  
+     - Use proper element `id`s matching the `id`s found in `www/img/gui/Classic_by_Joris Yidong Scholl.svg`.
      - Include polygon elements named `display_input` and `display_output`.  
-     - Include elements `scroll_x_order` and `scroll_y_border` to define scrolling behavior.  
+     - Include elements `scroll_x_border` and `scroll_y_border` to define scrolling behavior.
+     - Include the `indicator_*` elements found in `www/img/gui/Classic_by_Joris Yidong Scholl.svg`.
      - For each key element (`key_*`), include a corresponding `label_background_*` element for button press animations (these are handled by CSS).  
-     - Optionally, add locale-specific labels by appending locale codes like `label_,de-DE` or `label,_en-US`. Only `de-DE` and `en-US` are supported for now.  
+     - Optionally, add locale-specific labels by appending locale codes like `label_comma_de_DE` or `label_comma_en_US`. Only `de_DE` and `en_US` are supported for now.
+     - Safe your SVG as a `plain` SVG. You can place your source files (for example the Inkscape SVG) in the `assets/svg-src` folder.
    - Add SVG metadata specifying **author**, **date**, and an **open-source license** (e.g., CC0, CC-BY, CC-BY-SA) for compatibility with this GPL3 project.
+   - Your design should be functionally complete with all buttons drawn and given the proper `id`, even if the button in questions is not implemented in the Schulrechner yet. I'll toggle them visible once the feature is implemented.
 
 2. **Create your JSON file**  
    - There are some additional settings needed for a working calculator design
