@@ -190,6 +190,10 @@ describe('SVG Tests', () => {
             final_raw_innerHTML = svg_element.innerHTML.replace(regex,'')
             final_cleaned_innerHTML = clean_svg_element.innerHTML.replace(regex,'')
 
+            if (!fs.existsSync("temp")){
+                fs.mkdirSync("temp");
+            }
+
             fs.writeFileSync("temp/raw.svg", final_raw_innerHTML, 'utf8');
             fs.writeFileSync("temp/cleaned.svg", final_cleaned_innerHTML, 'utf8');
 
