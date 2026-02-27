@@ -133,7 +133,8 @@ describe('SVG Tests', () => {
                     const validExpected = [
                         "http://creativecommons.org/licenses/by-sa/4.0/",
                         "http://creativecommons.org/licenses/by/4.0/",
-                        "http://creativecommons.org/publicdomain/zero/1.0/"
+                        "http://creativecommons.org/publicdomain/zero/1.0/",
+                        "https://unlicense.org/"
                     ];
                     assert.ok(validExpected.includes(license_url), `Expected one of ${validExpected.join(', ')}, but got ${license_url}`);
                 } catch (e) {
