@@ -19,7 +19,7 @@ describe('SVG Tests', () => {
     files.forEach(file => {
         test(`SVG ${file} filename should match <Design Name>_by_<Author Name>.svg`, (t) => {
             const pattern = /^.+_by_.+\.svg$/;
-
+ 
             assert.ok(
                 pattern.test(file),
                 `${file} does not match the expected pattern "<Design Name>_by_<Author Name>.svg"`
@@ -145,60 +145,50 @@ describe('SVG Tests', () => {
         test(`SVG ${file} should be safe and sanitized`, (t) => {
             const window = new JSDOM('').window;
             const filePath = path.join(directory, file);
-            const content = fs.readFileSync(filePath, 'utf8');
-
-            const svg_element = window.document.createElement('div');
-
-            svg_element.innerHTML = content;
-            
+            const content = fs.readFileSync(filePath, 'utf8')
+                .replaceAll("cc:Agent", "g")
+                .replaceAll("cc:license", "g")
+                .replaceAll("cc:License", "g")
+                .replaceAll("cc:permits", "g")
+                .replaceAll("cc:requires", "g")
+                .replaceAll("cc:Work", "g")
+                .replaceAll("dc:creator", "g")
+                .replaceAll("dc:date", "g")
+                .replaceAll("dc:rights", "g")
+                .replaceAll("dc:title", "g")
+                .replaceAll("rdf:RDF", "g")
+                .replaceAll('xmlns:cc="http://creativecommons.org/ns#"', "")
+                .replaceAll('xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"', "")
+                .replaceAll('xmlns:dc="http://purl.org/dc/elements/1.1/"', "")   
+                .replaceAll('xmlns:svg="http://www.w3.org/2000/svg"', "")
             const DOMPurify = createDOMPurify(window);
-            const clean_svg_element_innerHTML = DOMPurify.sanitize(svg_element.innerHTML,{
-                PARSER_MEDIA_TYPE: "application/xhtml+xml",
+
+            const clean_content = DOMPurify.sanitize(content, {
+                USE_PROFILES: { svg: true, svgFilters: true },
+                ADD_TAGS: ['#comment'],
                 ADD_ATTR: [
-                    'rdf:about',
-                    'rdf:resource',
-                    'gradientUnits',
-                    'gradientTransform',
-                    'viewBox'
+                    "rdf:about",
+                    "rdf:resource"
                 ],
-                ADD_TAGS: [
-                    '#comment',
-                    'cc:agent',
-                    'cc:license',
-                    'cc:permits',
-                    'cc:requires',
-                    'cc:work',
-                    'dc:creator',
-                    'dc:date',
-                    'dc:title',
-                    'rdf:rdf',
-                    'linearGradient'
-                ],
-                ALLOWED_NAMESPACES: [
-                    "http://www.w3.org/1999/xhtml",
-                    "http://www.w3.org/2000/svg",
-                    "http://www.w3.org/1998/Math/MathML",
-                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
-                    "http://creativecommons.org/ns#",
-                    "http://purl.org/dc/elements/1.1/"
-                ]
+                FORCE_BODY: true,
+                WHOLE_DOCUMENT: true
             });
-            const clean_svg_element = window.document.createElement('div');
-            clean_svg_element.innerHTML = clean_svg_element_innerHTML
 
-            const regex = / xmlns:\S*"/gm;
+            const raw_wrapper_div = window.document.createElement("div")
+            const clean_wrapper_div = window.document.createElement("div")
 
-            final_raw_innerHTML = svg_element.innerHTML.replace(regex,'')
-            final_cleaned_innerHTML = clean_svg_element.innerHTML.replace(regex,'')
+
+            raw_wrapper_div.innerHTML = content
+            clean_wrapper_div.innerHTML = clean_content
 
             if (!fs.existsSync("temp")){
                 fs.mkdirSync("temp");
             }
 
-            fs.writeFileSync("temp/raw.svg", final_raw_innerHTML, 'utf8');
-            fs.writeFileSync("temp/cleaned.svg", final_cleaned_innerHTML, 'utf8');
+            fs.writeFileSync("temp/"+file+"_raw.svg", raw_wrapper_div.innerHTML, 'utf8');
+            fs.writeFileSync("temp/"+file+"_cleaned.svg", clean_wrapper_div.innerHTML, 'utf8');
 
-            assert.equal(final_raw_innerHTML,final_cleaned_innerHTML, `${file} was altered by DOMPurify!`)
+            assert.equal(clean_wrapper_div.innerHTML,raw_wrapper_div.innerHTML, `${file} was altered by DOMPurify!`)
         });
     });
 });
