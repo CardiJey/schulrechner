@@ -2289,6 +2289,166 @@ const tests = [
         "calc_mode": "COMP",
         "rounding_mode": "Norm_1",
         "turn_off_close": true
+    },
+    {
+        "userLang": "en-US",
+        "name": "Frac Test 1",
+        "input_history": [
+            "key_frac",
+            "key_8",
+            "key_9",
+            "key_dir2",
+            "key_4",
+            "key_5",
+            "key_dir2",
+            "key_div",
+            "key_frac",
+            "key_5",
+            "key_8",
+            "key_dir2",
+            "key_5",
+            "key_6",
+            "key_equals"
+        ],
+        "rendered_input": "<span class=\"alignLeft20\"></span><span class=\"frac_wrapper\" style=\"vertical-align: calc(-12.9935px + 0.06rem);\"><span class=\"frac_top\">89</span><span class=\"frac_bottom alignRight20\">45</span></span>÷<span class=\"alignLeft21\"></span><span class=\"frac_wrapper\" style=\"vertical-align: calc(-12.9935px + 0.06rem);\"><span class=\"frac_top\">58</span><span class=\"frac_bottom alignRight21\">56</span></span> ",
+        "rendered_output": "<span class=\"frac_wrapper\"><span class=\"frac_top\">2492</span><span class=\"frac_bottom\">1305</span></span>",
+        "calc_mode": "COMP",
+        "rounding_mode": "Norm_1",
+        "turn_off_close": true
+    },
+    {
+        "userLang": "en-US",
+        "name": "Frac Test 3",
+        "input_history": [
+            "key_frac",
+            "key_3",
+            "key_dir2",
+            "key_1",
+            "key_4",
+            "key_dir2",
+            "key_div",
+            "key_frac",
+            "key_2",
+            "key_dir2",
+            "key_7",
+            "key_equals"
+        ],
+        "rendered_input": "<span class=\"alignLeft15\"></span><span class=\"frac_wrapper\" style=\"vertical-align: calc(-12.9935px + 0.06rem);\"><span class=\"frac_top\">3</span><span class=\"frac_bottom alignRight15\">14</span></span>÷<span class=\"alignLeft16\"></span><span class=\"frac_wrapper\" style=\"vertical-align: calc(-12.9935px + 0.06rem);\"><span class=\"frac_top\">2</span><span class=\"frac_bottom alignRight16\">7</span></span> ",
+        "rendered_output": "<span class=\"frac_wrapper\"><span class=\"frac_top\">3</span><span class=\"frac_bottom\">4</span></span>",
+        "calc_mode": "COMP",
+        "rounding_mode": "Norm_1",
+        "turn_off_close": true
+    },
+    {
+        "userLang": "en-US",
+        "name": "Frac Test 4",
+        "input_history": [
+            "key_frac",
+            "key_1",
+            "key_dir2",
+            "key_7",
+            "key_dir2",
+            "key_div",
+            "key_frac",
+            "key_3",
+            "key_dir2",
+            "key_1",
+            "key_4",
+            "key_equals"
+        ],
+        "rendered_input": "<span class=\"alignLeft16\"></span><span class=\"frac_wrapper\" style=\"vertical-align: calc(-12.9935px + 0.06rem);\"><span class=\"frac_top\">1</span><span class=\"frac_bottom alignRight16\">7</span></span>÷<span class=\"alignLeft17\"></span><span class=\"frac_wrapper\" style=\"vertical-align: calc(-12.9935px + 0.06rem);\"><span class=\"frac_top\">3</span><span class=\"frac_bottom alignRight17\">14</span></span> ",
+        "rendered_output": "<span class=\"frac_wrapper\"><span class=\"frac_top\">2</span><span class=\"frac_bottom\">3</span></span>",
+        "calc_mode": "COMP",
+        "rounding_mode": "Norm_1",
+        "turn_off_close": true
+    },
+    {
+        "userLang": "en-US",
+        "name": "Frac Test 5",
+        "input_history": [
+            "key_frac",
+            "key_1",
+            "key_dir2",
+            "key_3",
+            "key_dir2",
+            "key_div",
+            "key_frac",
+            "key_1",
+            "key_dir2",
+            "key_2",
+            "key_equals"
+        ],
+        "rendered_input": "<span class=\"alignLeft14\"></span><span class=\"frac_wrapper\" style=\"vertical-align: calc(-12.9935px + 0.06rem);\"><span class=\"frac_top\">1</span><span class=\"frac_bottom alignRight14\">3</span></span>÷<span class=\"alignLeft15\"></span><span class=\"frac_wrapper\" style=\"vertical-align: calc(-12.9935px + 0.06rem);\"><span class=\"frac_top\">1</span><span class=\"frac_bottom alignRight15\">2</span></span> ",
+        "rendered_output": "<span class=\"frac_wrapper\"><span class=\"frac_top\">2</span><span class=\"frac_bottom\">3</span></span>",
+        "calc_mode": "COMP",
+        "rounding_mode": "Norm_1",
+        "turn_off_close": true
+    },
+    {
+        "userLang": "en-US",
+        "name": "Frac Test 6",
+        "input_history": [
+            "key_frac",
+            "key_1",
+            "key_1",
+            "key_dir2",
+            "key_2",
+            "key_dir2",
+            "key_div",
+            "key_frac",
+            "key_3",
+            "key_dir2",
+            "key_4",
+            "key_equals"
+        ],
+        "rendered_input": "<span class=\"alignLeft15\"></span><span class=\"frac_wrapper\" style=\"vertical-align: calc(-12.9935px + 0.06rem);\"><span class=\"frac_top\">11</span><span class=\"frac_bottom alignRight15\">2</span></span>÷<span class=\"alignLeft16\"></span><span class=\"frac_wrapper\" style=\"vertical-align: calc(-12.9935px + 0.06rem);\"><span class=\"frac_top\">3</span><span class=\"frac_bottom alignRight16\">4</span></span> ",
+        "rendered_output": "<span class=\"frac_wrapper\"><span class=\"frac_top\">22</span><span class=\"frac_bottom\">3</span></span>",
+        "calc_mode": "COMP",
+        "rounding_mode": "Norm_1",
+        "turn_off_close": true
+    },
+    {
+        "userLang": "en-US",
+        "name": "Frac Test 7",
+        "input_history": [
+            "key_frac",
+            "key_8",
+            "key_3",
+            "key_dir2",
+            "key_4",
+            "key_2",
+            "key_dir2",
+            "key_div",
+            "key_frac",
+            "key_7",
+            "key_7",
+            "key_dir2",
+            "key_1",
+            "key_2",
+            "key_equals"
+        ],
+        "rendered_input": "<span class=\"alignLeft20\"></span><span class=\"frac_wrapper\" style=\"vertical-align: calc(-12.9935px + 0.06rem);\"><span class=\"frac_top\">83</span><span class=\"frac_bottom alignRight20\">42</span></span>÷<span class=\"alignLeft21\"></span><span class=\"frac_wrapper\" style=\"vertical-align: calc(-12.9935px + 0.06rem);\"><span class=\"frac_top\">77</span><span class=\"frac_bottom alignRight21\">12</span></span> ",
+        "rendered_output": "<span class=\"frac_wrapper\"><span class=\"frac_top\">166</span><span class=\"frac_bottom\">539</span></span>",
+        "calc_mode": "COMP",
+        "rounding_mode": "Norm_1",
+        "turn_off_close": true
+    },
+    {
+        "userLang": "en-US",
+        "name": "Frac Test 8",
+        "input_history": [
+            "key_ac",
+            "key_sin",
+            "key_3",
+            "key_0",
+            "key_rparen",
+            "key_equals"
+        ],
+        "rendered_input": "sin(30) ",
+        "rendered_output": "<span class=\"frac_wrapper\"><span class=\"frac_top\">1</span><span class=\"frac_bottom\">2</span></span>",
+        "calc_mode": "COMP",
+        "rounding_mode": "Norm_1",
+        "turn_off_close": true
     }
 ]
 
@@ -2316,6 +2476,30 @@ const known_to_fail_tests = [
         ],
         "rendered_input": "0.0000000999999 ",
         "rendered_output": "9<span class='pow10'>×⒑</span><span class='pow_top'>-8</span>"
+    },
+    {
+        "userLang": "en-US",
+        "name": "Frac Test 2",
+        "input_history": [
+            "key_frac",
+            "key_1",
+            "key_9",
+            "key_dir2",
+            "key_2",
+            "key_1",
+            "key_dir2",
+            "key_div",
+            "key_frac",
+            "key_2",
+            "key_dir2",
+            "key_7",
+            "key_equals"
+        ],
+        "rendered_input": "<span class=\"alignLeft16\"></span><span class=\"frac_wrapper\" style=\"vertical-align: calc(-12.9935px + 0.06rem);\"><span class=\"frac_top\">19</span><span class=\"frac_bottom alignRight16\">21</span></span>÷<span class=\"alignLeft17\"></span><span class=\"frac_wrapper\" style=\"vertical-align: calc(-12.9935px + 0.06rem);\"><span class=\"frac_top\">2</span><span class=\"frac_bottom alignRight17\">7</span></span> ",
+        "rendered_output": "<span class=\"frac_wrapper\"><span class=\"frac_top\">19</span><span class=\"frac_bottom\">6</span></span>",
+        "calc_mode": "COMP",
+        "rounding_mode": "Norm_1",
+        "turn_off_close": true
     }
 ]
 
