@@ -2449,6 +2449,28 @@ const tests = [
         "calc_mode": "COMP",
         "rounding_mode": "Norm_1",
         "turn_off_close": true
+    },
+    {
+        "userLang": "en-US",
+        "name": "percent test",
+        "input_history": [
+            "key_7",
+            "key_shift",
+            "key_lparen",
+            "key_x",
+            "key_frac",
+            "key_4",
+            "key_shift",
+            "key_lparen",
+            "key_dir2",
+            "key_5",
+            "key_equals"
+        ],
+        "rendered_input": "7%×<span class=\"alignLeft6\"></span><span class=\"frac_wrapper\" style=\"vertical-align: calc(-6.35417px + 0.06rem);\"><span class=\"frac_top\">4%</span><span class=\"frac_bottom alignRight6\">5</span></span> ",
+        "rendered_output": "<span class=\"frac_wrapper\"><span class=\"frac_top\">7</span><span class=\"frac_bottom\">12500</span></span>",
+        "calc_mode": "COMP",
+        "rounding_mode": "Norm_1",
+        "turn_off_close": true
     }
 ]
 

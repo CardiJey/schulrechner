@@ -17,7 +17,8 @@
             "key_integ":"key_deriv",
             "key_mode":"key_setup",
             "key_eng": "key_back",
-            "key_ac": "key_off"
+            "key_ac": "key_off",
+            "key_lparen": "key_perc"
         },"alpha":{
             "key_pow10":"key_e",
             "key_neg":"key_uservar_A",

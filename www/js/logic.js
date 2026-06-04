@@ -717,6 +717,7 @@ class Const_Element extends Math_Element{
             "atm",
             "<i>π</i>",
             "<i>e</i>",
+            "%"
         ]
         super("var",left,char_map[index],"")
         this.index = index
@@ -765,7 +766,8 @@ class Const_Element extends Math_Element{
             6.67428e-11,//39
             101325,//40
             Math.PI,//41
-            Math.E//42
+            Math.E,//42
+            1e-2
         ]
 
         return value_map[this.index]
@@ -1618,6 +1620,11 @@ class EquationInputHandler extends InputHandler{
                 
                 case "key_e":
                     new_elements.push(new Const_Element(cursor_element,41))
+                    cursor_element = new_elements[0]
+                    break;
+                
+                case "key_perc":
+                    new_elements.push(new Const_Element(cursor_element,42))
                     cursor_element = new_elements[0]
                     break;
 
