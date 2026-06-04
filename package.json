@@ -9,6 +9,7 @@
     "test": "node --test tests/*.js",
     "update_version": "node update_version.js",
     "start": "electron .",
+    "debug": "electron . --no-sandbox",
     "dist": "electron-builder"
   },
   "repository": {
