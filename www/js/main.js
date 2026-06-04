@@ -1,3 +1,8 @@
+
+if (typeof navigator.serviceWorker !== 'undefined') {
+    navigator.serviceWorker.register('js/sw.js')
+}
+
 let changelog_visible = false
 let version;
 let versionCode;
