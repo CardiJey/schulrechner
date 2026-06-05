@@ -2176,6 +2176,6 @@ class EquationSelectInputHandler extends InputHandler{
     }
 }
 
-if(module){
+if(typeof module !== 'undefined'){
     module.exports = { InputHandler, VoidInputHandler, EquationSelectInputHandler, import_custom_math }
 }
