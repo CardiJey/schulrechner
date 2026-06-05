@@ -27,19 +27,19 @@
   ],
   "screenshots" : [
     {
-      "src": "www/img/phoneScreenshots/1.jpg",
+      "src": "img/phoneScreenshots/1.jpg",
       "sizes": "350x759",
       "type": "image/jpg",
       "platform": "narrow"
     },
     {
-      "src": "www/img/phoneScreenshots/2.jpg",
+      "src": "img/phoneScreenshots/2.jpg",
       "sizes": "350x759",
       "type": "image/jpg",
       "platform": "narrow"
     },
     {
-      "src": "www/img/phoneScreenshots/3.jpg",
+      "src": "img/phoneScreenshots/3.jpg",
       "sizes": "350x759",
       "type": "image/jpg",
       "platform": "narrow"
