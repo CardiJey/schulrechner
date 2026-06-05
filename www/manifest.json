@@ -3,9 +3,9 @@
   "display": "standalone",
   "name": "Schulrechner",
   "orientation": "portrait",
-  "scope": "/",
+  "scope": "/schulrechner/www/",
   "short_name": "Schulrechner",
-  "start_url": "/",
+  "start_url": "/schulrechner/www/",
   "id": "io.cardijey.schulrechner",
   "description": "The calculator you know from school",
   "lang": "de",
@@ -23,6 +23,35 @@
       "src": "img/flatpak-icons/icon.png",
       "sizes": "512x512",
       "type": "image/png"
+    }
+  ],
+  "screenshots" : [
+    {
+      "src": "www/img/phoneScreenshots/1.jpg",
+      "sizes": "350x759",
+      "type": "image/jpg",
+      "platform": "narrow"
+    },
+    {
+      "src": "www/img/phoneScreenshots/2.jpg",
+      "sizes": "350x759",
+      "type": "image/jpg",
+      "platform": "narrow"
+    },
+    {
+      "src": "www/img/phoneScreenshots/3.jpg",
+      "sizes": "350x759",
+      "type": "image/jpg",
+      "platform": "narrow"
+    }
+  ],
+  "theme_color": "#3f4266",
+  "background_color": "#000000",
+  "related_applications": [
+    {
+      "platform": "f-droid",
+      "url": "https://f-droid.org/packages/io.cardijey.schulrechner/",
+      "id": "io.cardijey.schulrechner"
     }
   ]
 }
