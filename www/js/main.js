@@ -227,11 +227,11 @@ class UI{
     }
 
     close_app(){
-        //window.close()
+        window.close()
         setTimeout(() => {
             this.show_alert(
                 "can_not_close",
-                "Can not close app",
+                "Can not close app!",
                 "The platform does not allow closing the app from within.<br>Disable closing?"
             )
         },1000)
