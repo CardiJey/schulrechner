@@ -116,7 +116,7 @@ jobs:
           path: platforms/android/app/build/outputs/apk/release/app-release.apk
 
       - name: Upload Release Assets
-        if: startsWith(github.ref_name, 'v') && github.event.pull_request.head.repo.full_name == github.repository
+        if: startsWith(github.ref_name, 'v') && (github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository)
         uses: softprops/action-gh-release@v3
         with:
           files: |
@@ -127,17 +127,17 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Prepare Browser Gradle project
-        if: startsWith(github.ref_name, 'v') && github.event.pull_request.head.repo.full_name == github.repository
+        if: startsWith(github.ref_name, 'v') && (github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository)
         run: |
           cordova platform add browser
 
       - name: Build Cordova Browser project
-        if: startsWith(github.ref_name, 'v') && github.event.pull_request.head.repo.full_name == github.repository
+        if: startsWith(github.ref_name, 'v') && (github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository)
         run: |
           cordova build browser --release
 
       - name: Push Browser Files to browser-release branch
-        if: startsWith(github.ref_name, 'v') && github.event.pull_request.head.repo.full_name == github.repository
+        if: startsWith(github.ref_name, 'v') && (github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository)
         run: |
           BROWSER_BRANCH="browser-release"
           TAG_NAME="${GITHUB_REF##*/}"
