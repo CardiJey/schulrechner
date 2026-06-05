@@ -227,11 +227,11 @@ class UI{
     }
 
     close_app(){
-        //window.close()
+        window.close()
         setTimeout(() => {
             this.show_alert(
                 "can_not_close",
-                "Can not close app",
+                "Can not close app!",
                 "The platform does not allow closing the app from within.<br>Disable closing?"
             )
         },1000)
@@ -651,17 +651,23 @@ function decodeHTMLEntities(str) {
     return txt.value;
 }
 
-function log_calculation(){
-    console.log({
+function log_calculation(test_name){
+    const test_data = {
         "userLang":userLang,
-        "name":"INSERT_TEST_NAME",
+        "name":test_name,
         "input_history":global_logic_vars.input_history,
         "rendered_input":decodeHTMLEntities(global_logic_vars.active_input_handler.math_input_element.innerHTML),
         "rendered_output":decodeHTMLEntities(global_logic_vars.active_input_handler.math_output_element.innerHTML),
         "calc_mode": global_logic_vars.calc_mode,
         "rounding_mode": global_logic_vars.rounding_mode,
         "turn_off_close": global_logic_vars.turn_off_close
-    })
+    }
+
+    var data_str = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(test_data));
+    var dl_anchor_elem = document.getElementById('download-anchor-elem');
+    dl_anchor_elem.setAttribute("href", data_str);
+    dl_anchor_elem.setAttribute("download", test_name + ".json");
+    dl_anchor_elem.click();
 }
 
 function isElectron() {

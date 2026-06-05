@@ -30,19 +30,19 @@
       "src": "img/phoneScreenshots/1.jpg",
       "sizes": "350x759",
       "type": "image/jpeg",
-      "platform": "narrow"
+      "form_factor": "narrow"
     },
     {
       "src": "img/phoneScreenshots/2.jpg",
       "sizes": "350x759",
       "type": "image/jpeg",
-      "platform": "narrow"
+      "form_factor": "narrow"
     },
     {
       "src": "img/phoneScreenshots/3.jpg",
       "sizes": "350x759",
       "type": "image/jpeg",
-      "platform": "narrow"
+      "form_factor": "narrow"
     }
   ],
   "theme_color": "#3f4266",

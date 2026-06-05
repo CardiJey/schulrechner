@@ -847,7 +847,7 @@ class InputHandler{
         return [res,resulting_fraction]
     }
 
-    formatNumber(num,format_as="fraction",epsilon=1.12e-16) {
+    formatNumber(num,format_as="fraction",epsilon=4.5e-16) {
         if(typeof num == "string"){
             return num
         }

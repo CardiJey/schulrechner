@@ -1,3 +1,10 @@
+- 1.14.13
+- updated versioncode
+- Bugfix: (19/21) / (2/7) now reuslts in fraction
+- replaced device with form_factor
+- Added more convenient test creation
+- cleanup up tests script
+- Reenabled closing
 - 1.14.12
 - updated versioncode
 - Feature: Added dialog for when closing is not possible
