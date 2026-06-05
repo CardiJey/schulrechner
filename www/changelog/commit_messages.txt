@@ -1,3 +1,124 @@
+- 1.14.6
+- Updated versioncode
+- Bugfix: forgot to include last bugfix everywhere
+- 1.14.5
+- updated versioncode
+- Bugfix: CI Signing steps now runs on pushes again
+- 1.14.4
+- One more update to versioncode
+- 1.14.3
+- 1.14.2
+- again
+- Updated versioncode
+- Feature: Added required PWA files
+- Feature: Added % function
+- Added debug script
+- Update dependency electron to v42.3.3 (#170)
+- Update dependency dompurify to v3.4.8 (#169)
+- Update dependency electron to v42.3.2 (#168)
+- Update dependency electron to v42.3.1 (#167)
+- Update cordova-plugin-inappbrowser digest to cc727aa (#166)
+- Update dependency dompurify to v3.4.7 (#165)
+- Update dependency electron to v42.3.0 (#164)
+- Update dependency dompurify to v3.4.6 (#163)
+- Add preference Fullscreen
+- Update cordova-plugin-inappbrowser digest to 60a5c73 (#162)
+- Update cordova-plugin-inappbrowser digest to e0bd9dc (#161)
+- Update cordova-plugin-inappbrowser digest to 1b0be4a (#160)
+- Update dependency electron to v42.2.0 (#158)
+- Update cordova-plugin-inappbrowser digest to efd32a9 (#157)
+- Update cordova-plugin-inappbrowser digest to e28ca69 (#156)
+- Update dependency dompurify to v3.4.5 (#155)
+- Update dependency dompurify to v3.4.4 (#154)
+- Update dependency electron to v42.1.0 (#153)
+- Update dependency dompurify to v3.4.3 (#152)
+- Update cordova-plugin-inappbrowser digest to 694adb0 (#151)
+- Update cordova-plugin-inappbrowser digest to 56fb083 (#150)
+- Update dependency electron to v42.0.1 (#149)
+- Update cordova-plugin-inappbrowser digest to 24c6738 (#148)
+- Update cordova-plugin-inappbrowser digest to 0cea6cc (#147)
+- Update dependency electron to v42 (#146)
+- Update cordova-plugin-inappbrowser digest to 7a90dde (#145)
+- Update dependency electron to v41.5.0 (#143)
+- Update dependency electron to v41.4.0 (#142)
+- Update dependency dompurify to v3.4.2 (#141)
+- Update cordova-plugin-inappbrowser digest to 3fdfc96 (#140)
+- Update dependency jsdom to v29.1.1 (#139)
+- Update cordova-plugin-inappbrowser digest to bad3830 (#138)
+- Update dependency jsdom to v29.1.0 (#137)
+- Update cordova-plugin-inappbrowser digest to d922047 (#136)
+- Added Tests for various Fractions
+- Update cordova-plugin-inappbrowser digest to 675002f (#135)
+- Update dependency electron to v41.3.0 (#134)
+- Update dependency dompurify to v3.4.1 (#133)
+- Update dependency electron to v41.2.2 (#132)
+- Update dependency electron to v41.2.1 (#131)
+- Update dependency dompurify to v3.4.0 (#130)
+- Update softprops/action-gh-release action to v3 (#129)
+- Update cordova-plugin-inappbrowser digest to c1c6544 (#127)
+- Update dependency electron to v41.2.0 (#126)
+- Update dependency mathjs to v15.2.0 (#125)
+- Update dependency mathjs to v15.2.0 (#124)
+- Update dependency jsdom to v29.0.2 (#123)
+- Update dependency electron to v41.1.1 (#122)
+- Update cordova-plugin-inappbrowser digest to c140eaf (#121)
+- Update dependency electron to v41.1.0 (#120)
+- Update cordova-plugin-inappbrowser digest to 4f9d07d (#119)
+- Update dependency electron to v41.0.4 (#118)
+- Update android-actions/setup-android action to v4 (#117)
+- Update dependency jsdom to v29.0.1 (#114)
+- Update dependency electron to v41.0.3 (#113)
+- Update dependency jsdom to v29 (#112)
+- Update dependency electron to v41.0.2 (#111)
+- Update dependency electron to v41.0.1 (#110)
+- Update dependency dompurify to v3.3.3 (#109)
+- Update dependency electron to v41 (#108)
+- Update dependency electron to v40.8.0 (#107)
+- Update dependency dompurify to v3.3.2 (#106)
+- Update dependency electron to v40.7.0 (#105)
+- Fixed test svg sanitization
+- Excluded APK Signing steps for Forks
+- Added https://unlicense.org/ to allowed licenses
+- Updated README.md to new Design procedure
+- Pipeline now doesn't fail if "temp" folder doesn't exist
+- Merge branch 'main' of github.com:CardiJey/schulrechner
+- Updated Copyright and Dependencies README section
+- Updated tests to new Plan SVG
+- Switched logic to SVG id instead of inkscape-labels
+- Tweak: Switched from Inkscape SVG to Plain SVG, resulting in roughly 10% file size reduction
+- Update actions/upload-artifact action to v7 (#103)
+- Update cordova-plugin-inappbrowser digest to b83a9b7 (#102)
+- Update dependency electron to v40.6.1 (#101)
+- Update cordova-plugin-inappbrowser digest to 89cd5fe (#100)
+- Update cordova-plugin-inappbrowser digest to 6b28d2d (#99)
+- Update dependency electron to v40.6.0 (#98)
+- Update dependency electron-builder to v26.8.1 (#97)
+- Update dependency jsdom to v28 (#95)
+- Update cordova-plugin-inappbrowser digest to f76988e (#94)
+- Merge branch 'main' of github.com:CardiJey/schulrechner
+- Drew all the labels!
+- Added SVG sanity test still in TODO state, because functionality still relies on inkscape specific attributes that get cleaned
+- Added dev dependencies dompurify and jsdom for future SVG sanitization
+- Update cordova-plugin-inappbrowser digest to 18ef50d (#93)
+- Update dependency electron to v40.4.1 (#92)
+- Update dependency electron to v40.4.0 (#91)
+- Update dependency electron to v40.3.0 (#90)
+- Update dependency mathjs to v15.1.1 (#89)
+- Update dependency mathjs to v15.1.1 (#88)
+- Update cordova-plugin-inappbrowser digest to 03831d7 (#87)
+- Update cordova-plugin-inappbrowser digest to b7ab3d0 (#86)
+- Update cordova-plugin-inappbrowser digest to c1eaf3b (#85)
+- Update cordova-plugin-inappbrowser digest to f67412f (#84)
+- Update cordova-plugin-inappbrowser digest to dfce3c7 (#83)
+- Update dependency electron to v40.2.1 (#82)
+- Update cordova-plugin-inappbrowser digest to b52242a (#80)
+- Update cordova-plugin-inappbrowser digest to 246f2a0 (#79)
+- Update dependency electron-builder to v26.7.0 (#77)
+- Update cordova-plugin-inappbrowser digest to fb5b469 (#76)
+- Update dependency electron to v40.1.0 (#75)
+- Update cordova-plugin-inappbrowser digest to 375c02b (#74)
+- added tests for turn on and off
+- Feature: Added Setting to toggle Turn-Off = Close App
 - 1.14.1
 - updated versioncode
 - Feature: Added Off-button

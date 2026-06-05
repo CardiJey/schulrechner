@@ -1,11 +1,28 @@
 {
-  "background_color": "#FFF",
+  "dir": "ltr",
   "display": "standalone",
   "name": "Schulrechner",
+  "orientation": "portrait",
+  "scope": "/",
   "short_name": "Schulrechner",
-  "version": "io.cardijey.schulrechner",
+  "start_url": "/",
+  "id": "io.cardijey.schulrechner",
   "description": "The calculator you know from school",
-  "author": "Joris Yidong Scholl",
-  "icons": [],
-  "start_url": "index.html"
+  "lang": "de",
+  "categories": [
+    "developer tools",
+    "education"
+  ],
+  "icons": [
+    {
+      "src": "img/android-icons/drawable-xxxhdpi-icon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "img/flatpak-icons/icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
 }
