@@ -10,6 +10,7 @@
     "update_version": "node update_version.js",
     "start": "electron .",
     "debug": "electron . --no-sandbox",
+    "serve": "npx serve www",
     "dist": "electron-builder"
   },
   "repository": {
