@@ -1,0 +1,9 @@
+Feature: % Funktion hinzugefügt
+Feature: ON-Knopf hinzugefügt
+Feature: OFF-Knopf hinzugefügt
+Feature: Einstellung hinzugefügt, bei Off die App zu schließen
+Feature: Web Version kann nun als PWA installiert werden
+Bugfix: (19/21) / (2/7) ergibt nun einen bruch
+Tweak: F-Droid App auf Vollbild gestellt
+Tweak: Dependencies aktualisiert
+Tweak: Von Inkscape SVG auf Plain SVG gewechselt und ca. 10% Speicherplatz gespart
