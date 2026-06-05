@@ -1,3 +1,6 @@
+- 1.14.11
+- updated versioncode
+- Bugfix: screenshot path was wrong
 - 1.14.10
 - updated versioncode
 - Added screenshots to manifest
