@@ -46,5 +46,5 @@ self.addEventListener('fetch', event => {
         // Otherwise, go to the network
           return fetch(event.request)
       };
-  });
+  })();
 });
