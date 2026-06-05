@@ -81,18 +81,18 @@ jobs:
           cordova build android --release "--" --packageType=apk
 
       - name: Decode Keystore from secret
-        if: github.event.pull_request.head.repo.full_name == github.repository
+        if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository
         run: echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > schulrechner.jks
 
       - name: Find latest Build Tools version
         id: buildtools
-        if: github.event.pull_request.head.repo.full_name == github.repository
+        if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository
         run: |
           LATEST=$(ls -v "$ANDROID_HOME/build-tools" | tail -n 1)
           echo "version=$LATEST" >> $GITHUB_OUTPUT
 
       - name: Sign the APK with apksigner
-        if: github.event.pull_request.head.repo.full_name == github.repository
+        if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository
         run: |
           BUILD_TOOLS_VERSION=${{ steps.buildtools.outputs.version }}
       
@@ -109,7 +109,7 @@ jobs:
             platforms/android/app/build/outputs/apk/release/app-release-aligned.apk
 
       - name: Upload APK artifact
-        if: github.event.pull_request.head.repo.full_name == github.repository
+        if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository
         uses: actions/upload-artifact@v7
         with:
           name: schulrechner-apk
