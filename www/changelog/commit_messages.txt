@@ -1,3 +1,6 @@
+- 1.14.7
+- updated versioncode
+- sw not registered for electron
 - 1.14.6
 - Updated versioncode
 - Bugfix: forgot to include last bugfix everywhere

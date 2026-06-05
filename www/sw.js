@@ -1,7 +1,7 @@
 const CACHE_NAME = 'schulrechner-cache';
 
-// Add whichever assets you want to pre-cache here:
 const PRECACHE_ASSETS = [
+    '/',
     '/changelog/en-US.txt',
     '/changelog/de-DE.txt',
     '/css/styles.css',
@@ -15,11 +15,11 @@ const PRECACHE_ASSETS = [
     '/js/logic.js',
     '/js/main.js',
     '/js/math.js',
+    '/js/register_sw.js',
     '/version.txt',
     '/versionCode.txt'
 ]
 
-// Listener for the install event - pre-caches our assets list on service worker install.
 self.addEventListener('install', event => {
     event.waitUntil((async () => {
         const cache = await caches.open(CACHE_NAME);
