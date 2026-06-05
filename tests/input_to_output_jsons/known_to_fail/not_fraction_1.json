@@ -1,0 +1,19 @@
+{
+    "userLang": "en-US",
+    "name": "does NOT default to fraction test 1",
+    "input_history": [
+        "key_0",
+        "key_comma",
+        "key_0",
+        "key_0",
+        "key_0",
+        "key_0",
+        "key_0",
+        "key_0",
+        "key_0",
+        "key_9",
+        "key_equals"
+    ],
+    "rendered_input": "0.00000009 ",
+    "rendered_output": "9<span class='pow10'>×⒑</span><span class='pow_top'>-8</span>"
+}
