@@ -1,0 +1,24 @@
+{
+    "userLang": "en-US",
+    "name": "Frac Test 2",
+    "input_history": [
+        "key_frac",
+        "key_1",
+        "key_9",
+        "key_dir2",
+        "key_2",
+        "key_1",
+        "key_dir2",
+        "key_div",
+        "key_frac",
+        "key_2",
+        "key_dir2",
+        "key_7",
+        "key_equals"
+    ],
+    "rendered_input": "<span class=\"alignLeft16\"></span><span class=\"frac_wrapper\" style=\"vertical-align: calc(-12.9935px + 0.06rem);\"><span class=\"frac_top\">19</span><span class=\"frac_bottom alignRight16\">21</span></span>÷<span class=\"alignLeft17\"></span><span class=\"frac_wrapper\" style=\"vertical-align: calc(-12.9935px + 0.06rem);\"><span class=\"frac_top\">2</span><span class=\"frac_bottom alignRight17\">7</span></span> ",
+    "rendered_output": "<span class=\"frac_wrapper\"><span class=\"frac_top\">19</span><span class=\"frac_bottom\">6</span></span>",
+    "calc_mode": "COMP",
+    "rounding_mode": "Norm_1",
+    "turn_off_close": true
+}
