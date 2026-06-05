@@ -1,0 +1,1 @@
+const is_cordova = false
