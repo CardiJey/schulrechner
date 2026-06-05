@@ -53,5 +53,6 @@
       "url": "https://f-droid.org/packages/io.cardijey.schulrechner/",
       "id": "io.cardijey.schulrechner"
     }
-  ]
+  ],
+  "prefer_related_applications": true
 }
