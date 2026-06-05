@@ -13,6 +13,18 @@
         <script src="js/math.js" type="text/javascript"></script>
     </head>
     <body>
+        <div id="custom-alert" class="alert-overlay">
+            <div class="alert-card">
+                <button class="close-btn close-alert-btn">&times;</button>
+                <h3 id="custom-alert-title"></h3>
+                <p id="custom-alert-message"></p>
+                
+                <div class="action-buttons">
+                    <button class="btn btn-secondary close-alert-btn">Cancel</button>
+                    <button class="btn btn-primary confirm-alert-btn">Okay</button>
+                </div>
+            </div>
+        </div>
         <div class="calculator">
             <div id="svg-container"></div>
             <div id="math-output" class="math-div no-device-text-size-adjust"></div>

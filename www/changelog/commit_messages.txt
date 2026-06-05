@@ -1,3 +1,8 @@
+- 1.14.12
+- updated versioncode
+- Feature: Added dialog for when closing is not possible
+- Added option to prefer the F-Droid verison
+- changed screenshot type to jpeg
 - 1.14.11
 - updated versioncode
 - Bugfix: screenshot path was wrong

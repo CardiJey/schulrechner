@@ -5,6 +5,7 @@ let selected_design
 let design_list
 let userLang = navigator.language || navigator.userLanguage;
 let is_electron = isElectron()
+let alert_box = document.getElementById('custom-alert')
 let shell
 if(is_electron){
     shell = require("electron").shell;
@@ -31,6 +32,9 @@ class UI{
     constructor(global_logic_vars){
         this.global_logic_vars = global_logic_vars
         this.userLang = userLang
+        this.alert_actions = {
+            "can_not_close": function(){localStorage.setItem("turnOffClose", false);location.reload()}
+        }
     }
 
     async fetchChangelog(fdroid) {
@@ -223,7 +227,39 @@ class UI{
     }
 
     close_app(){
-        window.close()
+        //window.close()
+        setTimeout(() => {
+            this.show_alert(
+                "can_not_close",
+                "Can not close app",
+                "The platform does not allow closing the app from within.<br>Disable closing?"
+            )
+        },1000)
+    }
+
+    show_alert(code,title,message) {
+        document.getElementById("custom-alert-title").innerHTML = title
+        document.getElementById("custom-alert-message").innerHTML = message
+        alert_box.setAttribute("schulrechner_alert_code",code)
+        alert_box.classList.add('active');
+    }
+
+    close_alert() {
+        const alert_code = alert_box.getAttribute("schulrechner_alert_code")
+
+        alert_box.classList.remove('active');
+        alert_box.removeAttribute("schulrechner_alert_code")
+    }
+
+    confirm_alert() {
+        const alert_code = alert_box.getAttribute("schulrechner_alert_code")
+
+        alert_box.classList.remove('active');
+        alert_box.removeAttribute("schulrechner_alert_code")
+
+        if(alert_code in this.alert_actions){
+            this.alert_actions[alert_code]()
+        }
     }
 }
 
@@ -405,6 +441,22 @@ document.addEventListener("DOMContentLoaded", async () => {
         .catch(error => console.error("Error loading SVG:", error));
 
     function attachEventListeners() {
+        const close_alert_elements = document.querySelectorAll('.close-alert-btn')
+        const confirm_alert_elements = document.querySelectorAll('.confirm-alert-btn')
+
+        close_alert_elements.forEach(element => {
+            element.addEventListener("pointerdown", function (e) {
+                ui.close_alert()
+            });
+        });
+
+        confirm_alert_elements.forEach(element => {
+            element.addEventListener("pointerdown", function (e) {
+                ui.confirm_alert()
+            });
+        });
+ 
+
         const designElements = document.querySelectorAll('.design-option')
 
         designElements.forEach(element => {
