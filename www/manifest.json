@@ -24,5 +24,34 @@
       "sizes": "512x512",
       "type": "image/png"
     }
+  ],
+  "screenshots" : [
+    {
+      "src": "www/img/phoneScreenshots/1.jpg",
+      "sizes": "350x759",
+      "type": "image/jpg",
+      "platform": "narrow"
+    },
+    {
+      "src": "www/img/phoneScreenshots/2.jpg",
+      "sizes": "350x759",
+      "type": "image/jpg",
+      "platform": "narrow"
+    },
+    {
+      "src": "www/img/phoneScreenshots/3.jpg",
+      "sizes": "350x759",
+      "type": "image/jpg",
+      "platform": "narrow"
+    }
+  ],
+  "theme_color": "#3f4266",
+  "background_color": "#000000",
+  "related_applications": [
+    {
+      "platform": "f-droid",
+      "url": "https://f-droid.org/packages/io.cardijey.schulrechner/",
+      "id": "io.cardijey.schulrechner"
+    }
   ]
 }
