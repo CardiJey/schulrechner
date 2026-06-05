@@ -1,0 +1,9 @@
+Feature: Added % function
+Feature: Added ON-button
+Feature: Added OFF-button
+Feature: Added Setting to toggle Turn-Off = Close App
+Feature: Web Version can now be installed as a PWA
+Bugfix: (19/21) / (2/7) now results in a fraction
+Tweak: Made F-Droid App Fullscreen
+Tweak: Updated Dependencies
+Tweak: Switched from Inkscape SVG to Plain SVG, resulting in roughly 10% file size reduction

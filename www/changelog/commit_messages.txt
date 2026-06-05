@@ -1,3 +1,8 @@
+- 1.15.0
+- Ran manual tests
+- update versioncode
+- Changelog aktualisiert
+- Fixed typo in metainfo xml
 - 1.14.13
 - updated versioncode
 - Bugfix: (19/21) / (2/7) now reuslts in fraction
