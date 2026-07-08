@@ -2147,12 +2147,15 @@ class EquationSelectInputHandler extends InputHandler{
                 this.display_equation_index = this.equations.length - 1
                 this.global_logic_vars.active_input_handler = this.equations[this.display_equation_index]
 
-                if([
-                    "key_plus",
-                    "key_minus",
-                    "key_div",
-                    "key_x"
-                ].includes(mapped_input_code)){
+                if(
+                    [
+                        "key_plus",
+                        "key_minus",
+                        "key_div",
+                        "key_x"
+                    ].includes(mapped_input_code) ||
+                    mapped_input_code.startsWith("key_STO_")
+                ){
                     this.global_logic_vars.active_input_handler.handle("key_Ans")
                 }
                 this.global_logic_vars.active_input_handler.handle(mapped_input_code)

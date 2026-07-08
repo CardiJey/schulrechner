@@ -1,3 +1,6 @@
+- 1.15.1
+- updated versioncode
+- Feature: Store Variable now also works with ANS of last equation
 - 1.15.0
 - Ran manual tests
 - update versioncode
