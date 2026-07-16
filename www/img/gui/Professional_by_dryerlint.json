@@ -1,0 +1,46 @@
+{
+    "font_color": "#3f4266",
+    "mode_maps":{
+        "shift":{
+            "key_pow10":"key_pi",
+            "key_rcl":"key_STO",
+            "key_sqrt":"key_sqrt3",
+            "key_pow2":"key_pow3",
+            "key_pown":"key_sqrtn",
+            "key_pow-1":"key_faculty",
+            "key_ln":"key_epow",
+            "key_sin":"key_sin-1",
+            "key_cos":"key_cos-1",
+            "key_tan":"key_tan-1",
+            "key_M+":"key_M-",
+            "key_7":"key_CONST",
+            "key_integ":"key_deriv",
+            "key_mode":"key_setup",
+            "key_eng": "key_back",
+            "key_ac": "key_off"
+        },"alpha":{
+            "key_pow10":"key_e",
+            "key_(-)":"key_uservar_A",
+            "key_°":"key_uservar_B",
+            "key_hyp":"key_uservar_C",
+            "key_sin":"key_uservar_D",
+            "key_cos":"key_uservar_E",
+            "key_tan":"key_uservar_F",
+            "key_)":"key_uservar_X",
+            "key_SD":"key_uservar_Y",
+            "key_M+":"key_uservar_M"
+        },"STO":{
+            "key_(-)":"key_STO_A",
+            "key_°":"key_STO_B",
+            "key_hyp":"key_STO_C",
+            "key_sin":"key_STO_D",
+            "key_cos":"key_STO_E",
+            "key_tan":"key_STO_F",
+            "key_)":"key_STO_X",
+            "key_SD":"key_STO_Y",
+            "key_M+":"key_STO_M"
+        },"cmplx":{
+            "key_eng": "key_i"
+        }
+    }
+}
